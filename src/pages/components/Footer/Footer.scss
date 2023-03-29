@@ -1,0 +1,26 @@
+@import '../../../styles/mixins';
+
+footer {
+	padding: 2rem 3rem;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	background-color: black;
+	color: white;
+
+	.block-line {
+		width: 4px;
+		background-color: var(--four-color);
+	}
+
+	.block-title {
+		font-family: var(--main-font);
+		font-size: 2.2rem;
+	}
+
+	.footer-info-block {
+		@include flex($direction: column, $gap: 50px);
+	}
+}

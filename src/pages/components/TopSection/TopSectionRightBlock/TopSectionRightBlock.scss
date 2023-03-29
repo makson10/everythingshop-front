@@ -1,0 +1,34 @@
+@import '../../../../styles/mixins';
+
+#right-text-block-wrapper {
+	padding-right: 10%;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	@include flex($direction: row, $gap: 10px);
+}
+
+#top-section-title-right {
+	color: white;
+	text-align: right;
+	font-family: var(--second-font);
+	font-size: 2rem;
+	line-height: 3.4rem;
+}
+
+#second-part-title-right {
+	@include flex($align: center);
+	color: white;
+	font-family: var(--second-font);
+	font-size: 1.5rem;
+}
+
+#top-section-curly-brackets {
+	@include flex($direction: column, $align: center);
+
+	font-family: sans-serif;
+	position: relative;
+	top: -13px;
+	font-size: 12rem;
+	color: white;
+}

@@ -1,0 +1,20 @@
+#contact-block-title-wrapper {
+	display: flex;
+	flex-direction: row;
+	gap: 15px;
+}
+
+#contact-block-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: flex-start;
+
+	.contact-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
+}

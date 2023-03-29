@@ -1,0 +1,6 @@
+@import '../../../styles/mixins';
+
+#top-section-wrapper {
+    height: 64vh;
+    @include flex(row, space-between, center);
+}

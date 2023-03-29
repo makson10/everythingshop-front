@@ -1,0 +1,32 @@
+#header-menu {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+	#header-link-menu {
+		display: flex;
+		align-items: center;
+		padding: 0 1rem;
+
+		#header-link-ul {
+			display: flex;
+			flex-direction: row;
+			gap: 15px;
+
+			& > li {
+				list-style-type: none;
+				& > a {
+                    font-family: var(--main-font);
+                    font-weight: var(--main-font-second-weight);
+					color: white;
+					text-decoration: none;
+					transition: all 100ms linear;
+
+					&:hover {
+						text-shadow: 0 0 5px pink;
+					}
+				}
+			}
+		}
+	}
+}

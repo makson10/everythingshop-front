@@ -1,0 +1,12 @@
+#choose-info-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 80px;
+
+	#info-cards-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		gap: 60px;
+	}
+}
