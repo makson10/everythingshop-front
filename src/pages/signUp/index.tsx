@@ -3,6 +3,7 @@ import {
 	isNumber,
 	isString,
 	clearInputField,
+    validateSignUpData
 } from '../functions/validateFunctions';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
@@ -10,6 +11,7 @@ import { useRouter } from 'next/router';
 import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
 import styles from './signUp.module.scss';
+
 
 interface UserDataType {
 	name: string;
@@ -98,7 +100,7 @@ export default function SignUp() {
 		};
 
 		if (!checkDataOnNull(user)) {
-			validateData(user);
+			setErrorList(validateSignUpData(user));
 		}
 
 		setValidateEnd(true);
@@ -127,59 +129,6 @@ export default function SignUp() {
 		return haveEmptyField;
 	}
 
-	function validateData({ name, age, email, login, password }: UserDataType) {
-		validateName(name);
-		validateAge(+age);
-		validateEmail(email);
-		validateLogin(login);
-		validatePassword(password);
-	}
-
-	function validateName(name: string) {
-		if (!isString(name) || name.length < 3) {
-			setErrorList((previousErrorList) => [
-				...previousErrorList,
-				'Your name is not valid!',
-			]);
-		}
-	}
-
-	function validateAge(age: number) {
-		if (!isNumber(age) || age < 7 || age > 100) {
-			setErrorList((previousErrorList) => [
-				...previousErrorList,
-				'Your age is not valid!',
-			]);
-		}
-	}
-
-	function validateEmail(email: string) {
-		if (!isString(email) || !email.includes('@')) {
-			setErrorList((previousErrorList) => [
-				...previousErrorList,
-				'Your email is not valid!',
-			]);
-		}
-	}
-
-	function validateLogin(login: string) {
-		if (!isString(login) || login.length < 8) {
-			setErrorList((previousErrorList) => [
-				...previousErrorList,
-				'Your login is not valid!',
-			]);
-		}
-	}
-
-	function validatePassword(password: string) {
-		if (!isString(password) || password.length < 8) {
-			setErrorList((previousErrorList) => [
-				...previousErrorList,
-				'Your password is not valid!',
-			]);
-		}
-	}
-
 	function clearAllInputVariables() {
 		setName('');
 		setAge(0);
@@ -188,8 +137,7 @@ export default function SignUp() {
 		setPassword('');
 	}
 
-
-    function handleSuccess() {
+	function handleSuccess() {
 		// create function for send data to backend server
 		setIsOpenSuccessWindow(true);
 
@@ -228,7 +176,7 @@ export default function SignUp() {
 		if (errorList.length === 0) {
 			handleSuccess();
 		} else {
-            handleFailure();
+			handleFailure();
 		}
 	}, [validateEnd]);
 
