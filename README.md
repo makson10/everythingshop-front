@@ -1,4 +1,4 @@
-<h3>Frontend for __Everything Marketplace__ using SSR Next.js app</h4>
+<h3>Frontend for <b>Everything Marketplace</b> using SSR Next.js app</h4>
 
 Useful links in the development:<br>
 --> https://www.figma.com/file/mcuZNoezbhzFYEEOMWReOk/Online-store-website-(Community)?node-id=0%3A1 <br>
