@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-	isNumber,
-	isString,
 	clearInputField,
-    validateSignUpData
+	validateSignUpData,
 } from '../functions/validateFunctions';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
@@ -12,8 +10,7 @@ import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
 import styles from './signUp.module.scss';
 
-
-interface UserDataType {
+interface SignUpUserDataType {
 	name: string;
 	age: string | number;
 	email: string;
@@ -91,7 +88,7 @@ export default function SignUp() {
 	}
 
 	function handleSubmit() {
-		const user: UserDataType = {
+		const user: SignUpUserDataType = {
 			name: name!,
 			age: age!,
 			email: email!,
@@ -112,7 +109,7 @@ export default function SignUp() {
 		email,
 		login,
 		password,
-	}: UserDataType) {
+	}: SignUpUserDataType) {
 		let haveEmptyField: boolean = false;
 
 		if (

@@ -1,225 +1,138 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import {
+	clearInputField,
+	validateLogInData,
+} from '../functions/validateFunctions';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
 import styles from './logIn.module.scss';
 
+interface LogInUserDataType {
+	login: string;
+	password: string;
+}
+
+interface ErrorListType {
+	errorList: string[];
+}
+
+interface ActionType {
+	action: string;
+}
+
+const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
+	return createPortal(
+		<ErrorWindow errorList={errorList} />,
+		document.querySelector('#portal')!
+	);
+};
+
+const ShowSuccessModalWindow = ({ action }: ActionType) => {
+	return createPortal(
+		<SuccessWindow typeOfSuccess={action} />,
+		document.querySelector('#portal')!
+	);
+};
+
 export default function LogIn() {
-	const router = useRouter();
-
-	const [login, setLogin] = useState('');
-	const [password, setPassword] = useState('');
-	const [userData, setUserData] = useState({});
-	const [loginedUser, setLoginedUser] = useState({});
-	const [errorList, setErrorList] = useState(['fuck you']);
-
-	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState(false);
-	const [isOpenSuccessWindow, setIsOpenSuccessWindow] = useState(false);
-
-	const [validateEnd, setValidateEnd] = useState(false);
-	const [startValidateLogin, setStartValidateLogin] = useState(false);
-	const [haveError, setHaveError] = useState(false);
+	const [login, setLogin] = useState<string | null>(null);
+	const [password, setPassword] = useState<string | null>(null);
 
 	const inputLoginRef = useRef(null);
 	const inputPasswordRef = useRef(null);
-	const buttonRef = useRef(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 
-	// function handleLoginInput(e) {
-	// 	setLogin(e.target.value);
-	// }
+	const [errorList, setErrorList] = useState<string[]>([]);
+	const [validateEnd, setValidateEnd] = useState<boolean>(false);
+	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
+	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
+		useState<boolean>(false);
 
-	// function handlePasswordInput(e) {
-	// 	setPassword(e.target.value);
-	// }
+	const router = useRouter();
 
-	// function handleSubmit() {
-	// 	const user = {
-	// 		login: login,
-	// 		password: password,
-	// 	};
+	function handleLoginInput(e: React.ChangeEvent<HTMLInputElement>) {
+		e.preventDefault();
+		setLogin(e.target.value);
+	}
 
-	// 	if (checkDataOnNull(user)) {
-	// 		setValidateEnd(true);
-	// 		return;
-	// 	}
+	function handlePasswordInput(e: React.ChangeEvent<HTMLInputElement>) {
+		e.preventDefault();
+		setPassword(e.target.value);
+	}
 
-	// 	validateData(user);
-	// 	setUserData(user);
-	// 	setStartValidateLogin(true);
-	// }
+	function handleSubmit() {
+		const user: LogInUserDataType = {
+			login: login!,
+			password: password!,
+		};
 
-	// function validateData({ login, password }) {
-	// 	validateLogin(login);
-	// 	validatePassword(password);
-	// }
+		if (!checkDataOnNull(user)) {
+			setErrorList(validateLogInData(user));
+		}
 
-	// function checkDataOnNull({ login, password }) {
-	// 	let haveEmptyField = false;
+		setValidateEnd(true);
+	}
 
-	// 	if (login === '' || password === '') {
-	// 		setErrorList(['Some of your field is not fill!']);
-	// 		haveEmptyField = true;
-	// 	}
+	function checkDataOnNull({ login, password }: LogInUserDataType) {
+		let haveEmptyField: boolean = false;
 
-	// 	return haveEmptyField;
-	// }
+		if (login === '' || password === '') {
+			setErrorList(['Some of your field is not fill!']);
+			haveEmptyField = true;
+		}
 
-	// function validateLogin(login) {
-	// 	if (!isString(login) || login.length < 8) {
-	// 		setErrorList((previousErrorList) => [
-	// 			...previousErrorList,
-	// 			'Your login is not valid!',
-	// 		]);
-	// 	}
-	// }
+		return haveEmptyField;
+	}
 
-	// function validatePassword(password) {
-	// 	if (!isString(password) || password.length < 8) {
-	// 		setErrorList((previousErrorList) => [
-	// 			...previousErrorList,
-	// 			'Your password is not valid!',
-	// 		]);
-	// 	}
-	// }
+	function clearAllInputVariables() {
+		setLogin('');
+		setPassword('');
+	}
 
-	// function isString(data) {
-	// 	if (typeof data === 'string') return true;
-	// }
+	function handleSuccess() {
+		// create function for send data to backend server
+		setIsOpenSuccessWindow(true);
 
-	// function gotError() {
-	// 	const isError = errorList.length === 0;
-	// 	return !isError;
-	// }
+		clearInputField(inputLoginRef, inputPasswordRef);
+		clearAllInputVariables();
 
-	// function clearInputField(...inputRefs) {
-	// 	inputRefs.map((input) => (input.current.value = ''));
-	// }
+		if (buttonRef.current) buttonRef.current.disabled = true;
+		setTimeout(() => {
+			setIsOpenSuccessWindow(false);
+			router.push('/');
+			setValidateEnd(false);
+		}, 3000);
+	}
 
-	// function clearAllInputVariables() {
-	// 	setLogin('');
-	// 	setPassword('');
-	// }
+	function handleFailure() {
+		setIsOpenErrorWindow(true);
+		if (buttonRef.current) buttonRef.current.disabled = true;
 
-	// function handleSuccess() {
-	//     userDataContextUpdate(userData);
+		setTimeout(() => {
+			setIsOpenErrorWindow(false);
+			setErrorList([]);
+			if (buttonRef.current) buttonRef.current.disabled = false;
+			setValidateEnd(false);
+		}, 3000);
+	}
 
-	// 	clearInputField(inputLoginRef, inputPasswordRef);
-	// 	clearAllInputVariables();
+	useEffect(() => {
+		if (!validateEnd) return;
 
-	// 	setIsOpenSuccessWindow(true);
-	// 	setErrorList([]);
-	// 	setValidateEnd(false);
-	// }
-
-	// async function getAllUsers() {
-	// 	const allUsers = await fetch('http://127.0.0.1:4000/users').then((data) =>
-	// 		data.json()
-	// 	);
-	// 	return allUsers;
-	// }
-
-	// function compareUserData(allUsers) {
-	// 	let isDataMatch = false;
-
-	// 	allUsers.map((user) => {
-	// 		if (
-	// 			user.login === userData.login &&
-	// 			user.password === userData.password
-	// 		) {
-	// 			isDataMatch = true;
-	//             setLoginedUser(user);
-	// 		}
-	// 	});
-
-	// 	if (!isDataMatch) {
-	// 		setErrorList(['Your login or password does not match']);
-	// 	}
-	// }
-
-	// async function haveUserRegistered() {
-	// 	const allUsers = await getAllUsers();
-	// 	compareUserData(allUsers);
-	// 	setValidateEnd(true);
-	// }
-
-	// function redirectUserOnSuccess() {
-	//     router.push('/');
-	// }
-
-	// function setValueInLocalStorage(key, value) {
-	//     localStorage.setItem(key, value);
-	// }
-
-	// useEffect(() => {
-	// 	const isError = gotError();
-	// 	if (isError) setHaveError(isError);
-	// 	else {
-	// 		if (startValidateLogin) {
-	// 			haveUserRegistered();
-	// 			setStartValidateLogin(false);
-	// 		}
-	// 	}
-	// }, [startValidateLogin]);
-
-	// useEffect(() => {
-	// 	const isError = gotError();
-	// 	if (isError) setHaveError(isError);
-	// 	else {
-	// 		if (validateEnd) handleSuccess();
-	// 	}
-	// }, [validateEnd]);
-
-	// useEffect(() => {
-	// 	if (haveError === true) {
-	// 		setIsOpenErrorWindow(true);
-	// 		setHaveError(null);
-	// 		setStartValidateLogin(false);
-	// 		setValidateEnd(false);
-	// 	}
-	// }, [haveError]);
-
-	// useEffect(() => {
-	//     if (validateEnd) {
-	//         setValueInLocalStorage('loginedUser', JSON.stringify(loginedUser));
-	//     }
-	// }, [loginedUser]);
-
-	// useEffect(() => {
-	// 	if (isOpenErrorWindow) {
-	// 		buttonRef.current.disabled = true;
-	// 		setTimeout(() => {
-	// 			setIsOpenErrorWindow(false);
-	// 			setErrorList([]);
-	// 			buttonRef.current.disabled = false;
-	// 		}, 3000);
-	// 	}
-	// }, [isOpenErrorWindow]);
-
-	// useEffect(() => {
-	// 	if (isOpenSuccessWindow) {
-	// 		buttonRef.current.disabled = true;
-	// 		setTimeout(() => {
-	// 			setIsOpenSuccessWindow(false);
-	//             redirectUserOnSuccess();
-	// 		}, 3000);
-	// 	}
-	// }, [isOpenSuccessWindow]);
+		if (errorList.length === 0) {
+			handleSuccess();
+		} else {
+			handleFailure();
+		}
+	}, [validateEnd]);
 
 	return (
 		<>
-			{isOpenErrorWindow &&
-				createPortal(
-					<ErrorWindow errorList={errorList} />,
-					document.querySelector('#root')!
-				)}
-
-			{isOpenSuccessWindow &&
-				createPortal(
-					<SuccessWindow typeOfSuccess={'signed in'} />,
-					document.querySelector('#root')!
-				)}
+			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
+			{isOpenSuccessWindow && <ShowSuccessModalWindow action={'logging in'} />}
 
 			<div id={styles['form-page']}>
 				<div id={styles['form-wrapper']}>
@@ -231,21 +144,20 @@ export default function LogIn() {
 								className={styles['form-input']}
 								type="text"
 								placeholder="Enter your login"
-								// onChange={handleLoginInput}
+								onChange={handleLoginInput}
 							/>
 							<input
 								ref={inputPasswordRef}
 								className={styles['form-input']}
 								type="password"
 								placeholder="Enter your password"
-								// onChange={handlePasswordInput}
+								onChange={handlePasswordInput}
 							/>
 						</div>
 						<button
 							ref={buttonRef}
 							className={styles['sign-up-button']}
-							// onClick={handleSubmit}
-						>
+							onClick={handleSubmit}>
 							Submit
 						</button>
 						<div className={styles['sign-up-link-wrapper']}>

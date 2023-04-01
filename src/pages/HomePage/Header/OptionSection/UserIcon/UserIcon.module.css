@@ -1,0 +1,39 @@
+#logined-user {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 160px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+#logined-user #logined-user-button {
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+#logined-user #logined-user-name {
+  color: white;
+  font-family: var(--main-font);
+}
+
+#button-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+#button-wrapper #sign-up-button {
+  border: 3px solid black;
+  border-radius: 10px;
+  background-color: #eae7b1;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  font-family: var(--main-font);
+  font-weight: var(--main-font-weight);
+  transition: all 100ms linear;
+}
+#button-wrapper #sign-up-button:hover {
+  transform: scale(1.1);
+}
+
+/*# sourceMappingURL=UserIcon.module.css.map */

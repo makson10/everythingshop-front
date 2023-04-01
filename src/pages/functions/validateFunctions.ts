@@ -1,7 +1,12 @@
-interface UserDataType {
+interface SignUpUserDataType {
 	name: string;
 	age: string | number;
 	email: string;
+	login: string;
+	password: string;
+}
+
+interface LogInUserDataType {
 	login: string;
 	password: string;
 }
@@ -24,7 +29,7 @@ function validateSignUpData({
 	email,
 	login,
 	password,
-}: UserDataType) {
+}: SignUpUserDataType) {
 	const validateError = [];
 
 	const nameError = validateName(name);
@@ -35,6 +40,18 @@ function validateSignUpData({
 
 	const emailError = validateEmail(email);
 	if (emailError) validateError.push(emailError);
+
+	const loginError = validateLogin(login);
+	if (loginError) validateError.push(loginError);
+
+	const passwordError = validatePassword(password);
+	if (passwordError) validateError.push(passwordError);
+
+	return validateError;
+}
+
+function validateLogInData({ login, password }: LogInUserDataType) {
+	const validateError = [];
 
 	const loginError = validateLogin(login);
 	if (loginError) validateError.push(loginError);
@@ -75,4 +92,10 @@ function validatePassword(password: string) {
 	} else return false;
 }
 
-export { isString, isNumber, clearInputField, validateSignUpData };
+export {
+	isString,
+	isNumber,
+	clearInputField,
+	validateSignUpData,
+	validateLogInData,
+};

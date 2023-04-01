@@ -1,0 +1,30 @@
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.card-wrapper .info-card-photo {
+  width: 330px;
+  height: 230px;
+}
+.card-wrapper .card-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.card-wrapper .card-text-wrapper .info-card-title,
+.card-wrapper .card-text-wrapper .info-card-body {
+  font-family: var(--main-font);
+  font-weight: var(--main-font-weight);
+  color: white;
+  width: 330px;
+}
+.card-wrapper .card-text-wrapper .info-card-title {
+  font-size: 1.8rem;
+}
+.card-wrapper .card-text-wrapper .info-card-body {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+/*# sourceMappingURL=InfoCard.module.css.map */
