@@ -1,0 +1,12 @@
+@import '@/styles/mixins';
+
+.footer {
+	padding: 2rem 3rem;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	background-color: black;
+	color: white;
+}

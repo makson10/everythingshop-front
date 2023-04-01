@@ -1,0 +1,36 @@
+@import '@/styles/mixins';
+
+#contact-block-title-wrapper {
+	display: flex;
+	flex-direction: row;
+	gap: 15px;
+}
+
+#contact-block-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: flex-start;
+
+	.contact-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
+}
+
+.block-line {
+    width: 4px;
+    background-color: var(--four-color);
+}
+
+.block-title {
+    font-family: var(--main-font);
+    font-size: 2.2rem;
+}
+
+.footer-info-block {
+    @include flex($direction: column, $gap: 50px);
+}

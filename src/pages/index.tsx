@@ -1,9 +1,5 @@
-
+import HomePage from './homePage/HomePage';
 
 export default function Home() {
-  return (
-    <>
-      <p>FUCK U</p>
-    </>
-  )
+	return <HomePage />;
 }
