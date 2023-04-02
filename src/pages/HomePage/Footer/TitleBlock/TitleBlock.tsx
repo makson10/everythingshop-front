@@ -10,9 +10,13 @@ export default function TitleBlock() {
 				<p>Here you can find all you need</p>
 				<p>Buy -&gt; sell -&gt; buy -&gt; sell</p>
 				<p id={styles['footer-phrase']}>
-					<small>All what you </small> <b>see</b><small> you can </small><b>buy</b>,
-                    <br />
-					<small>All what you </small><b>have</b><small> you can </small> <b>sell</b>
+					<small>All what you </small> <b>see</b>
+					<small> you can </small>
+					<b>buy</b>,
+					<br />
+					<small>All what you </small>
+					<b>have</b>
+					<small> you can </small> <b>sell</b>
 				</p>
 			</div>
 			<div id={styles['footer-link-wrapper']}>

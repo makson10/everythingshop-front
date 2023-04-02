@@ -22,76 +22,9 @@ export default function LogIn() {
 	const [startValidateLogin, setStartValidateLogin] = useState(false);
 	const [haveError, setHaveError] = useState(false);
 
-	const inputLoginRef = useRef(null);
-	const inputPasswordRef = useRef(null);
-	const buttonRef = useRef(null);
-
-	// function handleLoginInput(e) {
-	// 	setLogin(e.target.value);
-	// }
-
-	// function handlePasswordInput(e) {
-	// 	setPassword(e.target.value);
-	// }
-
-	// function handleSubmit() {
-	// 	const user = {
-	// 		login: login,
-	// 		password: password,
-	// 	};
-
-	// 	if (checkDataOnNull(user)) {
-	// 		setValidateEnd(true);
-	// 		return;
-	// 	}
-
-	// 	validateData(user);
-	// 	setUserData(user);
-	// 	setStartValidateLogin(true);
-	// }
-
-	// function validateData({ login, password }) {
-	// 	validateLogin(login);
-	// 	validatePassword(password);
-	// }
-
-	// function checkDataOnNull({ login, password }) {
-	// 	let haveEmptyField = false;
-
-	// 	if (login === '' || password === '') {
-	// 		setErrorList(['Some of your field is not fill!']);
-	// 		haveEmptyField = true;
-	// 	}
-
-	// 	return haveEmptyField;
-	// }
-
-	// function validateLogin(login) {
-	// 	if (!isString(login) || login.length < 8) {
-	// 		setErrorList((previousErrorList) => [
-	// 			...previousErrorList,
-	// 			'Your login is not valid!',
-	// 		]);
-	// 	}
-	// }
-
-	// function validatePassword(password) {
-	// 	if (!isString(password) || password.length < 8) {
-	// 		setErrorList((previousErrorList) => [
-	// 			...previousErrorList,
-	// 			'Your password is not valid!',
-	// 		]);
-	// 	}
-	// }
-
-	// function isString(data) {
-	// 	if (typeof data === 'string') return true;
-	// }
-
-	// function gotError() {
-	// 	const isError = errorList.length === 0;
-	// 	return !isError;
-	// }
+	const inputLoginRef = useRef<HTMLInputElement>(null);
+	const inputPasswordRef = useRef<HTMLInputElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	// function clearInputField(...inputRefs) {
 	// 	inputRefs.map((input) => (input.current.value = ''));

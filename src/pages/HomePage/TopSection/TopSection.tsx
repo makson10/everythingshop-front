@@ -4,17 +4,17 @@ import RightBlock from './RightBlock/RightBlock';
 import styles from './TopSection.module.scss';
 
 export default function TopSection() {
-    const componentRef = useRef(null);
+	const componentRef = useRef(null);
 
-    useEffect(() => {
-        async function animate() {
-            if (componentRef.current) {
-                const sr = (await import('scrollreveal')).default;
-                sr().reveal(componentRef.current, { duration: 1000 });
-            }
-        }
+	useEffect(() => {
+		async function animate() {
+			if (componentRef.current) {
+				const sr = (await import('scrollreveal')).default;
+				sr().reveal(componentRef.current, { duration: 1000 });
+			}
+		}
 
-        animate();
+		animate();
 	}, []);
 
 	return (

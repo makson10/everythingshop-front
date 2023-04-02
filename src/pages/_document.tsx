@@ -15,9 +15,10 @@ export default function Document() {
 					href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
 					rel="stylesheet"
 				/>
+				<meta name="csrf-token" content="{{ csrf_token() }}" />
 			</Head>
 			<body>
-                <div id='portal'></div>
+				<div id="portal"></div>
 				<Main />
 				<NextScript />
 			</body>

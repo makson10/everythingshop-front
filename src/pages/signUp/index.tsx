@@ -9,9 +9,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
+import axios from 'axios';
 import styles from './signUp.module.scss';
 
-interface UserDataType {
+interface SignUpUserDataType {
 	name: string;
 	age: string | number;
 	email: string;
@@ -48,11 +49,11 @@ export default function SignUp() {
 	const [login, setLogin] = useState<string | null>(null);
 	const [password, setPassword] = useState<string | null>(null);
 
-	const inputNameRef = useRef(null);
-	const inputAgeRef = useRef(null);
-	const inputEmailRef = useRef(null);
-	const inputLoginRef = useRef(null);
-	const inputPasswordRef = useRef(null);
+	const inputNameRef = useRef<HTMLInputElement>(null);
+	const inputAgeRef = useRef<HTMLInputElement>(null);
+	const inputEmailRef = useRef<HTMLInputElement>(null);
+	const inputLoginRef = useRef<HTMLInputElement>(null);
+	const inputPasswordRef = useRef<HTMLInputElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	const [errorList, setErrorList] = useState<string[]>([]);
@@ -88,8 +89,16 @@ export default function SignUp() {
 		setPassword(e.target.value);
 	}
 
+	async function sendDataToServer(data: SignUpUserDataType) {
+        await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie')
+            .then(getcsrf => {
+                axios.post('http://127.0.0.1:8000/customers', data);
+            })
+            .catch(err => { throw err });
+	}
+
 	function handleSubmit() {
-		const user: UserDataType = {
+		const user: SignUpUserDataType = {
 			name: name!,
 			age: age!,
 			email: email!,
@@ -110,7 +119,7 @@ export default function SignUp() {
 		email,
 		login,
 		password,
-	}: UserDataType) {
+	}: SignUpUserDataType) {
 		let haveEmptyField: boolean = false;
 
 		if (
@@ -127,7 +136,7 @@ export default function SignUp() {
 		return haveEmptyField;
 	}
 
-	function validateData({ name, age, email, login, password }: UserDataType) {
+	function validateData({ name, age, email, login, password }: SignUpUserDataType) {
 		validateName(name);
 		validateAge(+age);
 		validateEmail(email);
@@ -188,9 +197,16 @@ export default function SignUp() {
 		setPassword('');
 	}
 
+	function handleSuccess() {
+		const user: SignUpUserDataType = {
+			name: name!,
+			age: age!,
+			email: email!,
+			login: login!,
+			password: password!,
+		};
 
-    function handleSuccess() {
-		// create function for send data to backend server
+		sendDataToServer(user);
 		setIsOpenSuccessWindow(true);
 
 		clearInputField(

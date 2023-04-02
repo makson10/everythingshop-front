@@ -10,21 +10,21 @@
 
 #form-wrapper {
 	width: fit-content;
-    padding: {
-        top: 3rem;
-        bottom: 3rem;
-        left: 5rem;
-        right: 5rem;
-    };
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
+	padding: {
+		top: 3rem;
+		bottom: 3rem;
+		left: 5rem;
+		right: 5rem;
+	}
 
-    background-color: rgba($color: #fff, $alpha: 1);
-    border-radius: 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+
+	background-color: rgba($color: #fff, $alpha: 1);
+	border-radius: 30px;
 
 	#form-wrapper-title {
 		font-family: sans-serif;
