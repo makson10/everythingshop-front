@@ -3,15 +3,15 @@
 	flex-direction: column;
 	position: absolute;
 	top: 90px;
-    opacity: 1;
+	opacity: 1;
 
-    &[data-state='close'] {
-        animation: closingMenu 1000ms linear all;
-    }
-    
-    &[data-state='open'] {
-        animation: openingMenu 1000ms linear all;
-    }
+	&[data-state='close'] {
+		animation: closingMenu 1000ms linear all;
+	}
+
+	&[data-state='open'] {
+		animation: openingMenu 1000ms linear all;
+	}
 }
 
 #modal-menu {
@@ -56,21 +56,21 @@
 }
 
 @keyframes openingMenu {
-    from {
-        opacity: 0;
-    }
+	from {
+		opacity: 0;
+	}
 
-    to {
-        opacity: 1;
-    }
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes closingMenu {
-    from {
-        opacity: 1;
-    }
+	from {
+		opacity: 1;
+	}
 
-    to {
-        opacity: 0;
-    }
+	to {
+		opacity: 0;
+	}
 }

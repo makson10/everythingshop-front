@@ -41,8 +41,8 @@ export default function LogIn() {
 	const [login, setLogin] = useState<string | null>(null);
 	const [password, setPassword] = useState<string | null>(null);
 
-	const inputLoginRef = useRef(null);
-	const inputPasswordRef = useRef(null);
+	const inputLoginRef = useRef<HTMLInputElement>(null);
+	const inputPasswordRef = useRef<HTMLInputElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	const [errorList, setErrorList] = useState<string[]>([]);

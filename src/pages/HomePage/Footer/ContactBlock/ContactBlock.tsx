@@ -6,9 +6,7 @@ export default function ContactBlock() {
 		<div className={styles['footer-info-block']}>
 			<div id={styles['contact-block-title-wrapper']}>
 				<div className={styles['block-line']}></div>
-				<p
-					id={styles['contact-block-title']}
-					className={styles['block-title']}>
+				<p id={styles['contact-block-title']} className={styles['block-title']}>
 					CONTACTS
 				</p>
 			</div>
