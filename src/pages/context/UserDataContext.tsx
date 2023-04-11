@@ -60,17 +60,21 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 			const jwtToken = localStorage.getItem('jwtToken');
 
 			if (jwtToken) {
-				axios.get('http://127.0.0.1:8000/customers').then((getcsrf) => {
-					axios
-						.post('http://127.0.0.1:8000/customers/jwtLogin', {
-							jwtToken: jwtToken,
-						})
-						.then((res) => {
-							if (res.data.data.login && res.data.data.password) {
-								setData(res.data.data);
-							}
-						});
-				});
+				const csrfProtocol = axios
+					.get('http://127.0.0.1:8000/customers')
+					.catch((err) => {
+						throw err;
+					});
+				const JWTTokenResult = await axios.post(
+					'http://127.0.0.1:8000/customers/jwtLogin',
+					{
+						jwtToken: jwtToken,
+					}
+				);
+
+				if (JWTTokenResult.data.data.login && JWTTokenResult.data.data.password) {
+					setData(JWTTokenResult.data.data);
+				}
 			}
 		};
 

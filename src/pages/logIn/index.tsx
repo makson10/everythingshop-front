@@ -13,8 +13,6 @@ import jwt from 'jsonwebtoken';
 import styles from './logIn.module.scss';
 import { useUserDataUpdate } from '../context/UserDataContext';
 
-const jwtSecretKey = '106ae033375bd6d2';
-
 interface LogInUserDataType {
 	login: string;
 	password: string;
@@ -53,7 +51,9 @@ export default function LogIn() {
 	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	const [errorList, setErrorList] = useState<string[]>([]);
-	const [validateEnd, setValidateEnd] = useState<boolean>(false);
+	const [mainValidationEnd, setMainValidationEnd] = useState<boolean>(false);
+	const [secondaryValidationEnd, setSecondaryValidationEnd] =
+		useState<boolean>(false);
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
@@ -80,7 +80,7 @@ export default function LogIn() {
 			setErrorList(validateLogInData(user));
 		}
 
-		setValidateEnd(true);
+		setMainValidationEnd(true);
 	};
 
 	const checkDataOnNull = ({ login, password }: LogInUserDataType) => {
@@ -100,43 +100,40 @@ export default function LogIn() {
 	};
 
 	const sendDataToServer = async (data: LogInUserDataType) => {
-		await axios
+		const csrfProtocol = await axios
 			.get('http://127.0.0.1:8000/customers')
-			.then(async (getcsrf) => {
-				axios
-					.post('http://127.0.0.1:8000/customers/dataLogin', data, {
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					})
-					.then((res) => {
-						if (res.data['error']) {
-							setErrorList([res.data['error']]);
-						} else {
-							const userData = res.data.userData;
-							saveData(userData);
-
-							axios
-								.post('http://127.0.0.1:8000/customers/register', userData)
-								.then((res) =>
-									localStorage.setItem('jwtToken', res.data.jwtToken)
-								);
-						}
-					});
-			})
 			.catch((err) => {
 				throw err;
 			});
+            
+		const loginResult = await axios.post(
+			'http://127.0.0.1:8000/customers/dataLogin',
+			data,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+
+		if (loginResult.data.error) {
+			setErrorList((prevValue) => [loginResult.data.error]);
+		} else {
+			const userData = loginResult.data.userData;
+			saveData(userData);
+
+			const JWTTokenResult = await axios.post(
+				'http://127.0.0.1:8000/customers/register',
+				userData
+			);
+			localStorage.setItem('jwtToken', JWTTokenResult.data.jwtToken);
+		}
+
+		setSecondaryValidationEnd((prevValue) => true);
 	};
 
 	const handleSuccess = () => {
-		const user: LogInUserDataType = {
-			login: login!,
-			password: password!,
-		};
-
 		setIsOpenSuccessWindow(true);
-		sendDataToServer(user);
 
 		clearInputField(inputLoginRef, inputPasswordRef);
 		clearAllInputVariables();
@@ -145,7 +142,8 @@ export default function LogIn() {
 		setTimeout(() => {
 			setIsOpenSuccessWindow(false);
 			router.push('/');
-			setValidateEnd(false);
+			setMainValidationEnd(false);
+			setSecondaryValidationEnd(false);
 		}, 3000);
 	};
 
@@ -157,19 +155,36 @@ export default function LogIn() {
 			setIsOpenErrorWindow(false);
 			setErrorList([]);
 			if (buttonRef.current) buttonRef.current.disabled = false;
-			setValidateEnd(false);
+			setMainValidationEnd(false);
+			setSecondaryValidationEnd(false);
 		}, 3000);
 	};
 
 	useEffect(() => {
-		if (!validateEnd) return;
+		if (!mainValidationEnd) return;
+
+		if (errorList.length === 0) {
+			const user: LogInUserDataType = {
+				login: login!,
+				password: password!,
+			};
+
+			sendDataToServer(user);
+		} else {
+			handleFailure();
+		}
+	}, [mainValidationEnd]);
+
+	useEffect(() => {
+		if (!secondaryValidationEnd) return;
+		console.log(errorList);
 
 		if (errorList.length === 0) {
 			handleSuccess();
 		} else {
 			handleFailure();
 		}
-	}, [validateEnd]);
+	}, [secondaryValidationEnd]);
 
 	return (
 		<>

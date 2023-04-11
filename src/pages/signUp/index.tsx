@@ -43,7 +43,7 @@ const ShowSuccessModalWindow = ({ action }: ActionType) => {
 };
 
 export default function SignUp() {
-    const userData = useUserData();
+	const userData = useUserData();
 
 	const [name, setName] = useState<string | null>(null);
 	const [age, setAge] = useState<string | number | null>(null);
@@ -65,11 +65,6 @@ export default function SignUp() {
 		useState<boolean>(false);
 
 	const router = useRouter();
-
-    useEffect(() => {
-        console.log(userData);
-    }, []);
-    
 
 	const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
@@ -97,26 +92,32 @@ export default function SignUp() {
 	};
 
 	const sendDataToServer = async (data: SignUpUserDataType) => {
-		const headers = {
-			'Content-Type': 'application/json',
-		};
-
-		await axios
+		const csrfProtocol = await axios
 			.get('http://127.0.0.1:8000/customers')
-			.then(async (getcsrf) => {
-				await axios.post('http://127.0.0.1:8000/customers/saveData', data, {
-					headers: headers,
-				});
-
-				await axios
-					.post('http://127.0.0.1:8000/customers/register', data, {
-						headers: headers,
-					})
-					.then((res) => localStorage.setItem('jwtToken', res.data.jwtToken));
-			})
 			.catch((err) => {
 				throw err;
 			});
+            
+		const saveDataResult = await axios.post(
+			'http://127.0.0.1:8000/customers/saveData',
+			data,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+
+		const JWTTokenResult = await axios.post(
+			'http://127.0.0.1:8000/customers/register',
+			data,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		localStorage.setItem('jwtToken', JWTTokenResult.data.jwtToken);
 	};
 
 	const handleSubmit = () => {
