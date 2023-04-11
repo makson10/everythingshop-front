@@ -18,9 +18,9 @@ export default function Document() {
 				<meta name="csrf-token" content="{{ csrf_token() }}" />
 			</Head>
 			<body>
-				<div id="portal"></div>
-				<Main />
-				<NextScript />
+					<div id="portal"></div>
+					<Main />
+					<NextScript />
 			</body>
 		</Html>
 	);

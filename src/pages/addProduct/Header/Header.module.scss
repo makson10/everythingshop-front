@@ -1,0 +1,41 @@
+#header-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    #header-content-wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+
+    #back-button {
+        border-radius: 50%;
+        border: none;
+        background-color: transparent;
+
+        width: 100px;
+        height: 100px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        
+        #back-button-icon {
+            width: 60px;
+            height: 60px;
+        }
+        }
+    }
+
+    #page-title {
+        display: flex;
+        align-items: center;
+        font-size: 1.8rem;
+    }
+}
+
+#header-split-line {
+    width: 100%;
+    height: 5px;
+    background-color: orange;
+}

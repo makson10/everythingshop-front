@@ -1,0 +1,44 @@
+#our-experience-block-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+
+#text-title-wrapper {
+  padding-bottom: 1rem;
+}
+
+#text-block-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  background-color: white;
+  width: 500px;
+}
+#text-block-wrapper #text-wrapper-for-fucking-text {
+  padding: 1rem 1rem 1rem 1rem;
+}
+#text-block-wrapper #text-block-line {
+  width: 20px;
+  height: 100%;
+  background-color: wheat;
+}
+#text-block-wrapper #text-block-text {
+  font-size: 1.2rem;
+}
+
+#our-experience-subtitle {
+  color: white;
+  font-family: var(--main-font);
+  font-weight: var(--main-font-weight);
+  font-size: 2rem;
+}
+
+#our-experience-title {
+  color: white;
+  font-family: var(--second-font);
+  font-size: 1.2rem;
+}
+
+/*# sourceMappingURL=TextBlock.module.css.map */

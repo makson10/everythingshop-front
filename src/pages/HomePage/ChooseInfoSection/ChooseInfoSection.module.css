@@ -1,0 +1,13 @@
+#choose-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+#choose-info-wrapper #info-cards-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 60px;
+}
+
+/*# sourceMappingURL=ChooseInfoSection.module.css.map */

@@ -8,7 +8,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import styles from './logIn.module.scss';
+import { useUserDataUpdate } from '../context/UserDataContext';
+
+const jwtSecretKey = '106ae033375bd6d2';
 
 interface LogInUserDataType {
 	login: string;
@@ -38,6 +43,8 @@ const ShowSuccessModalWindow = ({ action }: ActionType) => {
 };
 
 export default function LogIn() {
+	const { saveData } = useUserDataUpdate();
+
 	const [login, setLogin] = useState<string | null>(null);
 	const [password, setPassword] = useState<string | null>(null);
 
@@ -53,17 +60,17 @@ export default function LogIn() {
 
 	const router = useRouter();
 
-	function handleLoginInput(e: React.ChangeEvent<HTMLInputElement>) {
+	const handleLoginInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setLogin(e.target.value);
-	}
+	};
 
-	function handlePasswordInput(e: React.ChangeEvent<HTMLInputElement>) {
+	const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setPassword(e.target.value);
-	}
+	};
 
-	function handleSubmit() {
+	const handleSubmit = () => {
 		const user: LogInUserDataType = {
 			login: login!,
 			password: password!,
@@ -74,9 +81,9 @@ export default function LogIn() {
 		}
 
 		setValidateEnd(true);
-	}
+	};
 
-	function checkDataOnNull({ login, password }: LogInUserDataType) {
+	const checkDataOnNull = ({ login, password }: LogInUserDataType) => {
 		let haveEmptyField: boolean = false;
 
 		if (login === '' || password === '') {
@@ -85,16 +92,51 @@ export default function LogIn() {
 		}
 
 		return haveEmptyField;
-	}
+	};
 
-	function clearAllInputVariables() {
+	const clearAllInputVariables = () => {
 		setLogin('');
 		setPassword('');
-	}
+	};
 
-	function handleSuccess() {
-		// create function for send data to backend server
+	const sendDataToServer = async (data: LogInUserDataType) => {
+		await axios
+			.get('http://127.0.0.1:8000/customers')
+			.then(async (getcsrf) => {
+				axios
+					.post('http://127.0.0.1:8000/customers/dataLogin', data, {
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					})
+					.then((res) => {
+						if (res.data['error']) {
+							setErrorList([res.data['error']]);
+						} else {
+							const userData = res.data.userData;
+							saveData(userData);
+
+							axios
+								.post('http://127.0.0.1:8000/customers/register', userData)
+								.then((res) =>
+									localStorage.setItem('jwtToken', res.data.jwtToken)
+								);
+						}
+					});
+			})
+			.catch((err) => {
+				throw err;
+			});
+	};
+
+	const handleSuccess = () => {
+		const user: LogInUserDataType = {
+			login: login!,
+			password: password!,
+		};
+
 		setIsOpenSuccessWindow(true);
+		sendDataToServer(user);
 
 		clearInputField(inputLoginRef, inputPasswordRef);
 		clearAllInputVariables();
@@ -105,9 +147,9 @@ export default function LogIn() {
 			router.push('/');
 			setValidateEnd(false);
 		}, 3000);
-	}
+	};
 
-	function handleFailure() {
+	const handleFailure = () => {
 		setIsOpenErrorWindow(true);
 		if (buttonRef.current) buttonRef.current.disabled = true;
 
@@ -117,7 +159,7 @@ export default function LogIn() {
 			if (buttonRef.current) buttonRef.current.disabled = false;
 			setValidateEnd(false);
 		}, 3000);
-	}
+	};
 
 	useEffect(() => {
 		if (!validateEnd) return;

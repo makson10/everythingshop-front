@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
 	clearInputField,
 	validateSignUpData,
@@ -10,6 +10,7 @@ import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
 import axios from 'axios';
 import styles from './signUp.module.scss';
+import { useUserData } from '@/pages/context/UserDataContext';
 
 interface SignUpUserDataType {
 	name: string;
@@ -42,6 +43,8 @@ const ShowSuccessModalWindow = ({ action }: ActionType) => {
 };
 
 export default function SignUp() {
+    const userData = useUserData();
+
 	const [name, setName] = useState<string | null>(null);
 	const [age, setAge] = useState<string | number | null>(null);
 	const [email, setEmail] = useState<string | null>(null);
@@ -63,40 +66,60 @@ export default function SignUp() {
 
 	const router = useRouter();
 
-	function handleNameInput(e: React.ChangeEvent<HTMLInputElement>) {
+    useEffect(() => {
+        console.log(userData);
+    }, []);
+    
+
+	const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setName(e.target.value);
-	}
+	};
 
-	function handleAgeInput(e: React.ChangeEvent<HTMLInputElement>) {
+	const handleAgeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setAge(e.target.value);
-	}
+	};
 
-	function handleEmailInput(e: React.ChangeEvent<HTMLInputElement>) {
+	const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setEmail(e.target.value);
-	}
+	};
 
-	function handleLoginInput(e: React.ChangeEvent<HTMLInputElement>) {
+	const handleLoginInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setLogin(e.target.value);
-	}
+	};
 
-	function handlePasswordInput(e: React.ChangeEvent<HTMLInputElement>) {
+	const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setPassword(e.target.value);
-	}
+	};
 
-	async function sendDataToServer(data: SignUpUserDataType) {
-        await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie')
-            .then(getcsrf => {
-                axios.post('http://127.0.0.1:8000/customers', data);
-            })
-            .catch(err => { throw err });
-	}
+	const sendDataToServer = async (data: SignUpUserDataType) => {
+		const headers = {
+			'Content-Type': 'application/json',
+		};
 
-	function handleSubmit() {
+		await axios
+			.get('http://127.0.0.1:8000/customers')
+			.then(async (getcsrf) => {
+				await axios.post('http://127.0.0.1:8000/customers/saveData', data, {
+					headers: headers,
+				});
+
+				await axios
+					.post('http://127.0.0.1:8000/customers/register', data, {
+						headers: headers,
+					})
+					.then((res) => localStorage.setItem('jwtToken', res.data.jwtToken));
+			})
+			.catch((err) => {
+				throw err;
+			});
+	};
+
+	const handleSubmit = () => {
 		const user: SignUpUserDataType = {
 			name: name!,
 			age: age!,
@@ -110,15 +133,15 @@ export default function SignUp() {
 		}
 
 		setValidateEnd(true);
-	}
+	};
 
-	function checkDataOnNull({
+	const checkDataOnNull = ({
 		name,
 		age,
 		email,
 		login,
 		password,
-	}: SignUpUserDataType) {
+	}: SignUpUserDataType) => {
 		let haveEmptyField: boolean = false;
 
 		if (
@@ -133,17 +156,17 @@ export default function SignUp() {
 		}
 
 		return haveEmptyField;
-	}
+	};
 
-	function clearAllInputVariables() {
+	const clearAllInputVariables = () => {
 		setName('');
 		setAge(0);
 		setEmail('');
 		setLogin('');
 		setPassword('');
-	}
+	};
 
-	function handleSuccess() {
+	const handleSuccess = () => {
 		const user: SignUpUserDataType = {
 			name: name!,
 			age: age!,
@@ -153,7 +176,6 @@ export default function SignUp() {
 		};
 
 		sendDataToServer(user);
-		// create function for send data to backend server
 		setIsOpenSuccessWindow(true);
 
 		clearInputField(
@@ -171,9 +193,9 @@ export default function SignUp() {
 			router.push('/');
 			setValidateEnd(false);
 		}, 3000);
-	}
+	};
 
-	function handleFailure() {
+	const handleFailure = () => {
 		setIsOpenErrorWindow(true);
 		if (buttonRef.current) buttonRef.current.disabled = true;
 
@@ -183,7 +205,7 @@ export default function SignUp() {
 			if (buttonRef.current) buttonRef.current.disabled = false;
 			setValidateEnd(false);
 		}, 3000);
-	}
+	};
 
 	useEffect(() => {
 		if (!validateEnd) return;

@@ -1,0 +1,10 @@
+#top-section-wrapper {
+  height: 64vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0px;
+}
+
+/*# sourceMappingURL=TopSection.module.css.map */

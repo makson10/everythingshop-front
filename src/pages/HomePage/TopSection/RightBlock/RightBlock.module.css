@@ -1,0 +1,45 @@
+#right-text-block-wrapper {
+  padding-right: 10%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: normal;
+  gap: 10px;
+}
+
+#top-section-title-right {
+  color: white;
+  text-align: right;
+  font-family: var(--second-font);
+  font-size: 2rem;
+  line-height: 3.4rem;
+}
+
+#second-part-title-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  color: white;
+  font-family: var(--second-font);
+  font-size: 1.5rem;
+}
+
+#top-section-curly-brackets {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  font-family: sans-serif;
+  position: relative;
+  top: -13px;
+  font-size: 12rem;
+  color: white;
+}
+
+/*# sourceMappingURL=RightBlock.module.css.map */

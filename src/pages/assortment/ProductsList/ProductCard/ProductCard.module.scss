@@ -1,0 +1,41 @@
+.card-wrapper {
+    padding: {
+        left: .5rem;
+        right: .5rem;
+        top: .6rem;
+        bottom: .6rem;
+    };
+    border: 1px solid #0E1F40;
+    border-radius: 10px;
+    background-color: bisque;
+    word-break: break-word;
+    
+    display: flex;
+    flex-direction: column;
+    
+    .card-photo {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .card-title {
+        font-weight: bold;
+        text-align: center;
+        font-size: 1.3rem;
+    }
+    
+    .card-desc {
+        height: 50%;
+    }
+    
+    .seller-data-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        
+        .card-price {
+            font-weight: bold;
+            font-family: var(--second-font);
+        }
+    }
+}

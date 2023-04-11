@@ -1,3 +1,5 @@
+import { rusBadWordsRegex, engBadWordsRegex } from './badWordsRegex';
+
 interface SignUpUserDataType {
 	name: string;
 	age: string | number;
@@ -11,25 +13,33 @@ interface LogInUserDataType {
 	password: string;
 }
 
-function isString(data: string | number) {
+interface ProductDataType {
+	photoFile: File;
+	title: string;
+	description: string;
+	creator: string;
+	price: number;
+}
+
+const isString = (data: string | number) => {
 	if (typeof data === 'string') return true;
-}
+};
 
-function isNumber(data: string | number) {
+const isNumber = (data: string | number) => {
 	if (typeof +data === 'number') return true;
-}
+};
 
-function clearInputField(...inputRefs: any[]) {
+const clearInputField = (...inputRefs: any[]) => {
 	inputRefs.map((input) => (input.current.value = ''));
-}
+};
 
-function validateSignUpData({
+const validateSignUpData = ({
 	name,
 	age,
 	email,
 	login,
 	password,
-}: SignUpUserDataType) {
+}: SignUpUserDataType) => {
 	const validateError = [];
 
 	const nameError = validateName(name);
@@ -48,9 +58,9 @@ function validateSignUpData({
 	if (passwordError) validateError.push(passwordError);
 
 	return validateError;
-}
+};
 
-function validateLogInData({ login, password }: LogInUserDataType) {
+const validateLogInData = ({ login, password }: LogInUserDataType) => {
 	const validateError = [];
 
 	const loginError = validateLogin(login);
@@ -60,37 +70,91 @@ function validateLogInData({ login, password }: LogInUserDataType) {
 	if (passwordError) validateError.push(passwordError);
 
 	return validateError;
-}
+};
 
-function validateName(name: string) {
+const validateName = (name: string) => {
 	if (!isString(name) || name.length < 3) {
 		return 'Your name is not valid!';
 	} else return false;
-}
+};
 
-function validateAge(age: number) {
+const validateAge = (age: number) => {
 	if (!isNumber(age) || age < 7 || age > 100) {
 		return 'Your age is not valid!';
 	} else return false;
-}
+};
 
-function validateEmail(email: string) {
+const validateEmail = (email: string) => {
 	if (!isString(email) || !email.includes('@')) {
 		return 'Your email is not valid!';
 	} else return false;
-}
+};
 
-function validateLogin(login: string) {
+const validateLogin = (login: string) => {
 	if (!isString(login) || login.length < 8) {
 		return 'Your login is not valid!';
 	} else return false;
-}
+};
 
-function validatePassword(password: string) {
+const validatePassword = (password: string) => {
 	if (!isString(password) || password.length < 8) {
 		return 'Your password is not valid!';
 	} else return false;
-}
+};
+
+const validateProductData = ({
+	title,
+	description,
+	price,
+}: ProductDataType) => {
+	const errors: string[] = [];
+
+	const titleError = validateTitle(title);
+	if (titleError) errors.push(titleError);
+    
+	const descriptionError = validateDescription(description);
+	if (descriptionError) errors.push(descriptionError);
+    
+	const priceError = validatePrice(price);
+	if (priceError) errors.push(priceError);
+
+	return errors;
+};
+
+const validateTitle = (title: string) => {
+	if (rusBadWordsRegex.test(title)) {
+		return 'Your title contain bad works';
+	}
+
+	// if (engBadWordsRegex.test(title)) {
+	// 	console.log('Title have bad word(s)');
+	//     return 'Your title contain bad works';
+	// }
+
+	return false;
+}; // enable eng bad words checking later
+
+const validateDescription = (description: string) => {
+	if (rusBadWordsRegex.test(description)) {
+        console.log('have bad words in description');
+		return 'Your description contain bad works';
+	}
+
+	// if (engBadWordsRegex.test(title)) {
+	// 	console.log('Title have bad word(s)');
+	//     return 'Your title contain bad works';
+	// }
+
+	return false;
+}; // enable eng bad words checking later
+
+const validatePrice = (price: number) => {
+	if (price > 9_999_999) {
+		return 'Your product is too expensive';
+	}
+
+	return false;
+};
 
 export {
 	isString,
@@ -98,4 +162,5 @@ export {
 	clearInputField,
 	validateSignUpData,
 	validateLogInData,
+	validateProductData,
 };
