@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
 	clearInputField,
 	validateSignUpData,
@@ -9,8 +9,11 @@ import { useRouter } from 'next/router';
 import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
 import axios from 'axios';
+import {
+	useUserData,
+	useUserDataUpdate,
+} from '@/pages/context/UserDataContext';
 import styles from './signUp.module.scss';
-import { useUserData } from '@/pages/context/UserDataContext';
 
 interface SignUpUserDataType {
 	name: string;
@@ -44,6 +47,7 @@ const ShowSuccessModalWindow = ({ action }: ActionType) => {
 
 export default function SignUp() {
 	const userData = useUserData();
+	const { saveData } = useUserDataUpdate();
 
 	const [name, setName] = useState<string | null>(null);
 	const [age, setAge] = useState<string | number | null>(null);
@@ -59,7 +63,9 @@ export default function SignUp() {
 	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	const [errorList, setErrorList] = useState<string[]>([]);
-	const [validateEnd, setValidateEnd] = useState<boolean>(false);
+	const [mainValidateEnd, setMainValidateEnd] = useState<boolean>(false);
+	const [secondaryValidateEnd, setSecondaryValidateEnd] =
+		useState<boolean>(false);
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
@@ -97,7 +103,7 @@ export default function SignUp() {
 			.catch((err) => {
 				throw err;
 			});
-            
+
 		const saveDataResult = await axios.post(
 			'http://127.0.0.1:8000/customers/saveData',
 			data,
@@ -107,6 +113,12 @@ export default function SignUp() {
 				},
 			}
 		);
+
+		if (saveDataResult.data.error) {
+			setErrorList((prevValue) => [saveDataResult.data.error]);
+			setSecondaryValidateEnd(true);
+			return;
+		}
 
 		const JWTTokenResult = await axios.post(
 			'http://127.0.0.1:8000/customers/register',
@@ -118,6 +130,16 @@ export default function SignUp() {
 			}
 		);
 		localStorage.setItem('jwtToken', JWTTokenResult.data.jwtToken);
+
+		saveData({
+			name: data.name,
+			age: data.age,
+			email: data.email,
+			login: data.login,
+			password: data.password,
+		});
+
+		setSecondaryValidateEnd(true);
 	};
 
 	const handleSubmit = () => {
@@ -133,7 +155,7 @@ export default function SignUp() {
 			setErrorList(validateSignUpData(user));
 		}
 
-		setValidateEnd(true);
+		setMainValidateEnd(true);
 	};
 
 	const checkDataOnNull = ({
@@ -168,15 +190,6 @@ export default function SignUp() {
 	};
 
 	const handleSuccess = () => {
-		const user: SignUpUserDataType = {
-			name: name!,
-			age: age!,
-			email: email!,
-			login: login!,
-			password: password!,
-		};
-
-		sendDataToServer(user);
 		setIsOpenSuccessWindow(true);
 
 		clearInputField(
@@ -192,7 +205,8 @@ export default function SignUp() {
 		setTimeout(() => {
 			setIsOpenSuccessWindow(false);
 			router.push('/');
-			setValidateEnd(false);
+			setMainValidateEnd(false);
+			setSecondaryValidateEnd(false);
 		}, 3000);
 	};
 
@@ -204,19 +218,38 @@ export default function SignUp() {
 			setIsOpenErrorWindow(false);
 			setErrorList([]);
 			if (buttonRef.current) buttonRef.current.disabled = false;
-			setValidateEnd(false);
+			setMainValidateEnd(false);
+			setSecondaryValidateEnd(false);
 		}, 3000);
 	};
 
 	useEffect(() => {
-		if (!validateEnd) return;
+		if (!mainValidateEnd) return;
+
+		if (errorList.length === 0) {
+			const user: SignUpUserDataType = {
+				name: name!,
+				age: age!,
+				email: email!,
+				login: login!,
+				password: password!,
+			};
+
+			sendDataToServer(user);
+		} else {
+			handleFailure();
+		}
+	}, [mainValidateEnd]);
+
+	useEffect(() => {
+		if (!secondaryValidateEnd) return;
 
 		if (errorList.length === 0) {
 			handleSuccess();
 		} else {
 			handleFailure();
 		}
-	}, [validateEnd]);
+	}, [secondaryValidateEnd]);
 
 	return (
 		<>

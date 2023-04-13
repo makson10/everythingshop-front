@@ -14,9 +14,10 @@ import {
 import { createPortal } from 'react-dom';
 import ErrorWindow from '@/pages/components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '@/pages/components/SuccessWindow/SuccessWindow';
-import styles from './AddForm.module.scss';
-import axios from 'axios';
 import { useUserData } from '@/pages/context/UserDataContext';
+import UserNotLoginWindow from '../UserNotLoginWindow/UserNotLoginWindow';
+import axios from 'axios';
+import styles from './AddForm.module.scss';
 
 interface ProductDataType {
 	photoFile: File;
@@ -49,7 +50,7 @@ const ShowSuccessModalWindow = ({ action }: ActionType) => {
 };
 
 export function AddForm() {
-    const authorizationUserData = useUserData();
+	const authorizationUserData = useUserData();
 
 	const [fileInputLabel, setFileInputLabel] = useState<string>(
 		'Enter product photo'
@@ -227,6 +228,10 @@ export function AddForm() {
 		}
 	}, [validateEnd]);
 
+	if (!authorizationUserData.data?.name) {
+		return <UserNotLoginWindow />;
+	}
+
 	return (
 		<>
 			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
@@ -256,7 +261,7 @@ export function AddForm() {
 								className={styles['form-input']}
 								type="text"
 								placeholder="Enter product title"
-								maxLength={255}
+								maxLength={18}
 								ref={inputTitleRef as LegacyRef<HTMLInputElement>}
 								onChange={handleTitle}
 							/>

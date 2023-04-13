@@ -18,7 +18,7 @@ interface FetchedDataType {
 export default function Assortment({ products }: FetchedDataType) {
 	return (
 		<>
-			<Header />
+			<Header pageName={'Assortment'} routeToGoBack='/' />
 			<ProductsList products={products} />
 			<PaginationBar />
 			<Footer />
