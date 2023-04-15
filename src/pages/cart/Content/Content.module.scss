@@ -1,0 +1,21 @@
+#cart-content {
+    padding: {
+        top: 2rem;
+        bottom: 2rem;
+    };
+    flex: 2 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    #products-list {
+        width: 50%;
+        background-color: gray;
+        border-radius: 15px;
+        padding: .7rem;
+
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+	}
+}
