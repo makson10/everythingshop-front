@@ -4,6 +4,7 @@ import '@/styles/index.scss';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { UserDataProvider } from '@/pages/context/UserDataContext';
+import { CartProvider } from './context/CartContext';
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
@@ -11,9 +12,11 @@ export default function App({ Component, pageProps }: AppProps) {
 			<Head>
 				<title>Everything Shop</title>
 			</Head>
-			<UserDataProvider>
-				<Component {...pageProps} />
-			</UserDataProvider>
+			<CartProvider>
+				<UserDataProvider>
+					<Component {...pageProps} />
+				</UserDataProvider>
+			</CartProvider>
 		</>
 	);
 }

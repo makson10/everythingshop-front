@@ -1,0 +1,17 @@
+#hint-window {
+    width: 500%;
+
+    position: absolute;
+    top: -48px;
+    left: 34px;
+
+    padding: .5rem;
+    color: white;
+    background-color: cadetblue;
+    border-radius: 15px;
+    border: 2px solid black;
+
+    #hint-window-text {
+        font-size: 1rem;
+    }
+}

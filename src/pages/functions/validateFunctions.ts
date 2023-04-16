@@ -1,25 +1,9 @@
 import { rusBadWordsRegex, engBadWordsRegex } from './badWordsRegex';
-
-interface SignUpUserDataType {
-	name: string;
-	age: string | number;
-	email: string;
-	login: string;
-	password: string;
-}
-
-interface LogInUserDataType {
-	login: string;
-	password: string;
-}
-
-interface ProductDataType {
-	photoFile: File;
-	title: string;
-	description: string;
-	creator: string;
-	price: number;
-}
+import {
+	SignUpUserDataType,
+	LogInUserDataType,
+	IValidationProductData,
+} from '@/pages/types/validationTypes';
 
 const isString = (data: string | number) => {
 	if (typeof data === 'string') return true;
@@ -106,15 +90,15 @@ const validateProductData = ({
 	title,
 	description,
 	price,
-}: ProductDataType) => {
+}: IValidationProductData) => {
 	const errors: string[] = [];
 
 	const titleError = validateTitle(title);
 	if (titleError) errors.push(titleError);
-    
+
 	const descriptionError = validateDescription(description);
 	if (descriptionError) errors.push(descriptionError);
-    
+
 	const priceError = validatePrice(price);
 	if (priceError) errors.push(priceError);
 
@@ -136,7 +120,7 @@ const validateTitle = (title: string) => {
 
 const validateDescription = (description: string) => {
 	if (rusBadWordsRegex.test(description)) {
-        console.log('have bad words in description');
+		console.log('have bad words in description');
 		return 'Your description contain bad works';
 	}
 

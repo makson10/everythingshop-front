@@ -7,16 +7,14 @@ import React, {
 	useState,
 } from 'react';
 import { useRouter } from 'next/router';
-import {
-	clearInputField,
-	validateProductData,
-} from '@/pages/functions/validateFunctions';
+import { validateProductData } from '@/pages/functions/validateFunctions';
 import { createPortal } from 'react-dom';
 import ErrorWindow from '@/pages/components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '@/pages/components/SuccessWindow/SuccessWindow';
 import { useUserData } from '@/pages/context/UserDataContext';
 import UserNotLoginWindow from '../UserNotLoginWindow/UserNotLoginWindow';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './AddForm.module.scss';
 
 interface ProductDataType {
@@ -176,6 +174,7 @@ export function AddForm() {
 		formData.append('description', user.description);
 		formData.append('creator', user.creator);
 		formData.append('price', user.price.toString());
+		formData.append('uniqueProductId', uuidv4());
 
 		axios
 			.get('http://127.0.0.1:8000/products')

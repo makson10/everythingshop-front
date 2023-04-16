@@ -9,10 +9,13 @@ export default function OptionSection() {
 			<div id={styles['header-link-menu']}>
 				<ul id={styles['header-link-ul']}>
 					<li>
-						<Link href={'/addProduct'}>Добавить товар</Link>
+						<Link href={'/addProduct'}>Add item</Link>
 					</li>
 					<li>
-						<Link href={'/assortment'}>Ассортимент</Link>
+						<Link href={'/assortment'}>Assortment</Link>
+					</li>
+					<li>
+						<Link href={'/cart'}>Cart</Link>
 					</li>
 				</ul>
 			</div>

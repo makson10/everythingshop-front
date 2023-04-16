@@ -1,22 +1,10 @@
-import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
-
-interface IUserData {
-	name: string | null;
-	age: string | number | null;
-	email: string | null;
-	login: string | null;
-	password: string | null;
-}
-
-type UserDataContextType = {
-	data: IUserData | null;
-};
-
-type UserDataUpdateContextType = {
-	saveData: (credential: IUserData) => void;
-	deleteData: () => void;
-};
+import {
+	IUserData,
+	UserDataContextType,
+	UserDataUpdateContextType,
+} from '@/pages/types/contextTypes';
+import axios from 'axios';
 
 interface ProviderProps {
 	children: React.ReactNode;
@@ -72,7 +60,10 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 					}
 				);
 
-				if (JWTTokenResult.data.data.login && JWTTokenResult.data.data.password) {
+				if (
+					JWTTokenResult.data.data.login &&
+					JWTTokenResult.data.data.password
+				) {
 					setData(JWTTokenResult.data.data);
 				}
 			}

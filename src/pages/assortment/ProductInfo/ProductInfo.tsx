@@ -1,10 +1,15 @@
-import SuccessWindow from '@/pages/components/SuccessWindow/SuccessWindow';
 import { createPortal } from 'react-dom';
-import styles from './ProductInfo.module.scss';
 import { useEffect, useState } from 'react';
+import { useUserData } from '@/pages/context/UserDataContext';
+import { HintWindow } from './HintWindow/HintWindow';
+import SuccessWindow from '@/pages/components/SuccessWindow/SuccessWindow';
+import { useCartUpdateContext } from '@/pages/context/CartContext';
+import { v4 as uuidv4 } from 'uuid';
+import { IProductData } from '@/pages/types/contextTypes';
+import styles from './ProductInfo.module.scss';
 
 interface Props {
-	productData: any;
+	productData: IProductData;
 }
 
 interface ActionType {
@@ -19,13 +24,35 @@ const ShowSuccessModalWindow = ({ action }: ActionType) => {
 };
 
 export default function ProductInfo({ productData }: Props) {
+	const authorizeUserData = useUserData();
+	const { addProductToCard } = useCartUpdateContext();
+
+	const [isAddToCartButtonDisable, setIsAddToCartButtonDisable] =
+		useState<boolean>(false);
+	const [isOpenHintWindow, setIsOpenHintWindow] = useState<boolean>(false);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
 
 	function handleClick() {
 		setIsOpenSuccessWindow(true);
-		// later add func where add this product to cart
+
+		const product = {
+			title: productData?.title,
+			description: productData?.description,
+			photo_id: productData?.photo_id,
+			creator: productData?.creator,
+			price: productData?.price,
+			uniqueProductId: uuidv4(),
+		};
+
+		addProductToCard(product);
 	}
+
+	useEffect(() => {
+		if (!authorizeUserData.data?.login && !authorizeUserData.data?.password) {
+			setIsAddToCartButtonDisable(true);
+		} else setIsAddToCartButtonDisable(false);
+	}, [authorizeUserData]);
 
 	useEffect(() => {
 		if (!isOpenSuccessWindow) return;
@@ -45,7 +72,7 @@ export default function ProductInfo({ productData }: Props) {
 				<div id={styles['photo-section']}>
 					<img
 						id={styles['photo']}
-						src={`http://127.0.0.1:8000/products/image/${productData?.photoId}`}
+						src={`http://127.0.0.1:8000/products/image/${productData?.photo_id}`}
 						onError={(event) => {
 							event.currentTarget.src =
 								'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo2vEKNv6zaKu2i_NKvQXN8lYd0g2NMeNXzrkrZlw&s';
@@ -56,7 +83,7 @@ export default function ProductInfo({ productData }: Props) {
 				</div>
 				<div id={styles['info-section']}>
 					<div id={styles['main-info']}>
-						<p id={styles['product-name']}>{productData?.productName}</p>
+						<p id={styles['product-name']}>{productData?.title}</p>
 						<p id={styles['description']}>{productData?.description}</p>
 					</div>
 					<div id={styles['secondary-info']}>
@@ -64,8 +91,18 @@ export default function ProductInfo({ productData }: Props) {
 						<p id={styles['price']}>${productData?.price}</p>
 					</div>
 					<div id={styles['buy-button-wrapper']}>
-						<button id={styles['buy-button']} onClick={handleClick}>
+						<button
+							id={styles['buy-button']}
+							onClick={handleClick}
+							disabled={isAddToCartButtonDisable}
+							onMouseOver={() =>
+								isAddToCartButtonDisable && setIsOpenHintWindow(true)
+							}
+							onMouseOut={() =>
+								isAddToCartButtonDisable && setIsOpenHintWindow(false)
+							}>
 							<img src="https://img.icons8.com/sf-black/32/null/buy.png" />
+							{isOpenHintWindow && <HintWindow />}
 						</button>
 					</div>
 				</div>
