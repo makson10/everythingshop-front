@@ -9,9 +9,9 @@ import { useRouter } from 'next/router';
 import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
 import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
 import styles from './logIn.module.scss';
 import { useUserDataUpdate } from '../context/UserDataContext';
+import Button from '../components/Button/Button';
 
 interface LogInUserDataType {
 	login: string;
@@ -105,7 +105,7 @@ export default function LogIn() {
 			.catch((err) => {
 				throw err;
 			});
-            
+
 		const loginResult = await axios.post(
 			'http://127.0.0.1:8000/customers/dataLogin',
 			data,
@@ -211,12 +211,7 @@ export default function LogIn() {
 								onChange={handlePasswordInput}
 							/>
 						</div>
-						<button
-							ref={buttonRef}
-							className={styles['sign-up-button']}
-							onClick={handleSubmit}>
-							Submit
-						</button>
+						<Button text="Submit" callbackFunc={handleSubmit} />
 						<div className={styles['sign-up-link-wrapper']}>
 							<Link className={styles['sign-up-link']} href="/signUp">
 								Not registered yet? Sign Up

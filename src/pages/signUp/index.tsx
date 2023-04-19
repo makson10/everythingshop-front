@@ -13,6 +13,7 @@ import {
 	useUserData,
 	useUserDataUpdate,
 } from '@/pages/context/UserDataContext';
+import Button from '../components/Button/Button';
 import styles from './signUp.module.scss';
 
 interface SignUpUserDataType {
@@ -297,12 +298,13 @@ export default function SignUp() {
 								onChange={handlePasswordInput}
 							/>
 						</div>
-						<button
+						{/* <button
 							ref={buttonRef}
 							className={styles['sign-up-button']}
 							onClick={handleSubmit}>
 							Submit
-						</button>
+						</button> */}
+                        <Button text='Submit' callbackFunc={handleSubmit} />
 						<div className={styles['sign-in-link-wrapper']}>
 							<Link className={styles['sign-in-link']} href="/logIn">
 								Already registered? Log in

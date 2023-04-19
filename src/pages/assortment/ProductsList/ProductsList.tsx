@@ -4,9 +4,11 @@ import styles from './ProductsList.module.scss';
 
 interface Props {
 	products: IProduct[];
+	sortParameter: string;
+	filterParameter: string;
 }
 
-export function ProductsList({ products }: Props) {
+export function ProductsList({ products, sortParameter, filterParameter }: Props) {
 	return (
 		<div id={styles['product-list']}>
 			{products.map((product, index) => {

@@ -110,13 +110,12 @@ const validateTitle = (title: string) => {
 		return 'Your title contain bad works';
 	}
 
-	// if (engBadWordsRegex.test(title)) {
-	// 	console.log('Title have bad word(s)');
-	//     return 'Your title contain bad works';
-	// }
+	if (engBadWordsRegex.test(title)) {
+		return 'Your title contain bad works';
+	}
 
 	return false;
-}; // enable eng bad words checking later
+};
 
 const validateDescription = (description: string) => {
 	if (rusBadWordsRegex.test(description)) {
@@ -124,13 +123,12 @@ const validateDescription = (description: string) => {
 		return 'Your description contain bad works';
 	}
 
-	// if (engBadWordsRegex.test(title)) {
-	// 	console.log('Title have bad word(s)');
-	//     return 'Your title contain bad works';
-	// }
+	if (engBadWordsRegex.test(description)) {
+		return 'Your title contain bad works';
+	}
 
 	return false;
-}; // enable eng bad words checking later
+};
 
 const validatePrice = (price: number) => {
 	if (price > 9_999_999) {

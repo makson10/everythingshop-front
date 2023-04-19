@@ -13,10 +13,12 @@ export function ProductCard({ productData }: Props) {
 	);
 
 	useEffect(() => {
-		if (cardDescription.length > 80) {
-			setCardDescription(`${cardDescription.slice(0, 80)}...`);
+		if (productData['description'].length > 80) {
+			setCardDescription(`${productData['description'].slice(0, 80)}...`);
+		} else {
+			setCardDescription(productData['description']);
 		}
-	}, []);
+	}, [productData]);
 
 	return (
 		<div className={styles['card-wrapper']}>
@@ -42,10 +44,9 @@ export function ProductCard({ productData }: Props) {
 			<p className={styles['card-desc']}>{cardDescription}</p>
 			<br />
 			<div className={styles['seller-data-row']}>
-				<p
-					className={
-						styles['card-creator']
-					}>{`Продав.:${productData['creator']}`}</p>
+				<p className={styles['card-creator']}>
+					{`Продав.:${productData['creator']}`}
+				</p>
 				<p className={styles['card-price']}>{`$${productData['price']}`}</p>
 			</div>
 		</div>

@@ -1,13 +1,27 @@
+import { useEffect, useState } from 'react';
 import { useCartContext } from '@/pages/context/CartContext';
 import { useUserData } from '@/pages/context/UserDataContext';
 import { FailWindow } from '../FailWindow/FailWindow';
 import { ProductRow } from './ProductRow/ProductRow';
 import { IProductData } from '@/pages/types/contextTypes';
+import { SubmitBuyRow } from './SubmitBuyRow/SubmitBuyRow';
 import styles from './Content.module.scss';
 
 export function Content() {
 	const authorizedUser = useUserData();
 	const products = useCartContext();
+	const [allProductsCostAmount, setAllProductsCostAmount] = useState<number>(0);
+
+	useEffect(() => {
+		let sum: number = 0;
+		products.map((product) => {
+			if (product.price) {
+				sum += +product.price;
+			}
+		});
+
+		setAllProductsCostAmount(sum);
+	}, [products]);
 
 	if (!authorizedUser.data?.login || !authorizedUser.data.password) {
 		return (
@@ -26,6 +40,7 @@ export function Content() {
 					return <ProductRow key={index} productData={product} />;
 				})}
 			</div>
+			<SubmitBuyRow costSum={allProductsCostAmount} />
 		</div>
 	);
 }

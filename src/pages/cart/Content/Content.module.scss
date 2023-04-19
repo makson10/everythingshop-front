@@ -5,8 +5,10 @@
     };
     flex: 2 1 auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 20px;
 
     #products-list {
         width: 50%;

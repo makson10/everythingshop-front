@@ -16,6 +16,7 @@ import UserNotLoginWindow from '../UserNotLoginWindow/UserNotLoginWindow';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './AddForm.module.scss';
+import Button from '@/pages/components/Button/Button';
 
 interface ProductDataType {
 	photoFile: File;
@@ -50,6 +51,10 @@ const ShowSuccessModalWindow = ({ action }: ActionType) => {
 export function AddForm() {
 	const authorizationUserData = useUserData();
 
+	if (!authorizationUserData.data?.name) {
+		return <UserNotLoginWindow />;
+	}
+
 	const [fileInputLabel, setFileInputLabel] = useState<string>(
 		'Enter product photo'
 	);
@@ -65,7 +70,8 @@ export function AddForm() {
 	const buttonRef = useRef<HTMLButtonElement>();
 
 	const [errorList, setErrorList] = useState<string[]>([]);
-	const [validateEnd, setValidateEnd] = useState<boolean>(false);
+	const [mainValidateEnd, setMainValidateEnd] = useState<boolean>(false);
+	const [secondValidateEnd, setSecondValidateEnd] = useState<boolean>(false);
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
@@ -115,7 +121,7 @@ export function AddForm() {
 			setErrorList(errors);
 		}
 
-		setValidateEnd(true);
+		setMainValidateEnd(true);
 	};
 
 	const checkNullInField = ({
@@ -139,35 +145,7 @@ export function AddForm() {
 		return haveEmptyField;
 	};
 
-	const handleSuccess = () => {
-		const user: ProductDataType = {
-			photoFile: photoFile!,
-			title: title,
-			description: description,
-			creator: authorizationUserData.data?.name || 'guess',
-			price: price,
-		};
-
-		sendDataToServer(user);
-		setIsOpenSuccessWindow(true);
-
-		clearInputField(
-			inputFileRef,
-			inputTitleRef,
-			inputDescritpionRef,
-			inputPriceRef
-		);
-		clearAllInputVariables();
-
-		if (buttonRef.current) buttonRef.current.disabled = true;
-		setTimeout(() => {
-			setIsOpenSuccessWindow(false);
-			router.push('/');
-			setValidateEnd(false);
-		}, 3000);
-	};
-
-	const sendDataToServer = (user: ProductDataType) => {
+	const sendDataToServer = async (user: ProductDataType) => {
 		const formData = new FormData();
 		formData.append('file', user.photoFile);
 		formData.append('title', user.title);
@@ -176,16 +154,23 @@ export function AddForm() {
 		formData.append('price', user.price.toString());
 		formData.append('uniqueProductId', uuidv4());
 
-		axios
-			.get('http://127.0.0.1:8000/products')
-			.then((getcsrf) => {
-				axios
-					.post('http://127.0.0.1:8000/products/addNewProduct', formData)
-					.then((data) => console.log(data));
-			})
-			.catch((err) => {
-				throw err;
-			});
+		try {
+			const csrfToken = await axios.get('http://127.0.0.1:8000/products');
+
+			const addProductResult = await axios.post(
+				'http://127.0.0.1:8000/products/addNewProduct',
+				formData
+			);
+
+			console.log(addProductResult);
+			if (!addProductResult.data.success) {
+				setErrorList([addProductResult.data.errorMessage]);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+
+		setSecondValidateEnd(true);
 	};
 
 	const clearAllInputVariables = () => {
@@ -205,6 +190,26 @@ export function AddForm() {
 		});
 	};
 
+	const handleSuccess = () => {
+		setIsOpenSuccessWindow(true);
+
+		clearInputField(
+			inputFileRef,
+			inputTitleRef,
+			inputDescritpionRef,
+			inputPriceRef
+		);
+		clearAllInputVariables();
+
+		if (buttonRef.current) buttonRef.current.disabled = true;
+		setTimeout(() => {
+			setIsOpenSuccessWindow(false);
+			router.push('/');
+			setMainValidateEnd(false);
+			setSecondValidateEnd(false);
+		}, 3000);
+	};
+
 	const handleFailure = () => {
 		setIsOpenErrorWindow(true);
 		if (buttonRef.current) buttonRef.current.disabled = true;
@@ -213,23 +218,38 @@ export function AddForm() {
 			setIsOpenErrorWindow(false);
 			setErrorList([]);
 			if (buttonRef.current) buttonRef.current.disabled = false;
-			setValidateEnd(false);
+			setMainValidateEnd(false);
+			setSecondValidateEnd(false);
 		}, 3000);
 	};
 
 	useEffect(() => {
-		if (!validateEnd) return;
+		if (!mainValidateEnd) return;
+
+		if (errorList.length === 0) {
+			const user: ProductDataType = {
+				photoFile: photoFile!,
+				title: title,
+				description: description,
+				creator: authorizationUserData.data?.name || 'guess',
+				price: price,
+			};
+
+			sendDataToServer(user);
+		} else {
+			handleFailure();
+		}
+	}, [mainValidateEnd]);
+
+	useEffect(() => {
+		if (!secondValidateEnd) return;
 
 		if (errorList.length === 0) {
 			handleSuccess();
 		} else {
 			handleFailure();
 		}
-	}, [validateEnd]);
-
-	if (!authorizationUserData.data?.name) {
-		return <UserNotLoginWindow />;
-	}
+	}, [secondValidateEnd]);
 
 	return (
 		<>
@@ -283,12 +303,11 @@ export function AddForm() {
 								onChange={handlePrice}
 							/>
 						</div>
-						<button
-							className={styles['add-button']}
-							ref={buttonRef as LegacyRef<HTMLButtonElement>}
-							onClick={handleSubmit}>
-							Add product
-						</button>
+						<Button
+							text="Add product"
+							buttonRef={buttonRef}
+							callbackFunc={handleSubmit}
+						/>
 					</div>
 				</div>
 			</div>
