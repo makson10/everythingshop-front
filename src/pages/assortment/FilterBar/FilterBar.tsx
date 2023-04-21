@@ -1,4 +1,4 @@
-import { ChangeEvent, SetStateAction, useState } from 'react';
+import { ChangeEvent, SetStateAction } from 'react';
 import { ISortAndFilterParameters } from '@/pages/types/sortAndFilterParameters';
 import styles from './FilterBar.module.scss';
 
@@ -38,13 +38,13 @@ export default function FilterBar({ setParameters }: Props) {
 					<p>Filter products by: </p>
 					<select onChange={handleFilterSelectChange}>
 						<option value="">Filter by</option>
-						<option value="notCheaperThan1000">Not cheaper than 1000$</option>
-						<option value="notMoreExpensiveThan1000">
-							Not more expensive than 1000$
+						<option value="cheaperThan1000">Cheaper than 1000$</option>
+						<option value="moreExpensiveThan1000">
+							More expensive than 1000$
 						</option>
-						<option value="notCheaperThan5000">Not cheaper than 5000$</option>
-						<option value="notMoreExpensiveThan5000">
-							Not more expensive than 5000$
+						<option value="cheaperThan5000">Cheaper than 5000$</option>
+						<option value="moreExpensiveThan5000">
+							More expensive than 5000$
 						</option>
 					</select>
 				</div>

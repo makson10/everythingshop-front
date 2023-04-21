@@ -56,23 +56,4 @@
 			}
 		}
 	}
-
-	.sign-up-link-wrapper {
-		display: flex;
-		justify-content: center;
-
-		.sign-up-link {
-			text-align: center;
-			cursor: pointer;
-			color: black;
-
-			&:hover {
-				text-decoration: underline;
-			}
-
-			&:visited {
-				color: black;
-			}
-		}
-	}
 }

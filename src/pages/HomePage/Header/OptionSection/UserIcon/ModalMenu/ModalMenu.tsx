@@ -1,6 +1,7 @@
 import { useUserDataUpdate } from '@/pages/context/UserDataContext';
+import { useEffect, useRef } from 'react';
+import { useCartUpdateContext } from '@/pages/context/CartContext';
 import styles from './ModalMenu.module.scss';
-import { LegacyRef, forwardRef, useEffect, useRef } from 'react';
 
 interface Props {
 	isOpen: boolean;
@@ -10,6 +11,7 @@ interface Props {
 
 export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 	const { saveData } = useUserDataUpdate();
+	const { deleteAllProducts } = useCartUpdateContext();
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	function handleLogOut() {
@@ -22,6 +24,7 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 		});
 		if (localStorage.getItem('jwtToken')) localStorage.removeItem('jwtToken');
 		setIsUserLogin(false);
+		deleteAllProducts();
 	}
 
 	useEffect(() => {
@@ -50,8 +53,6 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 					<div id={styles['modal-menu-triangle']}></div>
 				</div>
 				<div id={styles['modal-menu']}>
-					{/* <button className={styles['modal-menu-button']}>Profile</button>
-					<div className={styles['split-line']}></div> */}
 					<button
 						className={styles['modal-menu-button']}
 						onClick={handleLogOut}>

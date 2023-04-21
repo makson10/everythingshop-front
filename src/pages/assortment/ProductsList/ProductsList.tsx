@@ -1,14 +1,12 @@
 import { ProductCard } from '@/pages/assortment/ProductsList/ProductCard/ProductCard';
-import { IProduct } from '@/pages/types/productTypes';
 import styles from './ProductsList.module.scss';
+import { ProductType } from '@/pages/types/productTypes';
 
 interface Props {
-	products: IProduct[];
-	sortParameter: string;
-	filterParameter: string;
+	products: ProductType;
 }
 
-export function ProductsList({ products, sortParameter, filterParameter }: Props) {
+export function ProductsList({ products }: Props) {
 	return (
 		<div id={styles['product-list']}>
 			{products.map((product, index) => {

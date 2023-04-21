@@ -6,3 +6,5 @@ export interface IProduct {
 	price: number;
 	uniqueProductId: string;
 }
+
+export type ProductType = IProduct[];
