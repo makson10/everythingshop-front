@@ -1,17 +1,20 @@
 import { useRouter } from 'next/router';
 import { createPortal } from 'react-dom';
 import ErrorWindow from '@/pages/components/ErrorWindow/ErrorWindow';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '@/pages/components/Button/Button';
+import { validateLogInData } from '../functions/validateFunctions';
+import axios from 'axios';
+import { IAdminData } from '../types/adminDataTypes';
 import styles from './moderatePage.module.scss';
 
 interface ErrorListType {
-	errorMessage: string;
+	errorList: string[];
 }
 
-const ShowErrorModalWindow = ({ errorMessage }: ErrorListType) => {
+const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
 	return createPortal(
-		<ErrorWindow errorList={[errorMessage]} />,
+		<ErrorWindow errorList={errorList} />,
 		document.querySelector('#portal')!
 	);
 };
@@ -24,14 +27,13 @@ export default function ModeratePage() {
 	const inputPasswordRef = useRef<HTMLInputElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 
-    const [errorMessage, setErrorMessage] = useState<string>('');
-	const [validationEnd, setValidationEnd] = useState<boolean>(false);
-	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
-	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
+	const [errorList, setErrorList] = useState<string[]>([]);
+	const [mainValidationEnd, setMainValidationEnd] = useState<boolean>(false);
+	const [secondaryValidationEnd, setSecondaryValidationEnd] =
 		useState<boolean>(false);
+	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 
 	const router = useRouter();
-
 
 	const handleLoginInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
@@ -44,21 +46,93 @@ export default function ModeratePage() {
 	};
 
 	const handleSubmit = () => {
-		// const user: LogInUserDataType = {
-		// 	login: login!,
-		// 	password: password!,
-		// };
-		// if (!checkDataOnNull(user)) {
-		// 	setErrorList(validateLogInData(user));
-		// }
-		// setMainValidationEnd(true);
+		const adminData: IAdminData = {
+			login: login!,
+			password: password!,
+		};
+
+		if (!checkDataOnNull(adminData)) {
+			setErrorList(validateLogInData(adminData));
+		}
+
+		setMainValidationEnd(true);
 	};
+
+	const checkDataOnNull = ({ login, password }: IAdminData) => {
+		let haveEmptyField: boolean = false;
+
+		if (login === '' || password === '') {
+			setErrorList(['Some of your field is not fill!']);
+			haveEmptyField = true;
+		}
+
+		return haveEmptyField;
+	};
+
+	const handleSecondCheck = () => {
+		const adminData: IAdminData = {
+			login: login!,
+			password: password!,
+		};
+
+		checkAdminData(adminData);
+	};
+
+	const checkAdminData = async (adminData: IAdminData) => {
+		const csrfToken = await axios
+			.get('http://127.0.0.1:8000/customers')
+			.catch((err) => console.error(err));
+
+		const res = await axios.post(
+			'http://127.0.0.1:8000/admins/checkAdminData',
+			adminData,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+
+		if (!res.data.adminWithReceivedDataExist) {
+			setErrorList(["Admin with these credentials doesn't exist now"]);
+		}
+		setSecondaryValidationEnd(true);
+	};
+
+	const handleSuccess = () => {
+		router.push(`${router.pathname}/adminPanel`);
+		if (inputLoginRef.current) inputLoginRef.current.value = '';
+		if (inputPasswordRef.current) inputPasswordRef.current.value = '';
+	};
+
+	const handleFailure = () => {
+		setIsOpenErrorWindow(true);
+		if (buttonRef.current) buttonRef.current.disabled = true;
+
+		setTimeout(() => {
+			setIsOpenErrorWindow(false);
+			setErrorList([]);
+			if (buttonRef.current) buttonRef.current.disabled = false;
+			setMainValidationEnd(false);
+			setSecondaryValidationEnd(false);
+		}, 3000);
+	};
+
+	useEffect(() => {
+		if (!mainValidationEnd) return;
+		errorList.length === 0 ? handleSecondCheck() : handleFailure();
+	}, [mainValidationEnd]);
+
+	useEffect(() => {
+		if (!secondaryValidationEnd) return;
+		errorList.length === 0 ? handleSuccess() : handleFailure();
+	}, [secondaryValidationEnd]);
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow errorMessage={errorMessage} />}
+			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
 
-			<div id={styles['form-page']}>
+			<div id={styles['admin-login-page']}>
 				<div id={styles['form-wrapper']}>
 					<h1 id={styles['form-wrapper-title']}>Admin Log In</h1>
 					<div className={styles['login-form-wrapper']}>

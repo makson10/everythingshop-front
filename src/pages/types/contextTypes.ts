@@ -13,7 +13,6 @@ export type CartUpdateContextType = {
 	deleteAllProducts: () => void;
 };
 
-
 export interface IUserData {
 	name: string | null;
 	age: string | number | null;
@@ -21,6 +20,8 @@ export interface IUserData {
 	login: string | null;
 	password: string | null;
 }
+
+export type UserDataType = IUserData[];
 
 export type UserDataContextType = {
 	data: IUserData | null;

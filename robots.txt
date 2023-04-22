@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /moderate/
+Disallow: /moderate/adminPanel/
