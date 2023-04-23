@@ -2,6 +2,7 @@ import { IProduct } from '@/pages/types/productTypes';
 import axios from 'axios';
 import styles from './ProductRow.module.scss';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface Props {
 	product: IProduct;
@@ -32,7 +33,12 @@ export default function ProductRow({ product }: Props) {
 					loading="lazy"
 				/>
 				<p>
-					<b>{product.title}</b>, {product.creator}
+					<Link
+                        id={styles['title-link']}
+						href={`http://localhost:3000/assortment/${product.uniqueProductId}`}>
+						<b>{product.title}</b>
+					</Link>
+					, {product.creator}
 				</p>
 			</div>
 			<div id={styles['second-info']}>
@@ -41,7 +47,6 @@ export default function ProductRow({ product }: Props) {
 					<img src="https://img.icons8.com/windows/30/null/trash.png" />
 				</button>
 			</div>
-			{/* end markup, make all data in one row and price with delete button make rigthly */}
 		</div>
 	);
 }
