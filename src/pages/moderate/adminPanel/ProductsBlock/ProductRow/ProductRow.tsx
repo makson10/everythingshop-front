@@ -1,18 +1,26 @@
 import { IProduct } from '@/pages/types/productTypes';
+import axios from 'axios';
 import styles from './ProductRow.module.scss';
+import { useRouter } from 'next/router';
 
 interface Props {
 	product: IProduct;
 }
 
 export default function ProductRow({ product }: Props) {
-	const handleClick = () => {
-		console.log(product.uniqueProductId);
+	const router = useRouter();
+
+	const handleClick = async () => {
+		await axios.post(
+			`http://127.0.0.1:8000/products/deleteProduct/${product.uniqueProductId}`
+		);
+
+		router.reload();
 	};
 
 	return (
 		<div id={styles['product-row']}>
-			<div>
+			<div id={styles['main-info']}>
 				<img
 					id={styles['row-photo']}
 					src={`http://127.0.0.1:8000/products/image/${product.photo_id}`}
@@ -27,12 +35,13 @@ export default function ProductRow({ product }: Props) {
 					<b>{product.title}</b>, {product.creator}
 				</p>
 			</div>
-			<div>
+			<div id={styles['second-info']}>
 				<p>${product.price}</p>
 				<button id={styles['delete-button']} onClick={handleClick}>
 					<img src="https://img.icons8.com/windows/30/null/trash.png" />
 				</button>
 			</div>
+			{/* end markup, make all data in one row and price with delete button make rigthly */}
 		</div>
 	);
 }

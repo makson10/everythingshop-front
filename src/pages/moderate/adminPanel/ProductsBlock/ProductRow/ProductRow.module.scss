@@ -1,17 +1,32 @@
 #product-row {
-    display: flex;
-    flex-direction: column;
-    border: 2px solid black;
-    border-radius: 15px;
-    padding: .5rem;
+	display: flex;
+	flex-direction: row;
+	border: 2px solid black;
+	border-radius: 15px;
+	padding: 0.5rem;
 
-    #row-photo {
-        width: 50px;
-        height: 50px;
-    }
+	#main-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 10px;
+	}
 
-    #delete-button {
-        background-color: transparent;
-        border: none;
-    }
+	#second-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 5px;
+        margin-left: auto;
+	}
+
+	#row-photo {
+		width: 50px;
+		height: 50px;
+	}
+
+	#delete-button {
+		background-color: transparent;
+		border: none;
+	}
 }
