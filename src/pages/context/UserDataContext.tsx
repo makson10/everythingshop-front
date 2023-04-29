@@ -25,11 +25,11 @@ export function useUserDataUpdate() {
 }
 
 const initialValue = {
-	name: null,
-	age: null,
-	email: null,
-	login: null,
-	password: null,
+	name: '',
+	dateOfBirth: '',
+	email: '',
+	login: '',
+	password: '',
 };
 
 export function UserDataProvider({ children }: ProviderProps): JSX.Element {
@@ -64,6 +64,7 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 					JWTTokenResult.data.data.login &&
 					JWTTokenResult.data.data.password
 				) {
+                    console.log(JWTTokenResult.data.data);
 					setData(JWTTokenResult.data.data);
 				}
 			}

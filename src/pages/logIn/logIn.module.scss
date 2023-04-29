@@ -54,6 +54,10 @@
 			&:focus {
 				border-bottom: 3px solid blue;
 			}
+
+			&::placeholder {
+				user-select: none;
+			}
 		}
 	}
 

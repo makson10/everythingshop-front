@@ -47,23 +47,49 @@
 		gap: 1rem;
 
 		.form-input {
-			border: none;
 			position: relative;
 			display: flex;
-			flex-direction: column;
 			padding: 0 0.2rem 0.2rem 0.2rem;
 			width: 300px;
 
-			border: none;
 			outline: none;
 			border: none;
 			border-bottom: 3px solid black;
 			font-size: 1.5rem;
 
+            &[type='date'] {
+                justify-content: space-between;
+            }
+
 			&:focus {
 				border-bottom: 3px solid blue;
 			}
-		}
+
+			&::placeholder {
+				user-select: none;
+			}
+        }
+
+        .password-wrapper {
+            width: 300px;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+
+            .form-input {
+                width: 90%;
+            }            
+
+            .toggle-password-visible-button {
+                width: 40px;
+                background-color: transparent;
+                border: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
 	}
 
 	.sign-in-link-wrapper {

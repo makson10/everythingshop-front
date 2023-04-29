@@ -19,7 +19,7 @@ const clearInputField = (...inputRefs: any[]) => {
 
 const validateSignUpData = ({
 	name,
-	age,
+	dateOfBirth,
 	email,
 	login,
 	password,
@@ -29,8 +29,8 @@ const validateSignUpData = ({
 	const nameError = validateName(name);
 	if (nameError) validateError.push(nameError);
 
-	const ageError = validateAge(+age);
-	if (ageError) validateError.push(ageError);
+	const dateOfBirthError = validateDateOfBirth(dateOfBirth);
+	if (dateOfBirthError) validateError.push(dateOfBirthError);
 
 	const emailError = validateEmail(email);
 	if (emailError) validateError.push(emailError);
@@ -59,31 +59,48 @@ const validateLogInData = ({ login, password }: LogInUserDataType) => {
 const validateName = (name: string) => {
 	if (!isString(name) || name.length < 3) {
 		return 'Your name is not valid!';
-	} else return false;
+	}
+    
+    return false;
 };
 
-const validateAge = (age: number) => {
-	if (!isNumber(age) || age < 7 || age > 100) {
-		return 'Your age is not valid!';
-	} else return false;
+const validateDateOfBirth = (dateOfBirth: string) => {
+	if (!isString(dateOfBirth) || dateOfBirth.length === 0) {
+		return 'Your date of birth is not valid!';
+	}
+
+	const timeDifference = Date.now() - +new Date(dateOfBirth);
+	const minimalAge = 6 * (365 * 24 * 60 * 60 * 1000);
+
+	if (timeDifference < minimalAge) {
+		return 'Your date of birth is not valid!';
+	}
+
+	return false;
 };
 
 const validateEmail = (email: string) => {
 	if (!isString(email) || !email.includes('@')) {
 		return 'Your email is not valid!';
-	} else return false;
+	}
+    
+    return false;
 };
 
 const validateLogin = (login: string) => {
 	if (!isString(login) || login.length < 8) {
 		return 'Your login is not valid!';
-	} else return false;
+	}
+    
+    return false;
 };
 
 const validatePassword = (password: string) => {
 	if (!isString(password) || password.length < 8) {
 		return 'Your password is not valid!';
-	} else return false;
+	}
+    
+    return false;
 };
 
 const validateProductData = ({

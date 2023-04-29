@@ -1,47 +1,29 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import {
-	clearInputField,
+	// clearInputField,
 	validateLogInData,
 } from '../functions/validateFunctions';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
-import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
 import axios from 'axios';
-import styles from './logIn.module.scss';
-import { useUserDataUpdate } from '../context/UserDataContext';
+import { useUserData, useUserDataUpdate } from '../context/UserDataContext';
 import Button from '../components/Button/Button';
+import {
+	ShowErrorModalWindow,
+	ShowSuccessModalWindow,
+} from '../components/ShowModalWindow/ShowModalWindow';
+import styles from './logIn.module.scss';
+import UserAlreadyAuthorizedPage from '../components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 
 interface LogInUserDataType {
 	login: string;
 	password: string;
 }
 
-interface ErrorListType {
-	errorList: string[];
-}
-
-interface ActionType {
-	action: string;
-}
-
-const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
-	return createPortal(
-		<ErrorWindow errorList={errorList} />,
-		document.querySelector('#portal')!
-	);
-};
-
-const ShowSuccessModalWindow = ({ action }: ActionType) => {
-	return createPortal(
-		<SuccessWindow typeOfSuccess={action} />,
-		document.querySelector('#portal')!
-	);
-};
-
 export default function LogIn() {
+	const userData = useUserData();
 	const { saveData } = useUserDataUpdate();
+	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 
 	const [login, setLogin] = useState<string | null>(null);
 	const [password, setPassword] = useState<string | null>(null);
@@ -134,8 +116,6 @@ export default function LogIn() {
 
 	const handleSuccess = () => {
 		setIsOpenSuccessWindow(true);
-
-		clearInputField(inputLoginRef, inputPasswordRef);
 		clearAllInputVariables();
 
 		if (buttonRef.current) buttonRef.current.disabled = true;
@@ -185,6 +165,16 @@ export default function LogIn() {
 			handleFailure();
 		}
 	}, [secondaryValidationEnd]);
+
+	useEffect(() => {
+		if (mainValidationEnd) return;
+
+		if (userData.data?.login && userData.data.password) {
+			setDidUserAuthorized(true);
+		}
+	}, [userData]);
+
+	if (didUserAuthorized) return <UserAlreadyAuthorizedPage />;
 
 	return (
 		<>

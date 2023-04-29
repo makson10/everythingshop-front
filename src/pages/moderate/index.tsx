@@ -1,23 +1,11 @@
 import { useRouter } from 'next/router';
-import { createPortal } from 'react-dom';
-import ErrorWindow from '@/pages/components/ErrorWindow/ErrorWindow';
 import { useEffect, useRef, useState } from 'react';
 import Button from '@/pages/components/Button/Button';
 import { validateLogInData } from '../functions/validateFunctions';
 import axios from 'axios';
 import { IAdminData } from '../types/adminDataTypes';
+import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
 import styles from './moderatePage.module.scss';
-
-interface ErrorListType {
-	errorList: string[];
-}
-
-const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
-	return createPortal(
-		<ErrorWindow errorList={errorList} />,
-		document.querySelector('#portal')!
-	);
-};
 
 export default function ModeratePage() {
 	const [login, setLogin] = useState<string | null>(null);

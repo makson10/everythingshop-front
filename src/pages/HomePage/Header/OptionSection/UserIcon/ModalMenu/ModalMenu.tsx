@@ -10,18 +10,12 @@ interface Props {
 }
 
 export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
-	const { saveData } = useUserDataUpdate();
+	const { deleteData } = useUserDataUpdate();
 	const { deleteAllProducts } = useCartUpdateContext();
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	function handleLogOut() {
-		saveData({
-			name: null,
-			age: null,
-			email: null,
-			login: null,
-			password: null,
-		});
+		deleteData();
 		if (localStorage.getItem('jwtToken')) localStorage.removeItem('jwtToken');
 		setIsUserLogin(false);
 		deleteAllProducts();

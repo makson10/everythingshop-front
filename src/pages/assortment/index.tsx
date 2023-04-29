@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import { paginate } from './PaginationBar/paginate';
 import FilterBar from './FilterBar/FilterBar';
 import { ISortAndFilterParameters } from '../types/sortAndFilterParameters';
-import { IProduct } from '@/pages/types/productTypes';
 import { ProductType } from '@/pages/types/productTypes';
 import {
 	filterProducts,
 	sortProducts,
+	searchProducts,
 } from '../functions/productsTransformation';
+import { ProductsNotFoundPage } from './ProductsNotFoundPage/ProductsNotFoundPage';
 
 interface FetchedDataType {
 	productsData: ProductType;
@@ -20,7 +21,7 @@ interface FetchedDataType {
 export default function Assortment({ productsData }: FetchedDataType) {
 	const [products, setProducts] = useState<ProductType>(productsData);
 	const [productListParameters, setProductListParameters] =
-		useState<ISortAndFilterParameters>({ filter: '', sort: '' });
+		useState<ISortAndFilterParameters>({ filter: '', sort: '', search: '' });
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const showingProductAmount = 15;
@@ -36,6 +37,16 @@ export default function Assortment({ productsData }: FetchedDataType) {
 	};
 
 	useEffect(() => {
+		let searchedProducts = productsData;
+		if (productListParameters.search) {
+			searchedProducts = searchProducts(
+				productListParameters.search,
+				productsData
+			);
+		}
+
+		setProducts(searchedProducts);
+
 		if (
 			productListParameters.sort === '' &&
 			productListParameters.filter === ''
@@ -45,7 +56,7 @@ export default function Assortment({ productsData }: FetchedDataType) {
 
 		const filteredProducts = filterProducts(
 			productListParameters.filter,
-			productsData
+			searchedProducts
 		);
 
 		const sortedProducts = sortProducts(
@@ -53,15 +64,18 @@ export default function Assortment({ productsData }: FetchedDataType) {
 			filteredProducts
 		);
 
-		console.log(sortedProducts);
-        setProducts(sortedProducts);
+		setProducts(sortedProducts);
 	}, [productListParameters]);
 
 	return (
 		<>
 			<Header pageName={'Assortment'} />
 			<FilterBar setParameters={setProductListParameters} />
-			<ProductsList products={productsForDisplay} />
+			{productsForDisplay.length !== 0 ? (
+				<ProductsList products={productsForDisplay} />
+			) : (
+				<ProductsNotFoundPage />
+			)}
 			<PaginationBar
 				onPageChange={onPageChange}
 				productsAmount={products.length}

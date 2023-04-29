@@ -3,61 +3,36 @@ import {
 	clearInputField,
 	validateSignUpData,
 } from '../functions/validateFunctions';
-import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import ErrorWindow from '../components/ErrorWindow/ErrorWindow';
-import SuccessWindow from '../components/SuccessWindow/SuccessWindow';
 import axios from 'axios';
 import {
 	useUserData,
 	useUserDataUpdate,
 } from '@/pages/context/UserDataContext';
 import Button from '../components/Button/Button';
+import {
+	ShowErrorModalWindow,
+	ShowSuccessModalWindow,
+} from '../components/ShowModalWindow/ShowModalWindow';
+import { SignUpUserDataType } from '@/pages/types/validationTypes';
+import UserAlreadyAuthorizedPage from '@/pages/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import styles from './signUp.module.scss';
-
-interface SignUpUserDataType {
-	name: string;
-	age: string | number;
-	email: string;
-	login: string;
-	password: string;
-}
-
-interface ErrorListType {
-	errorList: string[];
-}
-
-interface ActionType {
-	action: string;
-}
-
-const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
-	return createPortal(
-		<ErrorWindow errorList={errorList} />,
-		document.querySelector('#portal')!
-	);
-};
-
-const ShowSuccessModalWindow = ({ action }: ActionType) => {
-	return createPortal(
-		<SuccessWindow typeOfSuccess={action} />,
-		document.querySelector('#portal')!
-	);
-};
 
 export default function SignUp() {
 	const userData = useUserData();
 	const { saveData } = useUserDataUpdate();
+	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 
-	const [name, setName] = useState<string | null>(null);
-	const [age, setAge] = useState<string | number | null>(null);
-	const [email, setEmail] = useState<string | null>(null);
-	const [login, setLogin] = useState<string | null>(null);
-	const [password, setPassword] = useState<string | null>(null);
+	const [name, setName] = useState<string>('');
+	const [dateOfBirth, setDateOfBirth] = useState<string>('');
+	const [email, setEmail] = useState<string>('');
+	const [login, setLogin] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
 	const inputNameRef = useRef<HTMLInputElement>(null);
-	const inputAgeRef = useRef<HTMLInputElement>(null);
+	const inputDateOfBirthRef = useRef<HTMLInputElement>(null);
 	const inputEmailRef = useRef<HTMLInputElement>(null);
 	const inputLoginRef = useRef<HTMLInputElement>(null);
 	const inputPasswordRef = useRef<HTMLInputElement>(null);
@@ -78,9 +53,9 @@ export default function SignUp() {
 		setName(e.target.value);
 	};
 
-	const handleAgeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleDateOfBirthInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
-		setAge(e.target.value);
+		setDateOfBirth(e.target.value);
 	};
 
 	const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,6 +71,10 @@ export default function SignUp() {
 	const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setPassword(e.target.value);
+	};
+
+	const handleTogglePasswordVisible = () => {
+		setIsPasswordVisible((prevValue) => !prevValue);
 	};
 
 	const sendDataToServer = async (data: SignUpUserDataType) => {
@@ -134,7 +113,7 @@ export default function SignUp() {
 
 		saveData({
 			name: data.name,
-			age: data.age,
+			dateOfBirth: data.dateOfBirth,
 			email: data.email,
 			login: data.login,
 			password: data.password,
@@ -145,11 +124,11 @@ export default function SignUp() {
 
 	const handleSubmit = () => {
 		const user: SignUpUserDataType = {
-			name: name!,
-			age: age!,
-			email: email!,
-			login: login!,
-			password: password!,
+			name: name,
+			dateOfBirth: dateOfBirth,
+			email: email,
+			login: login,
+			password: password,
 		};
 
 		if (!checkDataOnNull(user)) {
@@ -161,7 +140,7 @@ export default function SignUp() {
 
 	const checkDataOnNull = ({
 		name,
-		age,
+		dateOfBirth,
 		email,
 		login,
 		password,
@@ -170,7 +149,7 @@ export default function SignUp() {
 
 		if (
 			name === '' ||
-			age === '' ||
+			dateOfBirth === '' ||
 			email === '' ||
 			login === '' ||
 			password === ''
@@ -184,7 +163,7 @@ export default function SignUp() {
 
 	const clearAllInputVariables = () => {
 		setName('');
-		setAge(0);
+		setDateOfBirth('');
 		setEmail('');
 		setLogin('');
 		setPassword('');
@@ -195,7 +174,7 @@ export default function SignUp() {
 
 		clearInputField(
 			inputNameRef,
-			inputAgeRef,
+			inputDateOfBirthRef,
 			inputEmailRef,
 			inputLoginRef,
 			inputPasswordRef
@@ -229,11 +208,11 @@ export default function SignUp() {
 
 		if (errorList.length === 0) {
 			const user: SignUpUserDataType = {
-				name: name!,
-				age: age!,
-				email: email!,
-				login: login!,
-				password: password!,
+				name: name,
+				dateOfBirth: dateOfBirth,
+				email: email,
+				login: login,
+				password: password,
 			};
 
 			sendDataToServer(user);
@@ -251,6 +230,16 @@ export default function SignUp() {
 			handleFailure();
 		}
 	}, [secondaryValidateEnd]);
+
+	useEffect(() => {
+		if (mainValidateEnd) return;
+
+		if (userData.data?.login && userData.data.password) {
+			setDidUserAuthorized(true);
+		}
+	}, [userData]);
+
+	if (didUserAuthorized) return <UserAlreadyAuthorizedPage />;
 
 	return (
 		<>
@@ -270,11 +259,11 @@ export default function SignUp() {
 								onChange={handleNameInput}
 							/>
 							<input
-								ref={inputAgeRef}
+								ref={inputDateOfBirthRef}
 								className={styles['form-input']}
-								type="number"
-								placeholder="Enter your age"
-								onChange={handleAgeInput}
+								type="date"
+								placeholder="Enter your date of birth"
+								onChange={handleDateOfBirthInput}
 							/>
 							<input
 								ref={inputEmailRef}
@@ -290,21 +279,25 @@ export default function SignUp() {
 								placeholder="Enter your login"
 								onChange={handleLoginInput}
 							/>
-							<input
-								ref={inputPasswordRef}
-								className={styles['form-input']}
-								type="password"
-								placeholder="Enter your password"
-								onChange={handlePasswordInput}
-							/>
+							<div className={styles['password-wrapper']}>
+								<input
+									ref={inputPasswordRef}
+									className={styles['form-input']}
+									type={isPasswordVisible ? 'text' : 'password'}
+									placeholder="Enter your password"
+									onChange={handlePasswordInput}
+								/>
+								<button
+									className={styles['toggle-password-visible-button']}
+									onClick={handleTogglePasswordVisible}>
+									<img
+										src={isPasswordVisible ? './hide.png' : './show.png'}
+										alt="#"
+									/>
+								</button>
+							</div>
 						</div>
-						{/* <button
-							ref={buttonRef}
-							className={styles['sign-up-button']}
-							onClick={handleSubmit}>
-							Submit
-						</button> */}
-                        <Button text='Submit' callbackFunc={handleSubmit} />
+						<Button text="Submit" callbackFunc={handleSubmit} />
 						<div className={styles['sign-in-link-wrapper']}>
 							<Link className={styles['sign-in-link']} href="/logIn">
 								Already registered? Log in

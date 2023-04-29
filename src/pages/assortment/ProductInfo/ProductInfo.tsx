@@ -1,27 +1,15 @@
-import { createPortal } from 'react-dom';
 import { useEffect, useState } from 'react';
 import { useUserData } from '@/pages/context/UserDataContext';
 import { HintWindow } from './HintWindow/HintWindow';
-import SuccessWindow from '@/pages/components/SuccessWindow/SuccessWindow';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
 import { v4 as uuidv4 } from 'uuid';
 import { IProductData } from '@/pages/types/contextTypes';
+import { ShowSuccessModalWindow } from '@/pages/components/ShowModalWindow/ShowModalWindow';
 import styles from './ProductInfo.module.scss';
 
 interface Props {
 	productData: IProductData;
 }
-
-interface ActionType {
-	action: string;
-}
-
-const ShowSuccessModalWindow = ({ action }: ActionType) => {
-	return createPortal(
-		<SuccessWindow typeOfSuccess={action} />,
-		document.querySelector('#portal')!
-	);
-};
 
 export default function ProductInfo({ productData }: Props) {
 	const authorizeUserData = useUserData();

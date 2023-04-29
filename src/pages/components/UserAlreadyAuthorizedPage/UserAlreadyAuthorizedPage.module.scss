@@ -1,0 +1,44 @@
+#page {
+	height: 100vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-image: url(https://img.freepik.com/premium-vector/seamless-pattern-with-night-sky-and-stars-space-seamless-background_266639-1832.jpg);
+
+    #message-wrapper {
+        width: fit-content;
+        padding: {
+            top: 3rem;
+            bottom: 3rem;
+            left: 5rem;
+            right: 5rem;
+        }
+    
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+    
+        background-color: rgba($color: #fff, $alpha: 1);
+        border-radius: 30px;
+
+        #log-out-button {
+			background-color: coral;
+			padding: 0.6rem;
+			border-radius: 8px;
+            color: white;
+            font-family: var(--main-font);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 150ms ease all;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+		}
+    }
+}

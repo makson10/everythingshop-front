@@ -1,6 +1,6 @@
 export interface SignUpUserDataType {
 	name: string;
-	age: string | number;
+	dateOfBirth: string;
 	email: string;
 	login: string;
 	password: string;

@@ -1,6 +1,9 @@
 import { IProduct, ProductType } from '../types/productTypes';
 
-export const filterProducts = (filterAction: string, arrayForFilter: ProductType) => {
+export const filterProducts = (
+	filterAction: string,
+	arrayForFilter: ProductType
+) => {
 	let filterFunction = (product: IProduct) => {
 		return true;
 	};
@@ -70,4 +73,27 @@ export const sortProducts = (sortAction: string, arrayForSort: ProductType) => {
 
 	const sortedProducts: ProductType = arrayForSort.sort(sortFunction);
 	return sortedProducts;
+};
+
+export const searchProducts = (
+	searchName: string,
+	arrayForSearch: ProductType
+) => {
+    console.log(searchName);
+    console.log(arrayForSearch);
+    // if (searchName === '') return arrayForSearch;
+
+	const newArray: ProductType = [];
+
+	arrayForSearch.map((product) => {
+		const productTitle = product.title.toLowerCase();
+		const productTitleStart = productTitle.slice(0, searchName.length);
+		searchName = searchName.toLowerCase();
+
+		if (productTitleStart === searchName) {
+			newArray.push(product);
+		}
+	});
+
+	return newArray;
 };

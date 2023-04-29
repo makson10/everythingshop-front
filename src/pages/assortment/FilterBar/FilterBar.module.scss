@@ -1,24 +1,14 @@
 #filter-bar-wrapper {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	padding: 2rem;
 
 	#select-boxes-wrapper {
 		width: 75%;
+		height: fit-content;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-around;
-
-		#select-box {
-			display: flex;
-			flex-direction: row;
-			gap: 20px;
-
-			& > select {
-				display: flex;
-				justify-content: center;
-				font-size: 1.1rem;
-			}
-		}
 	}
 }

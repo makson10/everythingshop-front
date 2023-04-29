@@ -1,24 +1,12 @@
 import { useEffect, useState } from 'react';
-import SuccessWindow from '@/pages/components/SuccessWindow/SuccessWindow';
-import { createPortal } from 'react-dom';
-import styles from './SubmitBuyRow.module.scss';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
 import Button from '@/pages/components/Button/Button';
+import { ShowSuccessModalWindow } from '@/pages/components/ShowModalWindow/ShowModalWindow';
+import styles from './SubmitBuyRow.module.scss';
 
 interface Props {
 	costSum: number;
 }
-
-interface ActionType {
-	action: string;
-}
-
-const ShowSuccessModalWindow = ({ action }: ActionType) => {
-	return createPortal(
-		<SuccessWindow typeOfSuccess={action} />,
-		document.querySelector('#portal')!
-	);
-};
 
 export function SubmitBuyRow({ costSum }: Props) {
 	const { deleteAllProducts } = useCartUpdateContext();

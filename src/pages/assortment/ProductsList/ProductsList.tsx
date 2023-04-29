@@ -1,6 +1,6 @@
 import { ProductCard } from '@/pages/assortment/ProductsList/ProductCard/ProductCard';
-import styles from './ProductsList.module.scss';
 import { ProductType } from '@/pages/types/productTypes';
+import styles from './ProductsList.module.scss';
 
 interface Props {
 	products: ProductType;

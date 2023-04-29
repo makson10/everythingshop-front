@@ -8,15 +8,16 @@ import React, {
 } from 'react';
 import { useRouter } from 'next/router';
 import { validateProductData } from '@/pages/functions/validateFunctions';
-import { createPortal } from 'react-dom';
-import ErrorWindow from '@/pages/components/ErrorWindow/ErrorWindow';
-import SuccessWindow from '@/pages/components/SuccessWindow/SuccessWindow';
 import { useUserData } from '@/pages/context/UserDataContext';
 import UserNotLoginWindow from '../UserNotLoginWindow/UserNotLoginWindow';
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 import styles from './AddForm.module.scss';
 import Button from '@/pages/components/Button/Button';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import {
+	ShowSuccessModalWindow,
+	ShowErrorModalWindow,
+} from '@/pages/components/ShowModalWindow/ShowModalWindow';
 
 interface ProductDataType {
 	photoFile: File;
@@ -25,28 +26,6 @@ interface ProductDataType {
 	creator: string;
 	price: number;
 }
-
-interface ErrorListType {
-	errorList: string[];
-}
-
-interface ActionType {
-	action: string;
-}
-
-const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
-	return createPortal(
-		<ErrorWindow errorList={errorList} />,
-		document.querySelector('#portal')!
-	);
-};
-
-const ShowSuccessModalWindow = ({ action }: ActionType) => {
-	return createPortal(
-		<SuccessWindow typeOfSuccess={action} />,
-		document.querySelector('#portal')!
-	);
-};
 
 export function AddForm() {
 	const authorizationUserData = useUserData();
