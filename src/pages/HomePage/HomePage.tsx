@@ -1,4 +1,5 @@
-import { lazy } from 'react';
+import { useRouter } from 'next/router';
+import { lazy, useEffect } from 'react';
 const Header = lazy(() => import('./Header/Header'));
 const HomePageBg = lazy(() => import('./HomePageBg'));
 const TopSection = lazy(() => import('./TopSection/TopSection'));

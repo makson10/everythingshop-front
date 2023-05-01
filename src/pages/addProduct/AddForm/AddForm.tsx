@@ -18,6 +18,7 @@ import {
 	ShowSuccessModalWindow,
 	ShowErrorModalWindow,
 } from '@/pages/components/ShowModalWindow/ShowModalWindow';
+import Input from '@/pages/components/Input/Input';
 
 interface ProductDataType {
 	photoFile: File;
@@ -29,10 +30,6 @@ interface ProductDataType {
 
 export function AddForm() {
 	const authorizationUserData = useUserData();
-
-	if (!authorizationUserData.data?.name) {
-		return <UserNotLoginWindow />;
-	}
 
 	const [fileInputLabel, setFileInputLabel] = useState<string>(
 		'Enter product photo'
@@ -230,6 +227,10 @@ export function AddForm() {
 		}
 	}, [secondValidateEnd]);
 
+	if (!authorizationUserData.data?.name) {
+		return <UserNotLoginWindow />;
+	}
+
 	return (
 		<>
 			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
@@ -255,13 +256,11 @@ export function AddForm() {
 									onChange={handleFileInput}
 								/>
 							</label>
-							<input
-								className={styles['form-input']}
-								type="text"
+							<Input
 								placeholder="Enter product title"
 								maxLength={18}
-								ref={inputTitleRef as LegacyRef<HTMLInputElement>}
-								onChange={handleTitle}
+								inputRef={inputTitleRef as LegacyRef<HTMLInputElement>}
+								onChangeFunction={handleTitle}
 							/>
 							<textarea
 								className={styles['form-input']}
@@ -272,14 +271,13 @@ export function AddForm() {
 								ref={inputDescritpionRef as LegacyRef<HTMLTextAreaElement>}
 								onChange={handleDescription}
 							/>
-							<input
-								className={styles['form-input']}
+							<Input
 								type="number"
 								placeholder="Enter product price"
-								min="1"
-								max="9999999"
-								ref={inputPriceRef as LegacyRef<HTMLInputElement>}
-								onChange={handlePrice}
+								min={1}
+								max={9999999}
+								inputRef={inputPriceRef as LegacyRef<HTMLInputElement>}
+								onChangeFunction={handlePrice}
 							/>
 						</div>
 						<Button

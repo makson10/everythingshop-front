@@ -13,6 +13,7 @@ export type CartUpdateContextType = {
 	deleteAllProducts: () => void;
 };
 
+
 export interface IUserData {
 	name: string;
 	dateOfBirth: string;
@@ -21,13 +22,30 @@ export interface IUserData {
 	password: string;
 }
 
-export type UserDataType = IUserData[];
+export interface GoogleUserData {
+	id: string;
+	name: string;
+	email: string;
+	picture: string;
+}
+
+interface IUnionUserData {
+	id: string;
+	name: string;
+	email: string;
+	picture: string;
+	dateOfBirth: string;
+	login: string;
+	password: string;
+}
+
+export type UserDataType = IUserData[] | GoogleUserData[];
 
 export type UserDataContextType = {
-	data: IUserData | null;
+	data: IUnionUserData | null;
 };
 
 export type UserDataUpdateContextType = {
-	saveData: (credential: IUserData) => void;
+	saveData: (credential: IUserData | GoogleUserData) => void;
 	deleteData: () => void;
 };

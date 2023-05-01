@@ -17,6 +17,8 @@ import {
 } from '../components/ShowModalWindow/ShowModalWindow';
 import { SignUpUserDataType } from '@/pages/types/validationTypes';
 import UserAlreadyAuthorizedPage from '@/pages/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
+import GoogleButton from '../components/GoogleButton/GoogleButton';
+import Input from '../components/Input/Input';
 import styles from './signUp.module.scss';
 
 export default function SignUp() {
@@ -123,7 +125,7 @@ export default function SignUp() {
 	};
 
 	const handleSubmit = () => {
-		const user: SignUpUserDataType = {
+        const user: SignUpUserDataType = {
 			name: name,
 			dateOfBirth: dateOfBirth,
 			email: email,
@@ -234,12 +236,16 @@ export default function SignUp() {
 	useEffect(() => {
 		if (mainValidateEnd) return;
 
-		if (userData.data?.login && userData.data.password) {
+		if (
+			(userData.data?.login && userData.data?.password) ||
+			userData.data?.id
+		) {
 			setDidUserAuthorized(true);
 		}
 	}, [userData]);
 
 	if (didUserAuthorized) return <UserAlreadyAuthorizedPage />;
+	// поправить верстку ошибки, исправить проблему с рефами, чтоб можно было очищать поля после secondatyValidationEnd
 
 	return (
 		<>
@@ -249,43 +255,40 @@ export default function SignUp() {
 			<div id={styles['form-page']}>
 				<div id={styles['form-wrapper']}>
 					<h1 id={styles['form-wrapper-title']}>Sign up</h1>
+					<GoogleButton
+						action="Sign Up"
+						redirectUrl="/api/auth/login?action_type=register"
+					/>
 					<div className={styles['registration-form-wrapper']}>
 						<div className={styles['form-input-wrapper']}>
-							<input
-								ref={inputNameRef}
-								className={styles['form-input']}
+							<Input
+								inputRef={inputNameRef}
 								placeholder="Enter your name"
-								type="text"
-								onChange={handleNameInput}
+								onChangeFunction={handleNameInput}
 							/>
-							<input
-								ref={inputDateOfBirthRef}
-								className={styles['form-input']}
-								type="date"
+							<Input
+								inputRef={inputDateOfBirthRef}
 								placeholder="Enter your date of birth"
-								onChange={handleDateOfBirthInput}
+								type="date"
+								onChangeFunction={handleDateOfBirthInput}
 							/>
-							<input
-								ref={inputEmailRef}
-								className={styles['form-input']}
-								type="text"
+							<Input
+								inputRef={inputEmailRef}
 								placeholder="Enter your email"
-								onChange={handleEmailInput}
+								onChangeFunction={handleEmailInput}
 							/>
-							<input
-								ref={inputLoginRef}
-								className={styles['form-input']}
-								type="text"
+							<Input
+								inputRef={inputLoginRef}
 								placeholder="Enter your login"
-								onChange={handleLoginInput}
+								onChangeFunction={handleLoginInput}
 							/>
 							<div className={styles['password-wrapper']}>
-								<input
-									ref={inputPasswordRef}
-									className={styles['form-input']}
+								<Input
+									inputRef={inputPasswordRef}
+									style={{ width: '90%' }}
 									type={isPasswordVisible ? 'text' : 'password'}
 									placeholder="Enter your password"
-									onChange={handlePasswordInput}
+									onChangeFunction={handlePasswordInput}
 								/>
 								<button
 									className={styles['toggle-password-visible-button']}

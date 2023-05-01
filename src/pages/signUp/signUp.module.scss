@@ -28,6 +28,7 @@
 
 	#form-wrapper-title {
 		font-family: sans-serif;
+        font-size: 1.8rem;
 	}
 }
 
@@ -46,39 +47,11 @@
 		flex-direction: column;
 		gap: 1rem;
 
-		.form-input {
-			position: relative;
-			display: flex;
-			padding: 0 0.2rem 0.2rem 0.2rem;
-			width: 300px;
-
-			outline: none;
-			border: none;
-			border-bottom: 3px solid black;
-			font-size: 1.5rem;
-
-            &[type='date'] {
-                justify-content: space-between;
-            }
-
-			&:focus {
-				border-bottom: 3px solid blue;
-			}
-
-			&::placeholder {
-				user-select: none;
-			}
-        }
-
         .password-wrapper {
             width: 300px;
             display: flex;
             flex-direction: row;
             gap: 10px;
-
-            .form-input {
-                width: 90%;
-            }            
 
             .toggle-password-visible-button {
                 width: 40px;

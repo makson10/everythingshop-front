@@ -20,6 +20,11 @@
 
 	background-color: rgba($color: #fff, $alpha: 1);
 	border-radius: 30px;
+
+	#form-wrapper-title {
+		font-family: sans-serif;
+		font-size: 1.8rem;
+	}
 }
 
 .login-form-wrapper {

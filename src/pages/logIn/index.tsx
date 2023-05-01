@@ -12,8 +12,10 @@ import {
 	ShowErrorModalWindow,
 	ShowSuccessModalWindow,
 } from '../components/ShowModalWindow/ShowModalWindow';
-import styles from './logIn.module.scss';
 import UserAlreadyAuthorizedPage from '../components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
+import GoogleButton from '../components/GoogleButton/GoogleButton';
+import Input from '../components/Input/Input';
+import styles from './logIn.module.scss';
 
 interface LogInUserDataType {
 	login: string;
@@ -169,7 +171,10 @@ export default function LogIn() {
 	useEffect(() => {
 		if (mainValidationEnd) return;
 
-		if (userData.data?.login && userData.data.password) {
+		if (
+			(userData.data?.login && userData.data?.password) ||
+			userData.data?.id
+		) {
 			setDidUserAuthorized(true);
 		}
 	}, [userData]);
@@ -180,25 +185,25 @@ export default function LogIn() {
 		<>
 			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
 			{isOpenSuccessWindow && <ShowSuccessModalWindow action={'logging in'} />}
-
 			<div id={styles['form-page']}>
 				<div id={styles['form-wrapper']}>
 					<h1 id={styles['form-wrapper-title']}>Log In</h1>
+					<GoogleButton
+						action="Log In"
+						redirectUrl="/api/auth/login?action_type=login"
+					/>
 					<div className={styles['login-form-wrapper']}>
 						<div className={styles['login-input-wrapper']}>
-							<input
-								ref={inputLoginRef}
-								className={styles['form-input']}
-								type="text"
+							<Input
+								inputRef={inputLoginRef}
 								placeholder="Enter your login"
-								onChange={handleLoginInput}
+								onChangeFunction={handleLoginInput}
 							/>
-							<input
-								ref={inputPasswordRef}
-								className={styles['form-input']}
+							<Input
+								inputRef={inputPasswordRef}
 								type="password"
 								placeholder="Enter your password"
-								onChange={handlePasswordInput}
+								onChangeFunction={handlePasswordInput}
 							/>
 						</div>
 						<Button text="Submit" callbackFunc={handleSubmit} />

@@ -5,6 +5,7 @@ import { validateLogInData } from '../functions/validateFunctions';
 import axios from 'axios';
 import { IAdminData } from '../types/adminDataTypes';
 import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
+import Input from '../components/Input/Input';
 import styles from './moderatePage.module.scss';
 
 export default function ModeratePage() {
@@ -125,19 +126,16 @@ export default function ModeratePage() {
 					<h1 id={styles['form-wrapper-title']}>Admin Log In</h1>
 					<div className={styles['login-form-wrapper']}>
 						<div className={styles['login-input-wrapper']}>
-							<input
-								ref={inputLoginRef}
-								className={styles['form-input']}
-								type="text"
+							<Input
+								inputRef={inputLoginRef}
 								placeholder="Enter your admin login"
-								onChange={handleLoginInput}
+								onChangeFunction={handleLoginInput}
 							/>
-							<input
-								ref={inputPasswordRef}
-								className={styles['form-input']}
+							<Input
+								inputRef={inputPasswordRef}
 								type="password"
 								placeholder="Enter your admin password"
-								onChange={handlePasswordInput}
+								onChangeFunction={handlePasswordInput}
 							/>
 						</div>
 						<Button text="Submit" callbackFunc={handleSubmit} />

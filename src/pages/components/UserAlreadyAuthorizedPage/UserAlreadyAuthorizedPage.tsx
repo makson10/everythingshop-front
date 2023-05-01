@@ -8,6 +8,8 @@ export default function UserAlreadyAuthorizedPage() {
 
 	const handleClick = () => {
 		if (localStorage.getItem('jwtToken')) localStorage.removeItem('jwtToken');
+		if (localStorage.getItem('googleJWTToken'))
+			localStorage.removeItem('googleJWTToken');
 		router.reload();
 	};
 

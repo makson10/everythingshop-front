@@ -5,6 +5,7 @@ import {
 	UserDataUpdateContextType,
 } from '@/pages/types/contextTypes';
 import axios from 'axios';
+import { GoogleUserData } from '@/pages/types/contextTypes';
 
 interface ProviderProps {
 	children: React.ReactNode;
@@ -12,7 +13,7 @@ interface ProviderProps {
 
 const UserDataContext = createContext<UserDataContextType>({ data: null });
 const UserDataUpdateContext = createContext<UserDataUpdateContextType>({
-	saveData: () => {},
+	saveData: (credential: IUserData | GoogleUserData) => {},
 	deleteData: () => {},
 });
 
@@ -30,12 +31,14 @@ const initialValue = {
 	email: '',
 	login: '',
 	password: '',
+	id: '',
+	picture: '',
 };
 
 export function UserDataProvider({ children }: ProviderProps): JSX.Element {
-	const [data, setData] = useState<IUserData>(initialValue);
+	const [data, setData] = useState<IUserData | GoogleUserData>(initialValue);
 
-	function saveData(credential: IUserData) {
+	function saveData(credential: IUserData | GoogleUserData) {
 		setData(credential);
 	}
 
@@ -46,6 +49,7 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 	useEffect(() => {
 		const getUserData = async () => {
 			const jwtToken = localStorage.getItem('jwtToken');
+			const googleJWTToken = localStorage.getItem('googleJWTToken');
 
 			if (jwtToken) {
 				const csrfProtocol = axios
@@ -60,12 +64,26 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 					}
 				);
 
-				if (
-					JWTTokenResult.data.data.login &&
-					JWTTokenResult.data.data.password
-				) {
-                    console.log(JWTTokenResult.data.data);
+				const userData = JWTTokenResult.data.data;
+				if (userData.login && userData.password) {
 					setData(JWTTokenResult.data.data);
+				}
+			} else if (googleJWTToken) {
+				const csrfProtocol = axios
+					.get('http://127.0.0.1:8000/googleCustomers')
+					.catch((err) => {
+						throw err;
+					});
+				const googleJWTTokenResult = await axios.post(
+					'http://127.0.0.1:8000/googleCustomers/jwtLogin',
+					{
+						googleJWTToken: googleJWTToken,
+					}
+				);
+
+				const userData = googleJWTTokenResult.data.data;
+				if (userData.name && userData.id) {
+					setData(googleJWTTokenResult.data.data);
 				}
 			}
 		};

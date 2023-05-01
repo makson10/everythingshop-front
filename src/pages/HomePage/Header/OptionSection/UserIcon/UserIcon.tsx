@@ -12,7 +12,7 @@ export default function UserIcon() {
 	const router = useRouter();
 
 	useEffect(() => {
-		if (userData.data?.login) {
+		if (userData.data?.login || userData.data?.id) {
 			setIsUserLogin(true);
 		}
 

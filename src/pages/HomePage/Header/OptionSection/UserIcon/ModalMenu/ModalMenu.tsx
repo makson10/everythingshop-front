@@ -17,6 +17,8 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 	function handleLogOut() {
 		deleteData();
 		if (localStorage.getItem('jwtToken')) localStorage.removeItem('jwtToken');
+		if (localStorage.getItem('googleJWTToken'))
+			localStorage.removeItem('googleJWTToken');
 		setIsUserLogin(false);
 		deleteAllProducts();
 	}
