@@ -10,17 +10,15 @@ interface Props {
 }
 
 export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
-	const { deleteData } = useUserDataUpdate();
+	const { deleteData, deleteTokens } = useUserDataUpdate();
 	const { deleteAllProducts } = useCartUpdateContext();
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	function handleLogOut() {
 		deleteData();
-		if (localStorage.getItem('jwtToken')) localStorage.removeItem('jwtToken');
-		if (localStorage.getItem('googleJWTToken'))
-			localStorage.removeItem('googleJWTToken');
-		setIsUserLogin(false);
+		deleteTokens();
 		deleteAllProducts();
+		setIsUserLogin(false);
 	}
 
 	useEffect(() => {

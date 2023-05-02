@@ -4,6 +4,9 @@ import { UserDataType } from '@/pages/types/contextTypes';
 import axios from 'axios';
 import UsersDataBlock from './UsersDataBlock/UsersDataBlock';
 import ProductsBlock from './ProductsBlock/ProductsBlock';
+import { useEffect } from 'react';
+import { getCookie } from '@/pages/functions/cookiesFunction';
+import { useRouter } from 'next/router';
 import styles from './adminPanel.module.scss';
 
 interface FetchedData {
@@ -12,6 +15,16 @@ interface FetchedData {
 }
 
 export default function adminPanel({ customers, products }: FetchedData) {
+	const router = useRouter();
+
+	useEffect(() => {
+		const isAdminAuthorized = getCookie('isAdminAuthorized') === 'true';
+		if (!isAdminAuthorized) {
+			document.cookie = `isAdminAuthorized=false; max-age=0`;
+			router.push('/moderate');
+		}
+	}, []);
+
 	return (
 		<>
 			<div id={styles['moderate-page']}>

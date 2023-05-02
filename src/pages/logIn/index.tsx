@@ -110,7 +110,7 @@ export default function LogIn() {
 				'http://127.0.0.1:8000/customers/register',
 				userData
 			);
-			localStorage.setItem('jwtToken', JWTTokenResult.data.jwtToken);
+			document.cookie = `jwtToken=${JWTTokenResult.data.jwtToken}; path=/; samesite=lax;`;
 		}
 
 		setSecondaryValidationEnd((prevValue) => true);

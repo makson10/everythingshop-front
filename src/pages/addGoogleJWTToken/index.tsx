@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { getCookie } from '../functions/cookiesFunction';
 
 export default function AddGoogleJWTToken() {
 	const router = useRouter();
@@ -10,9 +11,10 @@ export default function AddGoogleJWTToken() {
 		const googleJWTToken = router.query.setGoogleJWTToken;
 
 		if (googleJWTToken) {
-			if (localStorage.getItem('jwtToken')) localStorage.removeItem('jwtToken');
-			if (typeof googleJWTToken === 'string')
-				localStorage.setItem('googleJWTToken', googleJWTToken);
+			if (getCookie('jwtToken')) document.cookie = `jwtToken=; max-age=0`;
+			if (typeof googleJWTToken === 'string') {
+				document.cookie = `googleJWTToken=${googleJWTToken}; path=/; samesite=lax;`;
+			}
 
 			router.replace('/');
 		}

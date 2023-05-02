@@ -7,6 +7,7 @@ import { IAdminData } from '../types/adminDataTypes';
 import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
 import Input from '../components/Input/Input';
 import styles from './moderatePage.module.scss';
+import { getCookie } from '../functions/cookiesFunction';
 
 export default function ModeratePage() {
 	const [login, setLogin] = useState<string | null>(null);
@@ -89,6 +90,7 @@ export default function ModeratePage() {
 	};
 
 	const handleSuccess = () => {
+		document.cookie = `isAdminAuthorized=true; max-age=${5 * 60}; path=/moderate; samesite=lax`;
 		router.push(`${router.pathname}/adminPanel`);
 		if (inputLoginRef.current) inputLoginRef.current.value = '';
 		if (inputPasswordRef.current) inputPasswordRef.current.value = '';
@@ -106,6 +108,11 @@ export default function ModeratePage() {
 			setSecondaryValidationEnd(false);
 		}, 3000);
 	};
+
+    useEffect(() => {
+		const isAdminAuthorized = getCookie('isAdminAuthorized') === 'true';
+		if (isAdminAuthorized) router.push('/moderate/adminPanel');
+	}, []);
 
 	useEffect(() => {
 		if (!mainValidationEnd) return;

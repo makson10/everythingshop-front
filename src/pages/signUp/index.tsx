@@ -111,7 +111,7 @@ export default function SignUp() {
 				},
 			}
 		);
-		localStorage.setItem('jwtToken', JWTTokenResult.data.jwtToken);
+		document.cookie = `jwtToken=${JWTTokenResult.data.jwtToken}; path=/; samesite=lax;`;
 
 		saveData({
 			name: data.name,
@@ -125,7 +125,7 @@ export default function SignUp() {
 	};
 
 	const handleSubmit = () => {
-        const user: SignUpUserDataType = {
+		const user: SignUpUserDataType = {
 			name: name,
 			dateOfBirth: dateOfBirth,
 			email: email,
@@ -245,7 +245,6 @@ export default function SignUp() {
 	}, [userData]);
 
 	if (didUserAuthorized) return <UserAlreadyAuthorizedPage />;
-	// поправить верстку ошибки, исправить проблему с рефами, чтоб можно было очищать поля после secondatyValidationEnd
 
 	return (
 		<>

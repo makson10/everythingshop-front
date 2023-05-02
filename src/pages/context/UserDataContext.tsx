@@ -3,9 +3,11 @@ import {
 	IUserData,
 	UserDataContextType,
 	UserDataUpdateContextType,
+	IUnionUserData,
 } from '@/pages/types/contextTypes';
 import axios from 'axios';
 import { GoogleUserData } from '@/pages/types/contextTypes';
+import { getCookie } from '../functions/cookiesFunction';
 
 interface ProviderProps {
 	children: React.ReactNode;
@@ -13,8 +15,9 @@ interface ProviderProps {
 
 const UserDataContext = createContext<UserDataContextType>({ data: null });
 const UserDataUpdateContext = createContext<UserDataUpdateContextType>({
-	saveData: (credential: IUserData | GoogleUserData) => {},
+	saveData: (credential: IUnionUserData) => {},
 	deleteData: () => {},
+	deleteTokens: () => {},
 });
 
 export function useUserData() {
@@ -36,9 +39,9 @@ const initialValue = {
 };
 
 export function UserDataProvider({ children }: ProviderProps): JSX.Element {
-	const [data, setData] = useState<IUserData | GoogleUserData>(initialValue);
+	const [data, setData] = useState<IUnionUserData>(initialValue);
 
-	function saveData(credential: IUserData | GoogleUserData) {
+	function saveData(credential: IUnionUserData) {
 		setData(credential);
 	}
 
@@ -46,10 +49,15 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 		setData(initialValue);
 	}
 
+	function deleteTokens() {
+		document.cookie = `jwtToken=; max-age=0;`;
+		document.cookie = `googleJWTToken=; max-age=0;`;
+	}
+
 	useEffect(() => {
 		const getUserData = async () => {
-			const jwtToken = localStorage.getItem('jwtToken');
-			const googleJWTToken = localStorage.getItem('googleJWTToken');
+			const jwtToken = getCookie('jwtToken');
+			const googleJWTToken = getCookie('googleJWTToken');
 
 			if (jwtToken) {
 				const csrfProtocol = axios
@@ -93,7 +101,8 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 
 	return (
 		<UserDataContext.Provider value={{ data }}>
-			<UserDataUpdateContext.Provider value={{ saveData, deleteData }}>
+			<UserDataUpdateContext.Provider
+				value={{ saveData, deleteData, deleteTokens }}>
 				{children}
 			</UserDataUpdateContext.Provider>
 		</UserDataContext.Provider>

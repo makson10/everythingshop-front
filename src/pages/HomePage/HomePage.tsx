@@ -1,16 +1,10 @@
-import { useRouter } from 'next/router';
-import { lazy, useEffect } from 'react';
-const Header = lazy(() => import('./Header/Header'));
-const HomePageBg = lazy(() => import('./HomePageBg'));
-const TopSection = lazy(() => import('./TopSection/TopSection'));
-const ChooseInfoSection = lazy(
-	() => import('./ChooseInfoSection/ChooseInfoSection')
-);
-const OurExperienceBlock = lazy(
-	() => import('./OurExperienceBlock/OurExperienceBlock')
-);
-const ReviewBlock = lazy(() => import('./ReviewBlock/ReviewBlock'));
-const Footer = lazy(() => import('./Footer/Footer'));
+import Header from './Header/Header';
+import HomePageBg from './HomePageBg';
+import TopSection from './TopSection/TopSection';
+import ChooseInfoSection from './ChooseInfoSection/ChooseInfoSection';
+import OurExperienceBlock from './OurExperienceBlock/OurExperienceBlock';
+import ReviewBlock from './ReviewBlock/ReviewBlock';
+import Footer from './Footer/Footer';
 
 export default function HomePage() {
 	return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { ModalMenu } from './ModalMenu/ModalMenu';
+import { ModalMenu } from './ModalMenu';
 import { useUserData } from '@/pages/context/UserDataContext';
 import styles from './UserIcon.module.scss';
 
