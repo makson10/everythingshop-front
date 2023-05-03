@@ -1,3 +1,4 @@
+import { SubmitFormData } from '../types/productTypes';
 import { rusBadWordsRegex, engBadWordsRegex } from './badWordsRegex';
 import {
 	SignUpUserDataType,
@@ -56,12 +57,31 @@ const validateLogInData = ({ login, password }: LogInUserDataType) => {
 	return validateError;
 };
 
+const validateBuySubmitData = ({
+	fullName,
+	email,
+	deliveryAddress,
+}: SubmitFormData) => {
+	const validateError = [];
+
+	const fullNameError = validateName(fullName);
+	if (fullNameError) validateError.push(fullNameError);
+
+	const emailError = validateEmail(email);
+	if (emailError) validateError.push(emailError);
+
+	const deliveryAddressError = validateDeliveryAddress(deliveryAddress);
+	if (deliveryAddressError) validateError.push(deliveryAddressError);
+
+	return validateError;
+};
+
 const validateName = (name: string) => {
 	if (!isString(name) || name.length < 3) {
 		return 'Your name is not valid!';
 	}
-    
-    return false;
+
+	return false;
 };
 
 const validateDateOfBirth = (dateOfBirth: string) => {
@@ -83,24 +103,32 @@ const validateEmail = (email: string) => {
 	if (!isString(email) || !email.includes('@')) {
 		return 'Your email is not valid!';
 	}
-    
-    return false;
+
+	return false;
 };
 
 const validateLogin = (login: string) => {
 	if (!isString(login) || login.length < 8) {
 		return 'Your login is not valid!';
 	}
-    
-    return false;
+
+	return false;
 };
 
 const validatePassword = (password: string) => {
 	if (!isString(password) || password.length < 8) {
 		return 'Your password is not valid!';
 	}
-    
-    return false;
+
+	return false;
+};
+
+const validateDeliveryAddress = (deliveryAddress: string) => {
+	if (!isString(deliveryAddress) || deliveryAddress.length < 4) {
+		return 'Your deliveryAddress is not valid!';
+	}
+
+	return false;
 };
 
 const validateProductData = ({
@@ -162,4 +190,5 @@ export {
 	validateSignUpData,
 	validateLogInData,
 	validateProductData,
+	validateBuySubmitData,
 };

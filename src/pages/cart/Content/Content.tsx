@@ -23,7 +23,7 @@ export function Content() {
 		setAllProductsCostAmount(sum);
 	}, [products]);
 
-	if (!authorizedUser.data?.login || !authorizedUser.data.password) {
+	if (!authorizedUser.data?.name) {
 		return (
 			<FailWindow failMessage="Cart is not available for unauthorized users" />
 		);

@@ -37,7 +37,7 @@ export default function ProductInfo({ productData }: Props) {
 	}
 
 	useEffect(() => {
-		if (!authorizeUserData.data?.login && !authorizeUserData.data?.password) {
+		if (!authorizeUserData.data?.name) {
 			setIsAddToCartButtonDisable(true);
 		} else setIsAddToCartButtonDisable(false);
 	}, [authorizeUserData]);

@@ -27,7 +27,7 @@
 		z-index: -2;
 	}
 
-	&:hover {
+	&:not(:disabled):hover {
 		color: #fff;
 		&:before {
 			width: 100%;

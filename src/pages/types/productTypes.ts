@@ -8,3 +8,9 @@ export interface IProduct {
 }
 
 export type ProductType = IProduct[];
+
+export interface SubmitFormData {
+	fullName: string;
+	email: string;
+	deliveryAddress: string;
+}
