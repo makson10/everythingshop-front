@@ -19,6 +19,7 @@ import { SignUpUserDataType } from '@/pages/types/validationTypes';
 import UserAlreadyAuthorizedPage from '@/pages/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '../components/GoogleButton/GoogleButton';
 import Input from '../components/Input/Input';
+import { Formik, FormikErrors } from 'formik';
 import styles from './signUp.module.scss';
 
 export default function SignUp() {
@@ -124,114 +125,114 @@ export default function SignUp() {
 		setSecondaryValidateEnd(true);
 	};
 
-	const handleSubmit = () => {
-		const user: SignUpUserDataType = {
-			name: name,
-			dateOfBirth: dateOfBirth,
-			email: email,
-			login: login,
-			password: password,
-		};
+	// const handleSubmit = () => {
+	// 	const user: SignUpUserDataType = {
+	// 		name: name,
+	// 		dateOfBirth: dateOfBirth,
+	// 		email: email,
+	// 		login: login,
+	// 		password: password,
+	// 	};
 
-		if (!checkDataOnNull(user)) {
-			setErrorList(validateSignUpData(user));
-		}
+	// 	if (!checkDataOnNull(user)) {
+	// 		setErrorList(validateSignUpData(user));
+	// 	}
 
-		setMainValidateEnd(true);
-	};
+	// 	setMainValidateEnd(true);
+	// };
 
-	const checkDataOnNull = ({
-		name,
-		dateOfBirth,
-		email,
-		login,
-		password,
-	}: SignUpUserDataType) => {
-		let haveEmptyField: boolean = false;
+	// const checkDataOnNull = ({
+	// 	name,
+	// 	dateOfBirth,
+	// 	email,
+	// 	login,
+	// 	password,
+	// }: SignUpUserDataType) => {
+	// 	let haveEmptyField: boolean = false;
 
-		if (
-			name === '' ||
-			dateOfBirth === '' ||
-			email === '' ||
-			login === '' ||
-			password === ''
-		) {
-			setErrorList(['Some of your field is not fill!']);
-			haveEmptyField = true;
-		}
+	// 	if (
+	// 		name === '' ||
+	// 		dateOfBirth === '' ||
+	// 		email === '' ||
+	// 		login === '' ||
+	// 		password === ''
+	// 	) {
+	// 		setErrorList(['Some of your field is not fill!']);
+	// 		haveEmptyField = true;
+	// 	}
 
-		return haveEmptyField;
-	};
+	// 	return haveEmptyField;
+	// };
 
-	const clearAllInputVariables = () => {
-		setName('');
-		setDateOfBirth('');
-		setEmail('');
-		setLogin('');
-		setPassword('');
-	};
+	// const clearAllInputVariables = () => {
+	// 	setName('');
+	// 	setDateOfBirth('');
+	// 	setEmail('');
+	// 	setLogin('');
+	// 	setPassword('');
+	// };
 
-	const handleSuccess = () => {
-		setIsOpenSuccessWindow(true);
+	// const handleSuccess = () => {
+	// 	setIsOpenSuccessWindow(true);
 
-		clearInputField(
-			inputNameRef,
-			inputDateOfBirthRef,
-			inputEmailRef,
-			inputLoginRef,
-			inputPasswordRef
-		);
-		clearAllInputVariables();
+	// 	clearInputField(
+	// 		inputNameRef,
+	// 		inputDateOfBirthRef,
+	// 		inputEmailRef,
+	// 		inputLoginRef,
+	// 		inputPasswordRef
+	// 	);
+	// 	clearAllInputVariables();
 
-		if (buttonRef.current) buttonRef.current.disabled = true;
-		setTimeout(() => {
-			setIsOpenSuccessWindow(false);
-			router.push('/');
-			setMainValidateEnd(false);
-			setSecondaryValidateEnd(false);
-		}, 3000);
-	};
+	// 	if (buttonRef.current) buttonRef.current.disabled = true;
+	// 	setTimeout(() => {
+	// 		setIsOpenSuccessWindow(false);
+	// 		router.push('/');
+	// 		setMainValidateEnd(false);
+	// 		setSecondaryValidateEnd(false);
+	// 	}, 3000);
+	// };
 
-	const handleFailure = () => {
-		setIsOpenErrorWindow(true);
-		if (buttonRef.current) buttonRef.current.disabled = true;
+	// const handleFailure = () => {
+	// 	setIsOpenErrorWindow(true);
+	// 	if (buttonRef.current) buttonRef.current.disabled = true;
 
-		setTimeout(() => {
-			setIsOpenErrorWindow(false);
-			setErrorList([]);
-			if (buttonRef.current) buttonRef.current.disabled = false;
-			setMainValidateEnd(false);
-			setSecondaryValidateEnd(false);
-		}, 3000);
-	};
+	// 	setTimeout(() => {
+	// 		setIsOpenErrorWindow(false);
+	// 		setErrorList([]);
+	// 		if (buttonRef.current) buttonRef.current.disabled = false;
+	// 		setMainValidateEnd(false);
+	// 		setSecondaryValidateEnd(false);
+	// 	}, 3000);
+	// };
 
-	useEffect(() => {
-		if (!mainValidateEnd) return;
+	// useEffect(() => {
+	// 	if (!mainValidateEnd) return;
 
-		if (errorList.length === 0) {
-			const user: SignUpUserDataType = {
-				name: name,
-				dateOfBirth: dateOfBirth,
-				email: email,
-				login: login,
-				password: password,
-			};
+	// 	if (errorList.length === 0) {
+	// 		const user: SignUpUserDataType = {
+	// 			name: name,
+	// 			dateOfBirth: dateOfBirth,
+	// 			email: email,
+	// 			login: login,
+	// 			password: password,
+	// 		};
 
-			sendDataToServer(user);
-		} else {
-			handleFailure();
-		}
-	}, [mainValidateEnd]);
+	// 		sendDataToServer(user);
+	// 	} else {
+	// 		handleFailure();
+	// 	}
+	// }, [mainValidateEnd]);
 
-	useEffect(() => {
-		if (!secondaryValidateEnd) return;
+	// useEffect(() => {
+	// 	if (!secondaryValidateEnd) return;
 
-		if (errorList.length === 0) {
-			handleSuccess();
-		} else {
-			handleFailure();
-		}
-	}, [secondaryValidateEnd]);
+	// 	if (errorList.length === 0) {
+	// 		handleSuccess();
+	// 	} else {
+	// 		handleFailure();
+	// 	}
+	// }, [secondaryValidateEnd]);
 
 	useEffect(() => {
 		if (mainValidateEnd) return;
@@ -259,52 +260,139 @@ export default function SignUp() {
 						redirectUrl="/api/auth/login?action_type=register"
 					/>
 					<div className={styles['registration-form-wrapper']}>
-						<div className={styles['form-input-wrapper']}>
-							<Input
-								inputRef={inputNameRef}
-								placeholder="Enter your name"
-								onChangeFunction={handleNameInput}
-							/>
-							<Input
-								inputRef={inputDateOfBirthRef}
-								placeholder="Enter your date of birth"
-								type="date"
-								onChangeFunction={handleDateOfBirthInput}
-							/>
-							<Input
-								inputRef={inputEmailRef}
-								placeholder="Enter your email"
-								onChangeFunction={handleEmailInput}
-							/>
-							<Input
-								inputRef={inputLoginRef}
-								placeholder="Enter your login"
-								onChangeFunction={handleLoginInput}
-							/>
-							<div className={styles['password-wrapper']}>
-								<Input
-									inputRef={inputPasswordRef}
-									style={{ width: '90%' }}
-									type={isPasswordVisible ? 'text' : 'password'}
-									placeholder="Enter your password"
-									onChangeFunction={handlePasswordInput}
-								/>
-								<button
-									className={styles['toggle-password-visible-button']}
-									onClick={handleTogglePasswordVisible}>
-									<img
-										src={isPasswordVisible ? './hide.png' : './show.png'}
-										alt="#"
+						<Formik
+							initialValues={{
+								name: '',
+								dateOfBirth: '',
+								email: '',
+								login: '',
+								password: '',
+							}}
+							validate={(values: SignUpUserDataType) => {
+								const errors: FormikErrors<SignUpUserDataType> = {};
+
+								if (!values.name) {
+									errors.name = 'Required';
+								} else if (values.name.length < 3) {
+									errors.name = 'Name is too short!';
+								}
+
+								if (!values.dateOfBirth) {
+									errors.dateOfBirth = 'Required';
+								}
+
+								if (!values.email) {
+									errors.email = 'Required';
+								} else if (
+									!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+								) {
+									errors.email = 'Email is not valid!';
+								}
+
+								if (!values.login) {
+									errors.login = 'Required';
+								} else if (values.login.length < 8) {
+									errors.login = 'Login is too short!';
+								}
+
+								if (!values.password) {
+									errors.password = 'Required';
+								} else if (values.password.length < 8) {
+									errors.password = 'Password is too short!';
+								}
+
+								return errors;
+							}}
+							onSubmit={(values, { setSubmitting }) => {
+								setTimeout(() => {
+									alert(JSON.stringify(values, null, 2));
+									setSubmitting(false);
+								}, 400);
+							}}>
+							{({
+								values,
+								errors,
+								touched,
+								handleChange,
+								handleBlur,
+								handleSubmit,
+								isSubmitting,
+							}) => (
+								<form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+									<input
+										id="form-input"
+										type="text"
+										name="name"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										value={values.name}
+										placeholder="Enter your name"
 									/>
-								</button>
-							</div>
-						</div>
-						<Button text="Submit" callbackFunc={handleSubmit} />
-						<div className={styles['sign-in-link-wrapper']}>
-							<Link className={styles['sign-in-link']} href="/logIn">
-								Already registered? Log in
-							</Link>
-						</div>
+									{errors.name && touched.name && errors.name}
+									<input
+										id="form-input"
+										type="date"
+										name="dateOfBirth"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										value={values.dateOfBirth}
+										placeholder="Enter your date of birth"
+									/>
+									{errors.dateOfBirth &&
+										touched.dateOfBirth &&
+										errors.dateOfBirth}
+									<input
+										id="form-input"
+										placeholder="Enter your email"
+										type="text"
+										name="email"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										value={values.email}
+									/>
+									{errors.email && touched.email && errors.email}
+									<input
+										id="form-input"
+										placeholder="Enter your login"
+										type="text"
+										name="login"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										value={values.login}
+									/>
+									{errors.login && touched.login && errors.login}
+									<div className={styles['password-wrapper']}>
+										<input
+											id="form-input"
+											className="w-11/12"
+											type={isPasswordVisible ? 'text' : 'password'}
+											name="password"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.password}
+											placeholder="Enter your password"
+										/>
+										<button
+											className={styles['toggle-password-visible-button']}
+											onClick={handleTogglePasswordVisible}>
+											<img
+												src={isPasswordVisible ? './hide.png' : './show.png'}
+												alt="#"
+											/>
+										</button>
+									</div>
+									{errors.password && touched.password && errors.password}
+									<div className="flex flex-col gap-3">
+										<button type="submit" disabled={isSubmitting}>
+											Submit
+										</button>
+										<Link className={styles['sign-in-link']} href="/logIn">
+											Already registered? Log in
+										</Link>
+									</div>
+								</form>
+							)}
+						</Formik>
 					</div>
 				</div>
 			</div>

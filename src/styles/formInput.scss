@@ -1,0 +1,23 @@
+#form-input {
+	position: relative;
+	display: flex;
+	padding: 0 0.2rem 0.2rem 0.2rem;
+	width: 300px;
+
+	outline: none;
+	border: none;
+	border-bottom: 3px solid black;
+	font-size: 1.5rem;
+
+	&[type='date'] {
+		justify-content: space-between;
+	}
+
+	&:focus {
+		border-bottom: 3px solid blue;
+	}
+
+	&::placeholder {
+		user-select: none;
+	}
+}

@@ -28,7 +28,7 @@
 
 	#form-wrapper-title {
 		font-family: sans-serif;
-        font-size: 1.8rem;
+		font-size: 1.8rem;
 	}
 }
 
@@ -42,27 +42,20 @@
 
 	font-family: sans-serif;
 
-	.form-input-wrapper {
+	.password-wrapper {
+		width: 300px;
 		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+		flex-direction: row;
+		gap: 10px;
 
-        .password-wrapper {
-            width: 300px;
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-
-            .toggle-password-visible-button {
-                width: 40px;
-                background-color: transparent;
-                border: none;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-
+		.toggle-password-visible-button {
+			width: 40px;
+			background-color: transparent;
+			border: none;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 
 	.sign-in-link-wrapper {
