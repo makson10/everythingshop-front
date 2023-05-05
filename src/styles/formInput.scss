@@ -13,6 +13,10 @@
 		justify-content: space-between;
 	}
 
+	&[data-type='password'] {
+		width: 90%;
+	}
+
 	&:focus {
 		border-bottom: 3px solid blue;
 	}

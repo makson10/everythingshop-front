@@ -27,6 +27,15 @@
 	}
 }
 
+.toggle-password-visible-button {
+    width: 40px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .login-form-wrapper {
 	width: fit-content;
 

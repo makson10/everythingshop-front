@@ -32,6 +32,13 @@
 	}
 }
 
+.password-wrapper {
+	width: 300px;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
 .registration-form-wrapper {
 	width: fit-content;
 
@@ -42,20 +49,13 @@
 
 	font-family: sans-serif;
 
-	.password-wrapper {
-		width: 300px;
+	.toggle-password-visible-button {
+		width: 40px;
+		background-color: transparent;
+		border: none;
 		display: flex;
-		flex-direction: row;
-		gap: 10px;
-
-		.toggle-password-visible-button {
-			width: 40px;
-			background-color: transparent;
-			border: none;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
+		justify-content: center;
+		align-items: center;
 	}
 
 	.sign-in-link-wrapper {

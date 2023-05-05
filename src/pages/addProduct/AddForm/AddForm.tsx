@@ -1,31 +1,24 @@
-import React, {
-	ChangeEvent,
-	LegacyRef,
-	MutableRefObject,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { validateProductData } from '@/pages/functions/validateFunctions';
+import { validateAddNewProduct } from '@/pages/functions/validateFunctions';
 import { useUserData } from '@/pages/context/UserDataContext';
 import UserNotLoginWindow from '../UserNotLoginWindow/UserNotLoginWindow';
 import styles from './AddForm.module.scss';
-import Button from '@/pages/components/Button/Button';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import {
 	ShowSuccessModalWindow,
 	ShowErrorModalWindow,
 } from '@/pages/components/ShowModalWindow/ShowModalWindow';
-import Input from '@/pages/components/Input/Input';
+import { Formik } from 'formik';
 
 interface ProductDataType {
-	photoFile: File;
+	photoFile?: File;
 	title: string;
 	description: string;
 	creator: string;
 	price: number;
+	uniqueProductId: string;
 }
 
 export function AddForm() {
@@ -34,20 +27,10 @@ export function AddForm() {
 	const [fileInputLabel, setFileInputLabel] = useState<string>(
 		'Enter product photo'
 	);
-	const [photoFile, setPhotoFile] = useState<File | undefined>();
-	const [title, setTitle] = useState<string>('');
-	const [description, setDescription] = useState<string>('');
-	const [price, setPrice] = useState<number>(0);
+	const [photoFile, setPhotoFile] = useState<File | null>(null);
 
-	const inputFileRef = useRef<HTMLInputElement>();
-	const inputTitleRef = useRef<HTMLInputElement>();
-	const inputDescritpionRef = useRef<HTMLTextAreaElement>();
-	const inputPriceRef = useRef<HTMLInputElement>();
-	const buttonRef = useRef<HTMLButtonElement>();
-
-	const [errorList, setErrorList] = useState<string[]>([]);
-	const [mainValidateEnd, setMainValidateEnd] = useState<boolean>(false);
-	const [secondValidateEnd, setSecondValidateEnd] = useState<boolean>(false);
+	const [isServerError, setIsServerError] = useState<boolean | null>(null);
+	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
@@ -56,79 +39,32 @@ export function AddForm() {
 
 	const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
-		if (e.target.files) {
-			let file = e.target.files[0];
-			if (file.name.length > 31) {
-				setFileInputLabel(file.name.slice(0, 26));
-			} else {
-				setFileInputLabel(file.name);
-			}
+		if (!e.target.files) return;
+		let file = e.target.files[0];
 
-			setPhotoFile(file);
-		}
-	};
-
-	const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setTitle(e.target.value);
-	};
-
-	const handleDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
-		e.preventDefault();
-		setDescription(e.target.value);
-	};
-
-	const handlePrice = (e: ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setPrice(+e.target.value);
-	};
-
-	const handleSubmit = () => {
-		const user: ProductDataType = {
-			photoFile: photoFile!,
-			title: title,
-			description: description,
-			creator: 'Maksim',
-			price: price,
-		};
-
-		if (!checkNullInField(user)) {
-			const errors = validateProductData(user);
-			setErrorList(errors);
+		if (file.name.length > 31) {
+			setFileInputLabel(file.name.slice(0, 26));
+		} else {
+			setFileInputLabel(file.name);
 		}
 
-		setMainValidateEnd(true);
-	};
-
-	const checkNullInField = ({
-		photoFile,
-		title,
-		description,
-		price,
-	}: ProductDataType) => {
-		let haveEmptyField: boolean = false;
-		if (
-			photoFile === null ||
-			photoFile === undefined ||
-			title === '' ||
-			description === '' ||
-			price === 0
-		) {
-			setErrorList(['Some of your field is not fill!']);
-			haveEmptyField = true;
-		}
-
-		return haveEmptyField;
+		setPhotoFile(file);
 	};
 
 	const sendDataToServer = async (user: ProductDataType) => {
+		if (!user.photoFile) {
+			setIsServerError(true);
+			setServerErrorMessage('File field is empty!');
+			return;
+		}
+
 		const formData = new FormData();
-		formData.append('file', user.photoFile);
+		formData.append('file', user.photoFile!);
 		formData.append('title', user.title);
 		formData.append('description', user.description);
 		formData.append('creator', user.creator);
 		formData.append('price', user.price.toString());
-		formData.append('uniqueProductId', uuidv4());
+		formData.append('uniqueProductId', user.uniqueProductId);
 
 		try {
 			const csrfToken = await axios.get('http://127.0.0.1:8000/products');
@@ -138,102 +74,54 @@ export function AddForm() {
 				formData
 			);
 
-			console.log(addProductResult);
 			if (!addProductResult.data.success) {
-				setErrorList([addProductResult.data.errorMessage]);
+				setIsServerError(true);
+				setServerErrorMessage(addProductResult.data.errorMessage || 'fuck');
+				return;
 			}
+
+			setIsServerError(false);
 		} catch (error) {
 			console.error(error);
+			setIsServerError(true);
 		}
-
-		setSecondValidateEnd(true);
-	};
-
-	const clearAllInputVariables = () => {
-		setPhotoFile(undefined);
-		setTitle('');
-		setDescription('');
-		setPrice(0);
-	};
-
-	const clearInputField = (
-		...inputRefs: MutableRefObject<
-			HTMLInputElement | HTMLTextAreaElement | undefined
-		>[]
-	) => {
-		inputRefs.map((inputRef) => {
-			if (inputRef.current) inputRef.current.value = '';
-		});
 	};
 
 	const handleSuccess = () => {
 		setIsOpenSuccessWindow(true);
 
-		clearInputField(
-			inputFileRef,
-			inputTitleRef,
-			inputDescritpionRef,
-			inputPriceRef
-		);
-		clearAllInputVariables();
-
-		if (buttonRef.current) buttonRef.current.disabled = true;
 		setTimeout(() => {
 			setIsOpenSuccessWindow(false);
 			router.push('/');
-			setMainValidateEnd(false);
-			setSecondValidateEnd(false);
 		}, 3000);
 	};
 
 	const handleFailure = () => {
 		setIsOpenErrorWindow(true);
-		if (buttonRef.current) buttonRef.current.disabled = true;
 
 		setTimeout(() => {
 			setIsOpenErrorWindow(false);
-			setErrorList([]);
-			if (buttonRef.current) buttonRef.current.disabled = false;
-			setMainValidateEnd(false);
-			setSecondValidateEnd(false);
+			setIsServerError(null);
 		}, 3000);
 	};
 
 	useEffect(() => {
-		if (!mainValidateEnd) return;
-
-		if (errorList.length === 0) {
-			const user: ProductDataType = {
-				photoFile: photoFile!,
-				title: title,
-				description: description,
-				creator: authorizationUserData.data?.name || 'guess',
-				price: price,
-			};
-
-			sendDataToServer(user);
-		} else {
-			handleFailure();
-		}
-	}, [mainValidateEnd]);
+		photoFile && setFileInputLabel(photoFile.name);
+	}, [photoFile]);
 
 	useEffect(() => {
-		if (!secondValidateEnd) return;
+		if (isServerError === null) return;
 
-		if (errorList.length === 0) {
-			handleSuccess();
-		} else {
-			handleFailure();
-		}
-	}, [secondValidateEnd]);
+		isServerError ? handleFailure() : handleSuccess();
+	}, [isServerError]);
 
-	if (!authorizationUserData.data?.name) {
-		return <UserNotLoginWindow />;
-	}
+	if (!authorizationUserData.data?.name) return <UserNotLoginWindow />;
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
+			{isOpenErrorWindow && (
+				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
+			)}
 			{isOpenSuccessWindow && (
 				<ShowSuccessModalWindow action={'added your product'} />
 			)}
@@ -251,40 +139,85 @@ export function AddForm() {
 								<input
 									className={styles['file-input']}
 									type="file"
+									name="photoFile"
 									accept="image/*"
-									ref={inputFileRef as LegacyRef<HTMLInputElement>}
 									onChange={handleFileInput}
 								/>
 							</label>
-							<Input
-								placeholder="Enter product title"
-								maxLength={18}
-								inputRef={inputTitleRef as LegacyRef<HTMLInputElement>}
-								onChangeFunction={handleTitle}
-							/>
-							<textarea
-								className={styles['form-input']}
-								placeholder="Enter product description"
-								maxLength={255}
-								rows={5}
-								style={{ resize: 'none' }}
-								ref={inputDescritpionRef as LegacyRef<HTMLTextAreaElement>}
-								onChange={handleDescription}
-							/>
-							<Input
-								type="number"
-								placeholder="Enter product price"
-								min={1}
-								max={9999999}
-								inputRef={inputPriceRef as LegacyRef<HTMLInputElement>}
-								onChangeFunction={handlePrice}
-							/>
+							<Formik
+								initialValues={{
+									title: '',
+									description: '',
+									creator: authorizationUserData.data.name,
+									price: 0,
+									uniqueProductId: uuidv4(),
+								}}
+								validate={(values: ProductDataType) => {
+									return validateAddNewProduct(values);
+								}}
+								onSubmit={(values, { setSubmitting }) => {
+									setTimeout(() => {
+										if (photoFile) values.photoFile = photoFile;
+										sendDataToServer(values);
+										setSubmitting(false);
+									}, 400);
+								}}>
+								{({
+									values,
+									errors,
+									touched,
+									handleChange,
+									handleBlur,
+									handleSubmit,
+									isSubmitting,
+								}) => (
+									<form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+										<div>
+											<input
+												className={styles['form-input']}
+												type="text"
+												name="title"
+												placeholder="Enter product title"
+												maxLength={18}
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.title}
+											/>
+											{errors.title && touched.title && errors.title}
+											<textarea
+												name="description"
+												className={styles['form-input']}
+												placeholder="Enter product description"
+												maxLength={255}
+												rows={5}
+												style={{ resize: 'none' }}
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.description}
+											/>
+											{errors.description &&
+												touched.description &&
+												errors.description}
+											<input
+												type="number"
+												name="price"
+												placeholder="Enter product price"
+												className={styles['form-input']}
+												min={1}
+												max={9999999}
+												onChange={handleChange}
+												onBlur={handleBlur}
+												// value={values.price}
+											/>
+											{errors.price && touched.price && errors.price}
+										</div>
+										<button id="button" type="submit" disabled={isSubmitting}>
+											Add product
+										</button>
+									</form>
+								)}
+							</Formik>
 						</div>
-						<Button
-							text="Add product"
-							buttonRef={buttonRef}
-							callbackFunc={handleSubmit}
-						/>
 					</div>
 				</div>
 			</div>

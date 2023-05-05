@@ -5,21 +5,17 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import {
-	clearInputField,
-	validateBuySubmitData,
-} from '@/pages/functions/validateFunctions';
+import { validateBuySubmitData } from '@/pages/functions/validateFunctions';
 import { useUserData } from '@/pages/context/UserDataContext';
-import Button from '@/pages/components/Button/Button';
 import {
 	ShowErrorModalWindow,
 	ShowSuccessModalWindow,
 } from '@/pages/components/ShowModalWindow/ShowModalWindow';
-import Input from '@/pages/components/Input/Input';
-import styles from './SubmitMenu.module.scss';
 import { useRouter } from 'next/router';
-import { SubmitFormData } from '@/pages/types/productTypes';
+import { ISubmitForm, SubmitFormData } from '@/pages/types/productTypes';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
+import { Formik } from 'formik';
+import styles from './SubmitMenu.module.scss';
 
 interface Props {
 	setIsOpenSubmitMenu: Dispatch<SetStateAction<boolean>>;
@@ -29,21 +25,15 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 	const authorizedUserData = useUserData();
 	const { deleteAllProducts } = useCartUpdateContext();
 
-	const [firstName, setFirstName] = useState<string>('');
-	const [lastName, setLastName] = useState<string>('');
 	const [useOldFullName, setUseOldFullName] = useState<boolean>(false);
-	const [email, setEmail] = useState<string>('');
 	const [useOldEmail, setUseOldEmail] = useState<boolean>(false);
-	const [deliveryAddress, setDeliveryAddress] = useState<string>('');
 
 	const inputFirstNameRef = useRef<HTMLInputElement>(null);
 	const inputLastNameRef = useRef<HTMLInputElement>(null);
 	const inputEmailRef = useRef<HTMLInputElement>(null);
-	const inputDeliveryAddressRef = useRef<HTMLInputElement>(null);
-	const submitButtonRef = useRef<HTMLButtonElement>();
 
-	const [errorList, setErrorList] = useState<string[]>([]);
-	const [mainValidateEnd, setMainValidateEnd] = useState<boolean>(false);
+	const [isError, setIsError] = useState<boolean | null>(null);
+	const [errorMessage, setErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
@@ -54,40 +44,16 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 		setIsOpenSubmitMenu(false);
 	};
 
-	const handleFirstNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setFirstName(e.target.value);
-	};
-
-	const handleLastNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setLastName(e.target.value);
-	};
-
-	const handleUseOldFullNameInput = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
+	const handleUseOldFullNameInput = () => {
 		setUseOldFullName((prevValue) => !prevValue);
 	};
 
-	const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setEmail(e.target.value);
-	};
-
-	const handleUseOldEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleUseOldEmailInput = () => {
 		setUseOldEmail((prevValue) => !prevValue);
 	};
 
-	const handleDeliveryAddressInput = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
-		e.preventDefault();
-		setDeliveryAddress(e.target.value);
-	};
-
-	const handleSubmit = () => {
-		const fullName = `${firstName} ${lastName}` || 'fuck u';
+	const handleSubmit = (values: ISubmitForm) => {
+		const fullName = `${values.firstName} ${values.lastName}` || 'fuck u';
 
 		const userFullName = useOldFullName
 			? typeof authorizedUserData.data?.name === 'string'
@@ -97,80 +63,29 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 		const userEmail = useOldEmail
 			? typeof authorizedUserData.data?.email === 'string'
 				? authorizedUserData.data?.email
-				: email
-			: email;
+				: values.email
+			: values.email;
 
 		const submitFormData: SubmitFormData = {
 			fullName: userFullName,
 			email: userEmail,
-			deliveryAddress: deliveryAddress,
+			deliveryAddress: values.deliveryAddress,
 		};
 
-		if (!checkDataOnNull(submitFormData)) {
-			setErrorList(validateBuySubmitData(submitFormData));
-		}
+		console.log(submitFormData);
 
-		setMainValidateEnd(true);
-	};
-
-	const checkDataOnNull = ({
-		fullName,
-		email,
-		deliveryAddress,
-	}: SubmitFormData) => {
-		let haveEmptyField: boolean = false;
-
-		if (fullName === '' || email === '' || deliveryAddress === '') {
-			setErrorList(['Some of your field is not fill!']);
-			haveEmptyField = true;
-		}
-
-		return haveEmptyField;
-	};
-
-	const clearAllInputVariables = () => {
-		setFirstName('');
-		setLastName('');
-		setEmail('');
-		setDeliveryAddress('');
+		handleSuccess();
 	};
 
 	const handleSuccess = () => {
 		setIsOpenSuccessWindow(true);
 
-		clearInputField(
-			inputFirstNameRef,
-			inputLastNameRef,
-			inputEmailRef,
-			inputDeliveryAddressRef
-		);
-		clearAllInputVariables();
-
-		if (submitButtonRef.current) submitButtonRef.current.disabled = true;
 		setTimeout(() => {
 			setIsOpenSuccessWindow(false);
 			router.push('/');
 			deleteAllProducts();
-			setMainValidateEnd(false);
 		}, 3000);
 	};
-
-	const handleFailure = () => {
-		setIsOpenErrorWindow(true);
-		if (submitButtonRef.current) submitButtonRef.current.disabled = true;
-
-		setTimeout(() => {
-			setIsOpenErrorWindow(false);
-			setErrorList([]);
-			if (submitButtonRef.current) submitButtonRef.current.disabled = false;
-			setMainValidateEnd(false);
-		}, 3000);
-	};
-
-	useEffect(() => {
-		if (!mainValidateEnd) return;
-		errorList.length === 0 ? handleSuccess() : handleFailure();
-	}, [mainValidateEnd]);
 
 	useEffect(() => {
 		if (inputFirstNameRef.current)
@@ -185,7 +100,7 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
+			{isOpenErrorWindow && <ShowErrorModalWindow errorList={[errorMessage]} />}
 			{isOpenSuccessWindow && (
 				<ShowSuccessModalWindow action={'bought your product'} />
 			)}
@@ -200,49 +115,123 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 					<h1 id={styles['form-wrapper-title']}>Buy Form</h1>
 					<div className={styles['registration-form-wrapper']}>
 						<div className={styles['form-input-wrapper']}>
-							<Input
-								inputRef={inputFirstNameRef}
-								placeholder="Enter your first name"
-								onChangeFunction={handleFirstNameInput}
-							/>
-							<Input
-								inputRef={inputLastNameRef}
-								placeholder="Enter your last name"
-								onChangeFunction={handleLastNameInput}
-							/>
-							<div className="flex flex-row gap-3">
-								<input
-									type="checkbox"
-									id="useOldFullName"
-									onChange={handleUseOldFullNameInput}
-									checked={useOldFullName}
-								/>
-								<label htmlFor="useOldFullName">Use old full name</label>
-							</div>
-							<Input
-								inputRef={inputEmailRef}
-								placeholder="Enter your email"
-								onChangeFunction={handleEmailInput}
-							/>
-							<div className="flex flex-row gap-3">
-								<input
-									type="checkbox"
-									id="useOldEmail"
-									onChange={handleUseOldEmailInput}
-									checked={useOldEmail}
-								/>
-								<label htmlFor="useOldEmail">Use old email</label>
-							</div>
-							<Input
-								inputRef={inputDeliveryAddressRef}
-								placeholder="Enter your delivery address"
-								onChangeFunction={handleDeliveryAddressInput}
-							/>
-							<Button
-								text="Submit"
-								callbackFunc={handleSubmit}
-								buttonRef={submitButtonRef}
-							/>
+							<Formik
+								initialValues={{
+									firstName: '',
+									lastName: '',
+									useOldFullName: false,
+									email: '',
+									useOldEmail: false,
+									deliveryAddress: '',
+								}}
+								validate={(values: ISubmitForm) => {
+									return validateBuySubmitData(values);
+								}}
+								onSubmit={(values, { setSubmitting }) => {
+									setTimeout(() => {
+										handleSubmit(values);
+										setSubmitting(false);
+									}, 400);
+								}}>
+								{({
+									values,
+									errors,
+									touched,
+									handleChange,
+									handleBlur,
+									handleSubmit,
+									isSubmitting,
+								}) => (
+									<form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+										<div className="flex flex-col gap-2">
+											<input
+												placeholder="Enter your first name"
+												id="form-input"
+												type="text"
+												name="firstName"
+												ref={inputFirstNameRef}
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.firstName}
+											/>
+											{errors.firstName &&
+												touched.firstName &&
+												errors.firstName}
+											<input
+												placeholder="Enter your last name"
+												ref={inputLastNameRef}
+												id="form-input"
+												type="text"
+												name="lastName"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.lastName}
+											/>
+											{errors.lastName && touched.lastName && errors.lastName}
+											<div className="flex flex-row gap-3">
+												<input
+													type="checkbox"
+													name="useOldFullName"
+													onChange={() => {
+														handleChange(event);
+														handleUseOldFullNameInput();
+													}}
+													onBlur={handleBlur}
+													checked={values.useOldFullName}
+												/>
+												<label htmlFor="useOldFullName">
+													Use old full name
+												</label>
+												{errors.useOldFullName &&
+													touched.useOldFullName &&
+													errors.useOldFullName}
+											</div>
+											<input
+												ref={inputEmailRef}
+												placeholder="Enter your email"
+												id="form-input"
+												type="text"
+												name="email"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.email}
+											/>
+											{errors.email && touched.email && errors.email}
+											<div className="flex flex-row gap-3">
+												<input
+													type="checkbox"
+													name="useOldEmail"
+													onChange={() => {
+														handleChange(event);
+														handleUseOldEmailInput();
+													}}
+													onBlur={handleBlur}
+													checked={values.useOldEmail}
+												/>
+												<label htmlFor="useOldEmail">Use old email</label>
+												{errors.useOldEmail &&
+													touched.useOldEmail &&
+													errors.useOldEmail}
+											</div>
+											<input
+												type="text"
+												placeholder="Enter your delivery address"
+												id="form-input"
+												name="deliveryAddress"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.deliveryAddress}
+											/>
+											{errors.deliveryAddress &&
+												touched.deliveryAddress &&
+												errors.deliveryAddress}
+											<button id="button" type="submit" disabled={isSubmitting}>
+												Submit
+											</button>
+										</div>
+									</form>
+								)}
+							</Formik>
 						</div>
 					</div>
 				</div>

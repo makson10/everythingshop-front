@@ -3,6 +3,7 @@ import '@/styles/mixins.scss';
 import '@/styles/index.scss';
 import '@/styles/globals.scss';
 import '@/styles/formInput.scss';
+import '@/styles/button.scss';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { UserDataProvider } from '@/pages/context/UserDataContext';

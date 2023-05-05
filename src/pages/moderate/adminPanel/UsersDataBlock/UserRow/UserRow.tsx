@@ -1,15 +1,21 @@
-import { IUserData } from '@/pages/types/contextTypes';
-import styles from './UserRow.module.scss';
 import { useEffect, useState } from 'react';
+import { IUnionUserData } from '@/pages/types/contextTypes';
+import styles from './UserRow.module.scss';
 
 interface Props {
-	customer: IUserData;
+	customer: IUnionUserData;
+	isGoogleCustomers?: boolean;
 }
 
-export default function UserRow({ customer }: Props) {
+export default function UserRow({
+	customer,
+	isGoogleCustomers = false,
+}: Props) {
 	const [customerAge, setCustomerAge] = useState<number>(0);
 
 	useEffect(() => {
+		if (isGoogleCustomers || !customer.dateOfBirth) return;
+
 		const dateNow = Date.now();
 		const customerDateOfBirth = new Date(customer.dateOfBirth);
 		const timeDifferent = dateNow - +customerDateOfBirth;
@@ -20,12 +26,26 @@ export default function UserRow({ customer }: Props) {
 
 	return (
 		<div id={styles['user-row']}>
-			<p>
-				<b>{customer.name}</b>, {customerAge}, {customer.email}
-			</p>
-			<p>
-				Login: {customer.login}, Password: {customer.password}
-			</p>
+			{isGoogleCustomers ? (
+				<>
+					<div className="flex flex-row gap-4">
+						<p>
+							<b>{customer.name}</b>, {customer.email}
+						</p>
+						<img src="https://img.icons8.com/color/24/null/google-logo.png" />
+					</div>
+					<p>ID: {customer.id}</p>
+				</>
+			) : (
+				<>
+					<p>
+						<b>{customer.name}</b>, {customerAge}, {customer.email}
+					</p>
+					<p>
+						Login: {customer.login}, Password: {customer.password}
+					</p>
+				</>
+			)}
 		</div>
 	);
 }

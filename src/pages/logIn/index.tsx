@@ -1,21 +1,18 @@
-import React, { useRef, useEffect, useState } from 'react';
-import {
-	// clearInputField,
-	validateLogInData,
-} from '../functions/validateFunctions';
+import React, { useEffect, useState } from 'react';
+import { validateLogInData } from '../functions/validateFunctions';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useUserData, useUserDataUpdate } from '../context/UserDataContext';
-import Button from '../components/Button/Button';
 import {
 	ShowErrorModalWindow,
 	ShowSuccessModalWindow,
 } from '../components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '../components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '../components/GoogleButton/GoogleButton';
-import Input from '../components/Input/Input';
+import { Formik } from 'formik';
 import styles from './logIn.module.scss';
+import { SignUpUserDataType } from '../types/validationTypes';
 
 interface LogInUserDataType {
 	login: string;
@@ -27,60 +24,20 @@ export default function LogIn() {
 	const { saveData } = useUserDataUpdate();
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 
-	const [login, setLogin] = useState<string | null>(null);
-	const [password, setPassword] = useState<string | null>(null);
+	const [logInUserCredential, setLogInUserCredential] =
+		useState<SignUpUserDataType>();
+	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
-	const inputLoginRef = useRef<HTMLInputElement>(null);
-	const inputPasswordRef = useRef<HTMLInputElement>(null);
-	const buttonRef = useRef<HTMLButtonElement>(null);
-
-	const [errorList, setErrorList] = useState<string[]>([]);
-	const [mainValidationEnd, setMainValidationEnd] = useState<boolean>(false);
-	const [secondaryValidationEnd, setSecondaryValidationEnd] =
-		useState<boolean>(false);
+	const [isServerError, setIsServerError] = useState<boolean | null>(null);
+	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
 
 	const router = useRouter();
 
-	const handleLoginInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setLogin(e.target.value);
-	};
-
-	const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setPassword(e.target.value);
-	};
-
-	const handleSubmit = () => {
-		const user: LogInUserDataType = {
-			login: login!,
-			password: password!,
-		};
-
-		if (!checkDataOnNull(user)) {
-			setErrorList(validateLogInData(user));
-		}
-
-		setMainValidationEnd(true);
-	};
-
-	const checkDataOnNull = ({ login, password }: LogInUserDataType) => {
-		let haveEmptyField: boolean = false;
-
-		if (login === '' || password === '') {
-			setErrorList(['Some of your field is not fill!']);
-			haveEmptyField = true;
-		}
-
-		return haveEmptyField;
-	};
-
-	const clearAllInputVariables = () => {
-		setLogin('');
-		setPassword('');
+	const handleTogglePasswordVisible = () => {
+		setIsPasswordVisible((prevValue) => !prevValue);
 	};
 
 	const sendDataToServer = async (data: LogInUserDataType) => {
@@ -101,76 +58,55 @@ export default function LogIn() {
 		);
 
 		if (loginResult.data.error) {
-			setErrorList((prevValue) => [loginResult.data.error]);
-		} else {
-			const userData = loginResult.data.userData;
-			saveData(userData);
-
-			const JWTTokenResult = await axios.post(
-				'http://127.0.0.1:8000/customers/register',
-				userData
-			);
-			document.cookie = `jwtToken=${JWTTokenResult.data.jwtToken}; path=/; samesite=lax;`;
+			setIsServerError(true);
+			setServerErrorMessage(loginResult.data.error);
+			return;
 		}
 
-		setSecondaryValidationEnd((prevValue) => true);
+		const userData = loginResult.data.userData;
+		setLogInUserCredential(userData);
+
+		const JWTTokenResult = await axios.post(
+			'http://127.0.0.1:8000/customers/register',
+			userData
+		);
+		document.cookie = `jwtToken=${JWTTokenResult.data.jwtToken}; path=/; samesite=lax;`;
+
+		setIsServerError(false);
 	};
 
 	const handleSuccess = () => {
 		setIsOpenSuccessWindow(true);
-		clearAllInputVariables();
 
-		if (buttonRef.current) buttonRef.current.disabled = true;
 		setTimeout(() => {
 			setIsOpenSuccessWindow(false);
 			router.push('/');
-			setMainValidationEnd(false);
-			setSecondaryValidationEnd(false);
+			saveData({
+				name: logInUserCredential!.name,
+				dateOfBirth: logInUserCredential!.dateOfBirth,
+				email: logInUserCredential!.email,
+				login: logInUserCredential!.login,
+				password: logInUserCredential!.password,
+			});
 		}, 3000);
 	};
 
 	const handleFailure = () => {
 		setIsOpenErrorWindow(true);
-		if (buttonRef.current) buttonRef.current.disabled = true;
 
 		setTimeout(() => {
 			setIsOpenErrorWindow(false);
-			setErrorList([]);
-			if (buttonRef.current) buttonRef.current.disabled = false;
-			setMainValidationEnd(false);
-			setSecondaryValidationEnd(false);
+			setIsServerError(null);
 		}, 3000);
 	};
 
 	useEffect(() => {
-		if (!mainValidationEnd) return;
+		if (isServerError === null) return;
 
-		if (errorList.length === 0) {
-			const user: LogInUserDataType = {
-				login: login!,
-				password: password!,
-			};
-
-			sendDataToServer(user);
-		} else {
-			handleFailure();
-		}
-	}, [mainValidationEnd]);
+		isServerError ? handleFailure() : handleSuccess();
+	}, [isServerError]);
 
 	useEffect(() => {
-		if (!secondaryValidationEnd) return;
-		console.log(errorList);
-
-		if (errorList.length === 0) {
-			handleSuccess();
-		} else {
-			handleFailure();
-		}
-	}, [secondaryValidationEnd]);
-
-	useEffect(() => {
-		if (mainValidationEnd) return;
-
 		if (
 			(userData.data?.login && userData.data?.password) ||
 			userData.data?.id
@@ -183,8 +119,11 @@ export default function LogIn() {
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
+			{isOpenErrorWindow && (
+				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
+			)}
 			{isOpenSuccessWindow && <ShowSuccessModalWindow action={'logging in'} />}
+
 			<div id={styles['form-page']}>
 				<div id={styles['form-wrapper']}>
 					<h1 id={styles['form-wrapper-title']}>Log In</h1>
@@ -193,25 +132,74 @@ export default function LogIn() {
 						redirectUrl="/api/auth/login?action_type=login"
 					/>
 					<div className={styles['login-form-wrapper']}>
-						<div className={styles['login-input-wrapper']}>
-							<Input
-								inputRef={inputLoginRef}
-								placeholder="Enter your login"
-								onChangeFunction={handleLoginInput}
-							/>
-							<Input
-								inputRef={inputPasswordRef}
-								type="password"
-								placeholder="Enter your password"
-								onChangeFunction={handlePasswordInput}
-							/>
-						</div>
-						<Button text="Submit" callbackFunc={handleSubmit} />
-						<div className={styles['sign-up-link-wrapper']}>
-							<Link className={styles['sign-up-link']} href="/signUp">
-								Not registered yet? Sign Up
-							</Link>
-						</div>
+						<Formik
+							initialValues={{
+								login: '',
+								password: '',
+							}}
+							validate={(values: LogInUserDataType) => {
+								return validateLogInData(values);
+							}}
+							onSubmit={(values, { setSubmitting }) => {
+								setTimeout(() => {
+									sendDataToServer(values);
+									setSubmitting(false);
+								}, 400);
+							}}>
+							{({
+								values,
+								errors,
+								touched,
+								handleChange,
+								handleBlur,
+								handleSubmit,
+								isSubmitting,
+							}) => (
+								<form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+									<div className="flex flex-col gap-2">
+										<input
+											id="form-input"
+											placeholder="Enter your login"
+											type="text"
+											name="login"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.login}
+										/>
+										{errors.login && touched.login && errors.login}
+										<div className="flex flex-row gap-1 w-input">
+											<input
+												id="form-input"
+												data-type="password"
+												type={isPasswordVisible ? 'text' : 'password'}
+												name="password"
+												placeholder="Enter your password"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.password}
+											/>
+											<div
+												className="flex justify-center items-center"
+												onClick={handleTogglePasswordVisible}>
+												<img
+													src={isPasswordVisible ? './hide.png' : './show.png'}
+													alt="#"
+												/>
+											</div>
+										</div>
+										{errors.password && touched.password && errors.password}
+									</div>
+									<div className="flex flex-col gap-3 items-center">
+										<button id="button" type="submit" disabled={isSubmitting}>
+											Submit
+										</button>
+										<Link className={styles['sign-in-link']} href="/signUp">
+											Not already registered? Sign Up
+										</Link>
+									</div>
+								</form>
+							)}
+						</Formik>
 					</div>
 				</div>
 			</div>

@@ -1,71 +1,24 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import Button from '@/pages/components/Button/Button';
 import { validateLogInData } from '../functions/validateFunctions';
 import axios from 'axios';
 import { IAdminData } from '../types/adminDataTypes';
 import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
-import Input from '../components/Input/Input';
 import styles from './moderatePage.module.scss';
 import { getCookie } from '../functions/cookiesFunction';
+import Link from 'next/link';
+import { Formik } from 'formik';
+import { LogInUserDataType } from '../types/validationTypes';
 
 export default function ModeratePage() {
-	const [login, setLogin] = useState<string | null>(null);
-	const [password, setPassword] = useState<string | null>(null);
-
-	const inputLoginRef = useRef<HTMLInputElement>(null);
-	const inputPasswordRef = useRef<HTMLInputElement>(null);
-	const buttonRef = useRef<HTMLButtonElement>(null);
-
-	const [errorList, setErrorList] = useState<string[]>([]);
-	const [mainValidationEnd, setMainValidationEnd] = useState<boolean>(false);
-	const [secondaryValidationEnd, setSecondaryValidationEnd] =
-		useState<boolean>(false);
+	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+	const [isServerError, setIsServerError] = useState<boolean | null>(null);
+	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
-
 	const router = useRouter();
 
-	const handleLoginInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setLogin(e.target.value);
-	};
-
-	const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-		e.preventDefault();
-		setPassword(e.target.value);
-	};
-
-	const handleSubmit = () => {
-		const adminData: IAdminData = {
-			login: login!,
-			password: password!,
-		};
-
-		if (!checkDataOnNull(adminData)) {
-			setErrorList(validateLogInData(adminData));
-		}
-
-		setMainValidationEnd(true);
-	};
-
-	const checkDataOnNull = ({ login, password }: IAdminData) => {
-		let haveEmptyField: boolean = false;
-
-		if (login === '' || password === '') {
-			setErrorList(['Some of your field is not fill!']);
-			haveEmptyField = true;
-		}
-
-		return haveEmptyField;
-	};
-
-	const handleSecondCheck = () => {
-		const adminData: IAdminData = {
-			login: login!,
-			password: password!,
-		};
-
-		checkAdminData(adminData);
+	const handleTogglePasswordVisible = () => {
+		setIsPasswordVisible((prevValue) => !prevValue);
 	};
 
 	const checkAdminData = async (adminData: IAdminData) => {
@@ -84,68 +37,119 @@ export default function ModeratePage() {
 		);
 
 		if (!res.data.adminWithReceivedDataExist) {
-			setErrorList(["Admin with these credentials doesn't exist now"]);
+			setIsServerError(true);
+			setServerErrorMessage("Admin with these credentials doesn't exist now");
+			return;
 		}
-		setSecondaryValidationEnd(true);
+
+		setIsServerError(false);
 	};
 
 	const handleSuccess = () => {
-		document.cookie = `isAdminAuthorized=true; max-age=${5 * 60}; path=/moderate; samesite=lax`;
+		document.cookie = `isAdminAuthorized=true; max-age=${
+			5 * 60
+		}; path=/moderate; samesite=lax`;
 		router.push(`${router.pathname}/adminPanel`);
-		if (inputLoginRef.current) inputLoginRef.current.value = '';
-		if (inputPasswordRef.current) inputPasswordRef.current.value = '';
 	};
 
 	const handleFailure = () => {
 		setIsOpenErrorWindow(true);
-		if (buttonRef.current) buttonRef.current.disabled = true;
 
 		setTimeout(() => {
 			setIsOpenErrorWindow(false);
-			setErrorList([]);
-			if (buttonRef.current) buttonRef.current.disabled = false;
-			setMainValidationEnd(false);
-			setSecondaryValidationEnd(false);
+			setIsServerError(null);
 		}, 3000);
 	};
 
-    useEffect(() => {
+	useEffect(() => {
 		const isAdminAuthorized = getCookie('isAdminAuthorized') === 'true';
 		if (isAdminAuthorized) router.push('/moderate/adminPanel');
 	}, []);
 
 	useEffect(() => {
-		if (!mainValidationEnd) return;
-		errorList.length === 0 ? handleSecondCheck() : handleFailure();
-	}, [mainValidationEnd]);
+		if (isServerError === null) return;
 
-	useEffect(() => {
-		if (!secondaryValidationEnd) return;
-		errorList.length === 0 ? handleSuccess() : handleFailure();
-	}, [secondaryValidationEnd]);
+		isServerError ? handleFailure() : handleSuccess();
+	}, [isServerError]);
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow errorList={errorList} />}
+			{isOpenErrorWindow && (
+				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
+			)}
 
 			<div id={styles['admin-login-page']}>
 				<div id={styles['form-wrapper']}>
 					<h1 id={styles['form-wrapper-title']}>Admin Log In</h1>
 					<div className={styles['login-form-wrapper']}>
-						<div className={styles['login-input-wrapper']}>
-							<Input
-								inputRef={inputLoginRef}
-								placeholder="Enter your admin login"
-								onChangeFunction={handleLoginInput}
-							/>
-							<Input
-								inputRef={inputPasswordRef}
-								type="password"
-								placeholder="Enter your admin password"
-								onChangeFunction={handlePasswordInput}
-							/>
-						</div>
-						<Button text="Submit" callbackFunc={handleSubmit} />
+						<Formik
+							initialValues={{
+								login: '',
+								password: '',
+							}}
+							validate={(values: LogInUserDataType) => {
+								return validateLogInData(values);
+							}}
+							onSubmit={(values, { setSubmitting }) => {
+								setTimeout(() => {
+									checkAdminData(values);
+									setSubmitting(false);
+								}, 400);
+							}}>
+							{({
+								values,
+								errors,
+								touched,
+								handleChange,
+								handleBlur,
+								handleSubmit,
+								isSubmitting,
+							}) => (
+								<form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+									<div className="flex flex-col gap-2">
+										<input
+											id="form-input"
+											placeholder="Enter your login"
+											type="text"
+											name="login"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.login}
+										/>
+										{errors.login && touched.login && errors.login}
+										<div className="flex flex-row gap-1 w-input">
+											<input
+												id="form-input"
+												data-type="password"
+												type={isPasswordVisible ? 'text' : 'password'}
+												name="password"
+												placeholder="Enter your password"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.password}
+											/>
+											<div
+												className="flex justify-center items-center"
+												onClick={handleTogglePasswordVisible}>
+												<img
+													src={isPasswordVisible ? './hide.png' : './show.png'}
+													alt="#"
+												/>
+											</div>
+										</div>
+										{errors.password && touched.password && errors.password}
+									</div>
+									<div className="flex flex-col gap-3 items-center">
+										<button id="button" type="submit" disabled={isSubmitting}>
+											Submit
+										</button>
+										<Link className={styles['sign-in-link']} href="/signUp">
+											Not already registered? Sign Up
+										</Link>
+									</div>
+								</form>
+							)}
+						</Formik>
 					</div>
 				</div>
 			</div>

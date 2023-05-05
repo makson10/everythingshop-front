@@ -11,10 +11,10 @@ export interface LogInUserDataType {
 	password: string;
 }
 
-export interface IValidationProductData {
-	photoFile: File;
+export interface ValidationProductData {
 	title: string;
 	description: string;
 	creator: string;
 	price: number;
+	uniqueProductId: string;
 }
