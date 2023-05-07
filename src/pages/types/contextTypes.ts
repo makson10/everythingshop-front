@@ -1,3 +1,11 @@
+export interface IComment {
+	name: string;
+	date: number;
+	picture: string;
+	text: string;
+    uniqueCommentId: string;
+}
+
 export interface IProductData {
 	title: string;
 	description: string;
@@ -5,6 +13,7 @@ export interface IProductData {
 	creator: string;
 	price: number;
 	uniqueProductId: string;
+	comments: IComment[];
 }
 
 export type CartUpdateContextType = {

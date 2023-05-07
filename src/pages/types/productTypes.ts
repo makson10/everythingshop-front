@@ -1,3 +1,5 @@
+import { IComment } from './contextTypes';
+
 export interface IProduct {
 	title: string;
 	description: string;
@@ -5,6 +7,7 @@ export interface IProduct {
 	creator: string;
 	price: number;
 	uniqueProductId: string;
+	comments: IComment[];
 }
 
 export type ProductType = IProduct[];
@@ -12,7 +15,7 @@ export type ProductType = IProduct[];
 export interface SubmitFormData {
 	firstName?: string;
 	lastName?: string;
-    fullName?: string;
+	fullName?: string;
 	email: string;
 	deliveryAddress: string;
 }

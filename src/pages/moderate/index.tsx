@@ -143,9 +143,6 @@ export default function ModeratePage() {
 										<button id="button" type="submit" disabled={isSubmitting}>
 											Submit
 										</button>
-										<Link className={styles['sign-in-link']} href="/signUp">
-											Not already registered? Sign Up
-										</Link>
 									</div>
 								</form>
 							)}

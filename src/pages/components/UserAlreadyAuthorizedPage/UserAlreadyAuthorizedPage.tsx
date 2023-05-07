@@ -3,13 +3,12 @@ import { useUserDataUpdate } from '@/pages/context/UserDataContext';
 import styles from './UserAlreadyAuthorizedPage.module.scss';
 
 export default function UserAlreadyAuthorizedPage() {
+	const { deleteData, deleteTokens } = useUserDataUpdate();
 	const router = useRouter();
-	const { deleteData } = useUserDataUpdate();
 
 	const handleClick = () => {
-		if (localStorage.getItem('jwtToken')) localStorage.removeItem('jwtToken');
-		if (localStorage.getItem('googleJWTToken'))
-			localStorage.removeItem('googleJWTToken');
+		deleteData();
+		deleteTokens();
 		router.reload();
 	};
 

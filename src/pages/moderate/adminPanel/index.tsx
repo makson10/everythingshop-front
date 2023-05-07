@@ -7,18 +7,23 @@ import { useRouter } from 'next/router';
 import UsersDataBlock from './UsersDataBlock/UsersDataBlock';
 import ProductsBlock from './ProductsBlock/ProductsBlock';
 import axios from 'axios';
+import CommentsBlock from './CommentsBlock/CommentsBlock';
 import styles from './adminPanel.module.scss';
+import { FeedbackType } from '@/pages/types/feedbackTypes';
+import FeedbackBlock from './FeedbackBlock/FeedbackBlock';
 
 interface FetchedData {
 	customers: UserDataType;
 	googleCustomers: UserDataType;
 	products: ProductType;
+	feedbacks: FeedbackType;
 }
 
 export default function adminPanel({
 	customers,
 	googleCustomers,
 	products,
+	feedbacks,
 }: FetchedData) {
 	const router = useRouter();
 
@@ -38,6 +43,8 @@ export default function adminPanel({
 					googleCustomers={googleCustomers}
 				/>
 				<ProductsBlock products={products} />
+				<CommentsBlock products={products} />
+				<FeedbackBlock feedbacks={feedbacks} />
 			</div>
 		</>
 	);
@@ -56,11 +63,16 @@ export const getServerSideProps: GetServerSideProps<FetchedData> = async () => {
 		.get('http://127.0.0.1:8000/products')
 		.then((data) => data.data);
 
+	const feedbacks: FeedbackType = await axios
+		.get('http://127.0.0.1:8000/feedback')
+		.then((data) => data.data);
+
 	return {
 		props: {
 			customers,
 			googleCustomers,
 			products,
+			feedbacks,
 		},
 	};
 };

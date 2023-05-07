@@ -171,15 +171,17 @@ export default function SignUp() {
 											value={values.name}
 										/>
 										{errors.name && touched.name && errors.name}
-										<input
-											id="form-input"
-											type="date"
-											name="dateOfBirth"
-											onChange={handleChange}
-											onBlur={handleBlur}
-											value={values.dateOfBirth}
-											placeholder="Enter your date of birth"
-										/>
+										<div data-te-datepicker-init data-te-input-wrapper-init>
+											<input
+												id="form-input"
+												type="date"
+												name="dateOfBirth"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.dateOfBirth}
+												placeholder="Enter your date of birth"
+											/>
+										</div>
 										{errors.dateOfBirth &&
 											touched.dateOfBirth &&
 											errors.dateOfBirth}

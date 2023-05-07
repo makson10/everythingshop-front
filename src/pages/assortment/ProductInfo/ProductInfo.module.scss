@@ -11,8 +11,8 @@
 		justify-content: right;
 		align-items: center;
 		width: 50%;
-		
-        #photo {
+
+		#photo {
 			width: 50%;
 			height: 50%;
 		}
@@ -43,9 +43,6 @@
 		#secondary-info {
 			width: 70%;
 
-			#creator {
-			}
-
 			#price {
 				font-weight: bold;
 				font-size: 1.3rem;
@@ -74,5 +71,23 @@
 				}
 			}
 		}
+	}
+}
+
+#comments-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	border: 2px solid black;
+	width: 70%;
+	padding: 0.5rem;
+}
+
+#add-new-comment {
+	border: 2px solid black;
+	width: 70%;
+
+	#comment-input {
+		width: 95%;
 	}
 }

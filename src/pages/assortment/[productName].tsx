@@ -18,7 +18,7 @@ interface Props {
 
 export default function ProductPage({ productData }: Props) {
 	return (
-		<div className="flex flex-col h-screen overflow-hidden">
+		<div className="flex flex-col h-screen">
 			<Header pageName={productData.title!} />
 			<ProductInfo productData={productData} />
 		</div>
@@ -34,6 +34,7 @@ export const getServerSideProps: GetServerSideProps<FetchedDataType> = async (
 		`http://127.0.0.1:8000/products/${productName}`
 	);
 	const productData = await fetchedData.json();
+	productData.data.comments = JSON.parse(productData.data.comments);
 
 	if (!productData.success) {
 		return {
