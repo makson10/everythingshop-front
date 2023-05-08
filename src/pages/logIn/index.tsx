@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { validateLogInData } from '../functions/validateFunctions';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -76,19 +76,14 @@ export default function LogIn() {
 	};
 
 	const handleSuccess = () => {
-		setIsOpenSuccessWindow(true);
-
-		setTimeout(() => {
-			setIsOpenSuccessWindow(false);
-			router.push('/');
-			saveData({
-				name: logInUserCredential!.name,
-				dateOfBirth: logInUserCredential!.dateOfBirth,
-				email: logInUserCredential!.email,
-				login: logInUserCredential!.login,
-				password: logInUserCredential!.password,
-			});
-		}, 3000);
+		router.push('/');
+		saveData({
+			name: logInUserCredential!.name,
+			dateOfBirth: logInUserCredential!.dateOfBirth,
+			email: logInUserCredential!.email,
+			login: logInUserCredential!.login,
+			password: logInUserCredential!.password,
+		});
 	};
 
 	const handleFailure = () => {
@@ -97,7 +92,7 @@ export default function LogIn() {
 		setTimeout(() => {
 			setIsOpenErrorWindow(false);
 			setIsServerError(null);
-		}, 3000);
+		}, 2000);
 	};
 
 	useEffect(() => {

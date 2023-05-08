@@ -7,8 +7,13 @@ module.exports = {
         extend: {
             width: {
                 'input': '300px'
-            }
+            },
+            gridTemplateRows: {
+                '[auto,auto,1fr]': 'auto auto 1fr',
+            },
         },
     },
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/aspect-ratio'),
+    ],
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import UserIcon from './UserIcon/UserIcon';
+import UserIcon from '../UserIcon/UserIcon';
 import styles from './OptionSection.module.scss';
 
 export default function OptionSection() {
@@ -18,9 +18,6 @@ export default function OptionSection() {
 						<Link href={'/cart'}>Cart</Link>
 					</li>
 				</ul>
-			</div>
-			<div id={styles['header-sign-button-wrapper']}>
-				<UserIcon />
 			</div>
 		</div>
 	);

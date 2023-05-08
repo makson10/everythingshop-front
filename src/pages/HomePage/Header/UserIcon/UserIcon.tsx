@@ -35,7 +35,14 @@ export default function UserIcon() {
 						<button
 							id={styles['logined-user-button']}
 							onClick={() => setIsOpenMenu((prevValue) => !prevValue)}>
-							<img src="user-circle.png" />
+							<img
+								className="w-12"
+								src={
+									userData.data?.picture
+										? userData.data?.picture
+										: 'user-circle.png'
+								}
+							/>
 						</button>
 						<p id={styles['logined-user-name']}>{userName}</p>
 					</div>

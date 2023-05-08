@@ -12,13 +12,13 @@ export default function SuccessWindow({ typeOfSuccess }: Props) {
 	useEffect(() => {
 		const progressBarInterval = setInterval(() => {
 			if (windowProcessBar.current) {
-				windowProcessBar.current.value -= 1;
+				windowProcessBar.current.value -= 3;
 			}
 		}, 1);
 
 		setTimeout(() => {
 			clearInterval(progressBarInterval);
-		}, 3000);
+		}, 1000);
 	}, []);
 
 	return (
