@@ -16,10 +16,6 @@
 	background-color: white;
 	width: 500px;
 
-	#text-wrapper-for-fucking-text {
-		padding: 1rem 1rem 1rem 1rem;
-	}
-
 	#text-block-line {
 		width: 20px;
 		height: 100%;
@@ -32,14 +28,11 @@
 }
 
 #our-experience-subtitle {
-	color: white;
-	font-family: var(--main-font);
 	font-weight: var(--main-font-weight);
 	font-size: 2rem;
 }
 
 #our-experience-title {
-	color: white;
 	font-family: var(--second-font);
 	font-size: 1.2rem;
 }

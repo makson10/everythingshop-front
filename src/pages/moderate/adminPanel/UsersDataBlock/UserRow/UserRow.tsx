@@ -29,6 +29,7 @@ export default function UserRow({
 			{isGoogleCustomers ? (
 				<>
 					<div className="flex flex-row gap-4">
+						<img className="w-6" src={customer.picture} />
 						<p>
 							<b>{customer.name}</b>, {customer.email}
 						</p>
@@ -38,9 +39,15 @@ export default function UserRow({
 				</>
 			) : (
 				<>
-					<p>
-						<b>{customer.name}</b>, {customerAge}, {customer.email}
-					</p>
+					<div className="flex flex-row gap-4">
+						<img
+							className="w-6"
+							src="https://img.icons8.com/windows/120/null/user-male-circle.png"
+						/>
+						<p>
+							<b>{customer.name}</b>, {customerAge}, {customer.email}
+						</p>
+					</div>
 					<p>
 						Login: {customer.login}, Password: {customer.password}
 					</p>

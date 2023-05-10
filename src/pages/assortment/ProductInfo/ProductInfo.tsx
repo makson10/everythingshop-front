@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, LegacyRef } from 'react';
 import { useUserData } from '@/pages/context/UserDataContext';
-import { HintWindow } from './HintWindow/HintWindow';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
 import { v4 as uuidv4 } from 'uuid';
 import { IComment, IProductData } from '@/pages/types/contextTypes';
@@ -172,7 +171,7 @@ export default function ProductInfo({ productData }: Props) {
 								<h3 className="sr-only">Description</h3>
 
 								<div className="space-y-6">
-									<p className="text-base text-gray-900">
+									<p className="text-base text-gray-900 break-words">
 										{productData.description}
 									</p>
 								</div>

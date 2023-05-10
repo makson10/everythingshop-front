@@ -9,10 +9,11 @@ export default function HomePageBg({ children }: Props) {
 		<div
 			id="home-page-bg"
 			style={{
-				backgroundColor: '#002222',
+				backgroundColor: '#F6FFDE',
 				display: 'flex',
 				flexDirection: 'column',
 				gap: '6rem',
+                color: '#545B5A'
 			}}>
 			{children}
 		</div>

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import styles from './Header.module.scss';
+import { useCartContext } from '@/pages/context/CartContext';
 
 interface Props {
 	pageName: string | string[] | undefined;
@@ -7,11 +8,12 @@ interface Props {
 }
 
 export default function Header({ pageName, showCartIcon = true }: Props) {
+	const cart = useCartContext();
 	const router = useRouter();
 
 	return (
 		<div className="flex flex-col">
-			<div className="flex flex-row justify-between p-4 px-6">
+			<div className="flex flex-row justify-between p-4 px-8">
 				<div className="flex flex-row">
 					<button id={styles['back-button']} onClick={() => router.back()}>
 						<img
@@ -23,11 +25,16 @@ export default function Header({ pageName, showCartIcon = true }: Props) {
 				<p id={styles['page-title']}>{pageName}</p>
 				<div className="flex justify-center items-center">
 					{showCartIcon && (
-						<button
-							id={styles['cart-button']}
-							onClick={() => router.push('/cart')}>
-							<img src="https://img.icons8.com/sf-black/48/null/buy.png" />
-						</button>
+						<>
+							<button
+								id={styles['cart-button']}
+								onClick={() => router.push('/cart')}>
+								<img src="https://img.icons8.com/sf-black/48/null/buy.png" />
+								{cart.length !== 0 && (
+									<div id={styles['cart-product-amount']}>{cart.length}</div>
+								)}
+							</button>
+						</>
 					)}
 				</div>
 			</div>

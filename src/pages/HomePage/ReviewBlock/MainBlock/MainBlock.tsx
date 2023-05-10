@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './MainBlock.module.scss';
 
 export default function MainBlock() {

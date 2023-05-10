@@ -43,7 +43,7 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 				ref={menuRef}
 				id={styles['modal-menu-wrapper']}
 				data-state={`${isOpen ? 'open' : 'close'}`}>
-				<div id={styles['modal-menu-triangle-wrapper']}>
+				<div className='flex justify-center'>
 					<div id={styles['modal-menu-triangle']}></div>
 				</div>
 				<div id={styles['modal-menu']}>

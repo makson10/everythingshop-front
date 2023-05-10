@@ -20,9 +20,9 @@
 	gap: 5px;
 
 	border-radius: 1rem;
-
-	background-color: white;
+	border: 2px solid black;
 	padding: 0.5rem;
+    color: black;
 
 	.modal-menu-button {
 		border: none;
@@ -39,11 +39,6 @@
 	}
 }
 
-#modal-menu-triangle-wrapper {
-	display: flex;
-	justify-content: center;
-}
-
 #modal-menu-triangle {
 	width: 0;
 	height: 0;
@@ -52,25 +47,5 @@
 	border-right: 10px solid transparent;
 	border-left: 10px solid transparent;
 	border-right: 10px solid transparent;
-	border-bottom: 10px solid white;
-}
-
-@keyframes openingMenu {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
-}
-
-@keyframes closingMenu {
-	from {
-		opacity: 1;
-	}
-
-	to {
-		opacity: 0;
-	}
+	border-bottom: 10px solid black;
 }

@@ -1,5 +1,5 @@
 import Header from '@/pages/components/Header/Header';
-import FeedbackForm from './FeedbackForm/FeedbackForm';
+import FeedbackForm from './FeedbackForm';
 
 export default function Feedback() {
 	return (

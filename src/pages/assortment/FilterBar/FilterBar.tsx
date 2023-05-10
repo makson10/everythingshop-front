@@ -1,54 +1,48 @@
-import { ChangeEvent, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { ISortAndFilterParameters } from '@/pages/types/sortAndFilterParameters';
-import styles from './FilterBar.module.scss';
-import SortSelect from './SortSelect/SortSelect';
-import FilterSelect from './FilterSelect/FilterSelect';
-import SearchInput from './SearchInput/SearchInput';
+import SortSelect from './Selects/SortSelect';
+import FilterSelect from './Selects/FilterSelect';
+import SearchInput from './Selects/SearchInput/SearchInput';
 
 interface Props {
-	setParameters: React.Dispatch<SetStateAction<ISortAndFilterParameters>>;
+	setParameters: Dispatch<SetStateAction<ISortAndFilterParameters>>;
 }
 
 export default function FilterBar({ setParameters }: Props) {
-	const handleSortSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		event.preventDefault();
+	const handleSortSelectChange = (sortParameter: string) => {
 		setParameters((prevValue) => {
 			return {
-				sort: event.target.value,
+				sort: sortParameter,
 				filter: prevValue?.filter,
 				search: prevValue?.search,
 			};
 		});
 	};
 
-	const handleFilterSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		event.preventDefault();
+	const handleFilterSelectChange = (filterParameter: string) => {
 		setParameters((prevValue) => {
 			return {
 				sort: prevValue?.sort,
-				filter: event.target.value,
+				filter: filterParameter,
 				search: prevValue?.search,
 			};
 		});
 	};
 
-	const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-		event.preventDefault();
+	const handleSearchInputChange = (searchParameter: string) => {
 		setParameters((prevValue) => {
 			return {
 				sort: prevValue?.sort,
 				filter: prevValue?.filter,
-				search: event.target.value,
+				search: searchParameter,
 			};
 		});
 	};
 
 	return (
-		<div id={styles['filter-bar-wrapper']}>
-			<div id={styles['select-boxes-wrapper']}>
-				<SortSelect handleFunction={handleSortSelectChange} />
-				<FilterSelect handleFunction={handleFilterSelectChange} />
-			</div>
+		<div className="flex justify-between items-center p-8 px-12">
+			<SortSelect handleFunction={handleSortSelectChange} />
+			<FilterSelect handleFunction={handleFilterSelectChange} />
 			<SearchInput handleFunction={handleSearchInputChange} />
 		</div>
 	);

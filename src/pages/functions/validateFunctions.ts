@@ -1,4 +1,4 @@
-import { IProduct, ISubmitForm, SubmitFormData } from '../types/productTypes';
+import { IProduct, ISubmitForm } from '../types/productTypes';
 import { rusBadWordsRegex, engBadWordsRegex } from './badWordsRegex';
 import {
 	SignUpUserDataType,
@@ -143,6 +143,18 @@ const validateBuySubmitData = (values: ISubmitForm) => {
 	return errors;
 };
 
+const validateFeedbaclData = (values: { feedbackText: string }) => {
+	const errors: FormikErrors<{ feedbackText: string }> = {};
+
+	if (!values.feedbackText) {
+		errors.feedbackText = 'Required!';
+	} else if (values.feedbackText.length < 3) {
+		errors.feedbackText = 'Feedback is too short!';
+	}
+
+	return errors;
+};
+
 const validateName = (name: string) => {
 	if (!isString(name) || name.length < 3) {
 		return 'Your name is not valid!';
@@ -206,4 +218,5 @@ export {
 	validateLogInData,
 	validateAddNewProduct,
 	validateBuySubmitData,
+	validateFeedbaclData,
 };

@@ -36,12 +36,13 @@ export default function UserIcon() {
 							id={styles['logined-user-button']}
 							onClick={() => setIsOpenMenu((prevValue) => !prevValue)}>
 							<img
-								className="w-12"
+								className="w-12 rounded-xl"
 								src={
 									userData.data?.picture
 										? userData.data?.picture
-										: 'user-circle.png'
+										: 'https://img.icons8.com/windows/120/null/user-male-circle.png'
 								}
+								loading="lazy"
 							/>
 						</button>
 						<p id={styles['logined-user-name']}>{userName}</p>

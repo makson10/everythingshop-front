@@ -2,10 +2,10 @@ import React, { LegacyRef, useEffect, useRef, useState } from 'react';
 import styles from './SuccessMenu.module.scss';
 
 interface Props {
-	typeOfSuccess: string;
+	successText: string;
 }
 
-export default function SuccessMenu({ typeOfSuccess }: Props) {
+export default function SuccessMenu({ successText }: Props) {
 	const menuRef = useRef<HTMLDivElement>();
 	const [show, setShow] = useState(false);
 
@@ -23,9 +23,7 @@ export default function SuccessMenu({ typeOfSuccess }: Props) {
 				className={show ? 'show' : 'close'}
 				id={styles['success-menu']}
 				ref={menuRef as LegacyRef<HTMLDivElement>}>
-				<p id={styles['success-menu-message']}>
-					You have {typeOfSuccess} successful
-				</p>
+				<p id={styles['success-menu-message']}>{successText}</p>
 			</div>
 			<style jsx>
 				{`

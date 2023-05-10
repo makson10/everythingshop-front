@@ -1,6 +1,4 @@
-import React from 'react';
 import Link from 'next/link';
-import UserIcon from '../UserIcon/UserIcon';
 import styles from './OptionSection.module.scss';
 
 export default function OptionSection() {

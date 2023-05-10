@@ -2,13 +2,14 @@
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-    gap: 10px;
+	gap: 10px;
 
 	width: 160px;
 	padding: {
 		left: 12px;
 		right: 12px;
 	}
+	color: black;
 
 	#logined-user-button {
 		border-radius: 50%;
@@ -18,8 +19,8 @@
 	}
 
 	#logined-user-name {
-		color: white;
 		font-family: var(--main-font);
+		font-weight: 600;
 	}
 }
 
@@ -31,7 +32,8 @@
 	#sign-up-button {
 		border: 3px solid black;
 		border-radius: 10px;
-		background-color: #eae7b1;
+		background-color: #fff992;
+		color: black;
 		padding: 0.5rem;
 		font-size: 1.2rem;
 		font-family: var(--main-font);

@@ -2,7 +2,10 @@
 	border-top-left-radius: 1rem;
 	border-bottom-left-radius: 1rem;
 	background-color: white;
+    z-index: 101;
+    word-wrap: break-word;
 
+    width: 250px;
 	position: fixed;
 	top: 25%;
 	right: -430px;

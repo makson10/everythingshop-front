@@ -78,76 +78,99 @@ export default function ModeratePage() {
 				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
 			)}
 
-			<div id={styles['admin-login-page']}>
-				<div id={styles['form-wrapper']}>
-					<h1 id={styles['form-wrapper-title']}>Admin Log In</h1>
-					<div className={styles['login-form-wrapper']}>
-						<Formik
-							initialValues={{
-								login: '',
-								password: '',
-							}}
-							validate={(values: LogInUserDataType) => {
-								return validateLogInData(values);
-							}}
-							onSubmit={(values, { setSubmitting }) => {
-								setTimeout(() => {
-									checkAdminData(values);
-									setSubmitting(false);
-								}, 400);
-							}}>
-							{({
-								values,
-								errors,
-								touched,
-								handleChange,
-								handleBlur,
-								handleSubmit,
-								isSubmitting,
-							}) => (
-								<form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-									<div className="flex flex-col gap-2">
+			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#3c6255] text-white">
+				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
+					<img
+						className="mx-auto h-10 w-auto"
+						src="everythingshop_logo.png"
+						alt="My Company"
+					/>
+					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
+						Log in to admin account
+					</h2>
+				</div>
+
+				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
+					<Formik
+						initialValues={{
+							login: '',
+							password: '',
+						}}
+						validate={(values: LogInUserDataType) => {
+							return validateLogInData(values);
+						}}
+						onSubmit={(values, { setSubmitting }) => {
+							setTimeout(() => {
+								checkAdminData(values);
+								setSubmitting(false);
+							}, 400);
+						}}>
+						{({
+							values,
+							errors,
+							touched,
+							handleChange,
+							handleBlur,
+							handleSubmit,
+							isSubmitting,
+						}) => (
+							<form className="space-y-6" onSubmit={handleSubmit}>
+								<div>
+									<div className="flex items-center justify-between">
+										<label
+											htmlFor="login"
+											className="block text-lg font-medium leading-6">
+											Login
+										</label>
+									</div>
+									<div className="mt-2">
 										<input
-											id="form-input"
-											placeholder="Enter your login"
-											type="text"
+											id="login"
 											name="login"
+											type="text"
+											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											value={values.login}
 										/>
 										{errors.login && touched.login && errors.login}
-										<div className="flex flex-row gap-1 w-input">
-											<input
-												id="form-input"
-												data-type="password"
-												type={isPasswordVisible ? 'text' : 'password'}
-												name="password"
-												placeholder="Enter your password"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												value={values.password}
-											/>
-											<div
-												className="flex justify-center items-center"
-												onClick={handleTogglePasswordVisible}>
-												<img
-													src={isPasswordVisible ? './hide.png' : './show.png'}
-													alt="#"
-												/>
-											</div>
-										</div>
+									</div>
+								</div>
+
+								<div>
+									<div className="flex items-center justify-between">
+										<label
+											htmlFor="password"
+											className="block text-lg font-medium leading-6">
+											Password
+										</label>
+									</div>
+									<div className="mt-2">
+										<input
+											id="password"
+											name="password"
+											type="password"
+											autoComplete="current-password"
+											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.password}
+										/>
 										{errors.password && touched.password && errors.password}
 									</div>
-									<div className="flex flex-col gap-3 items-center">
-										<button id="button" type="submit" disabled={isSubmitting}>
-											Submit
-										</button>
-									</div>
-								</form>
-							)}
-						</Formik>
-					</div>
+								</div>
+
+								<div>
+									<button
+										type="submit"
+										disabled={isSubmitting}
+										className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+										Log In
+									</button>
+								</div>
+							</form>
+						)}
+					</Formik>
 				</div>
 			</div>
 		</>

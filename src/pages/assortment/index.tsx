@@ -24,7 +24,7 @@ export default function Assortment({ productsData }: FetchedDataType) {
 		useState<ISortAndFilterParameters>({ filter: '', sort: '', search: '' });
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const showingProductAmount = 15;
+	const showingProductAmount = 16;
 
 	const productsForDisplay = paginate(
 		products,

@@ -19,7 +19,7 @@ interface Props {
 export default function ProductPage({ productData }: Props) {
 	return (
 		<div className="flex flex-col h-screen">
-			<Header pageName={productData.title!} />
+			<Header pageName={productData.title || 'unknown'} />
 			<ProductInfo productData={productData} />
 		</div>
 	);

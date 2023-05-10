@@ -21,9 +21,20 @@
 }
 
 #cart-button {
+	position: relative;
 	border: none;
 	background-color: transparent;
 	cursor: pointer;
+}
+
+#cart-product-amount {
+	position: absolute;
+	top: -15%;
+	left: 65%;
+	width: 50%;
+	height: 50%;
+	background-color: coral;
+	border-radius: 50%;
 }
 
 #header-split-line {

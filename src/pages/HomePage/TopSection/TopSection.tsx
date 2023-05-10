@@ -2,19 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import LeftBlock from './LeftBlock/LeftBlock';
 import RightBlock from './RightBlock/RightBlock';
 import styles from './TopSection.module.scss';
+import { animate } from '@/pages/functions/srAnimation';
+
 
 export default function TopSection() {
 	const componentRef = useRef(null);
 
 	useEffect(() => {
-		async function animate() {
-			if (componentRef.current) {
-				const sr = (await import('scrollreveal')).default;
-				sr().reveal(componentRef.current, { duration: 1000 });
-			}
-		}
-
-		animate();
+		animate(componentRef, 1000);
 	}, []);
 
 	return (

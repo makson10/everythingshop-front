@@ -1,16 +1,13 @@
 import Header from '@/pages/components/Header/Header';
-import { Content } from './Content/Content';
+import { CartProductList } from './CartProductList/CartProductList';
 
 export default function index() {
 	return (
-		<div
-			style={{
-				display: 'flex',
-				flexDirection: 'column',
-				height: '100vh',
-			}}>
+		<div className="flex flex-col min-h-screen">
 			<Header pageName={'Card'} showCartIcon={false} />
-			<Content />
+			<div className="flex-[2_1_auto] flex justify-center items-center p-4">
+				<CartProductList />
+			</div>
 		</div>
 	);
 }

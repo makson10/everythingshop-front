@@ -1,11 +1,10 @@
-import ContactBlock from './ContactBlock/ContactBlock';
-import HoursBlock from './HoursBlock/HoursBlock';
-import TitleBlock from './TitleBlock/TitleBlock';
-import styles from './Footer.module.scss';
+import ContactBlock from './ContactBlock';
+import HoursBlock from './HoursBlock';
+import TitleBlock from './TitleBlock';
 
 export default function Footer() {
 	return (
-		<footer className={styles['footer']}>
+		<footer className="flex flex-row justify-between bg-black text-white px-[2rem] py-[3rem]">
 			<ContactBlock />
 			<TitleBlock />
 			<HoursBlock />

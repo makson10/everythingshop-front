@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom';
-import { ErrorListType, ActionType } from './modalWindowTypes';
+import { ErrorListType, SuccessType } from './modalWindowTypes';
 import SuccessMenu from '../SuccessMenu/SuccessMenu';
 import ErrorMenu from '../ErrorMenu/ErrorMenu';
 
@@ -10,9 +10,9 @@ export const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
 	);
 };
 
-export const ShowSuccessModalWindow = ({ action }: ActionType) => {
+export const ShowSuccessModalWindow = ({ successText }: SuccessType) => {
 	return createPortal(
-		<SuccessMenu typeOfSuccess={action} />,
+		<SuccessMenu successText={successText} />,
 		document.querySelector('#portal')!
 	);
 };

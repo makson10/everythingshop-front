@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { validateAddNewProduct } from '@/pages/functions/validateFunctions';
 import { useUserData } from '@/pages/context/UserDataContext';
 import UserNotLoginWindow from '../UserNotLoginWindow/UserNotLoginWindow';
-import styles from './AddForm.module.scss';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import {
@@ -11,6 +10,7 @@ import {
 	ShowErrorModalWindow,
 } from '@/pages/components/ShowModalWindow/ShowModalWindow';
 import { Formik } from 'formik';
+import styles from './AddForm.module.scss';
 
 interface ProductDataType {
 	photoFile?: File;
@@ -42,11 +42,9 @@ export function AddForm() {
 		if (!e.target.files) return;
 		let file = e.target.files[0];
 
-		if (file.name.length > 31) {
-			setFileInputLabel(file.name.slice(0, 26));
-		} else {
-			setFileInputLabel(file.name);
-		}
+		file.name.length > 31
+			? setFileInputLabel(file.name.slice(0, 26))
+			: setFileInputLabel(file.name);
 
 		setPhotoFile(file);
 	};
@@ -65,9 +63,10 @@ export function AddForm() {
 		formData.append('creator', user.creator);
 		formData.append('price', user.price.toString());
 		formData.append('uniqueProductId', user.uniqueProductId);
+		formData.append('comments', JSON.stringify([]));
 
 		try {
-			const csrfToken = await axios.get('http://127.0.0.1:8000/products');
+			await axios.get('http://127.0.0.1:8000/products');
 
 			const addProductResult = await axios.post(
 				'http://127.0.0.1:8000/products/addNewProduct',
@@ -88,12 +87,7 @@ export function AddForm() {
 	};
 
 	const handleSuccess = () => {
-		setIsOpenSuccessWindow(true);
-
-		setTimeout(() => {
-			setIsOpenSuccessWindow(false);
-			router.push('/');
-		}, 3000);
+		router.push('/');
 	};
 
 	const handleFailure = () => {
@@ -126,11 +120,11 @@ export function AddForm() {
 				<ShowSuccessModalWindow action={'added your product'} />
 			)}
 
-			<div id={styles['form-page']}>
-				<div id={styles['form-wrapper']}>
-					<h1 id={styles['form-wrapper-title']}>Add new product</h1>
-					<div className={styles['form-wrapper']}>
-						<div className={styles['input-wrapper']}>
+			<div className="flex-[2_1_auto] flex justify-center items-center">
+				<div className="flex flex-col gap-8">
+					<h1 className="text-4xl">Add new product</h1>
+					<div className="flex flex-col">
+						<div className="flex flex-col gap-4">
 							<label className={styles['form-file-input']}>
 								<img src="https://img.icons8.com/ios/50/null/upload-to-cloud--v1.png" />
 								<p className={styles['form-file-input-label']}>
@@ -171,47 +165,55 @@ export function AddForm() {
 									handleSubmit,
 									isSubmitting,
 								}) => (
-									<form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-										<div>
-											<input
-												className={styles['form-input']}
-												type="text"
-												name="title"
-												placeholder="Enter product title"
-												maxLength={18}
-												onChange={handleChange}
-												onBlur={handleBlur}
-												value={values.title}
-											/>
-											{errors.title && touched.title && errors.title}
-											<textarea
-												name="description"
-												className={styles['form-input']}
-												placeholder="Enter product description"
-												maxLength={255}
-												rows={5}
-												style={{ resize: 'none' }}
-												onChange={handleChange}
-												onBlur={handleBlur}
-												value={values.description}
-											/>
-											{errors.description &&
-												touched.description &&
-												errors.description}
-											<input
-												type="number"
-												name="price"
-												placeholder="Enter product price"
-												className={styles['form-input']}
-												min={1}
-												max={9999999}
-												onChange={handleChange}
-												onBlur={handleBlur}
-												// value={values.price}
-											/>
-											{errors.price && touched.price && errors.price}
+									<form className="space-y-6" onSubmit={handleSubmit}>
+										<div className="flex flex-col gap-4">
+											<div>
+												<input
+													type="text"
+													name="title"
+													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+													placeholder="Enter product title"
+													maxLength={18}
+													onChange={handleChange}
+													onBlur={handleBlur}
+													value={values.title}
+												/>
+												{errors.title && touched.title && errors.title}
+											</div>
+											<div>
+												<textarea
+													name="description"
+													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+													placeholder="Enter product description"
+													maxLength={255}
+													rows={5}
+													style={{ resize: 'none' }}
+													onChange={handleChange}
+													onBlur={handleBlur}
+													value={values.description}
+												/>
+												{errors.description &&
+													touched.description &&
+													errors.description}
+											</div>
+											<div>
+												<input
+													type="number"
+													name="price"
+													placeholder="Enter product price"
+													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+													min={1}
+													max={9999999}
+													onChange={handleChange}
+													onBlur={handleBlur}
+												/>
+												{errors.price && touched.price && errors.price}
+											</div>
 										</div>
-										<button id="button" type="submit" disabled={isSubmitting}>
+										<button
+											className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+											type="submit"
+											disabled={isSubmitting}>
 											Add product
 										</button>
 									</form>
