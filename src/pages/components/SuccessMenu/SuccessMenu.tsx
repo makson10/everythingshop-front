@@ -1,4 +1,4 @@
-import React, { LegacyRef, useEffect, useRef, useState } from 'react';
+import { LegacyRef, useEffect, useRef, useState } from 'react';
 import styles from './SuccessMenu.module.scss';
 
 interface Props {
@@ -11,10 +11,7 @@ export default function SuccessMenu({ successText }: Props) {
 
 	useEffect(() => {
 		setShow(true);
-
-		setTimeout(() => {
-			setShow(false);
-		}, 2000);
+		setTimeout(() => setShow(false), 2000);
 	}, []);
 
 	return (

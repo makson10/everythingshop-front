@@ -1,5 +1,5 @@
 import { FeedbackType } from '@/pages/types/feedbackTypes';
-import FeedbackRow from './FeedbackRow/FeedbackRow';
+import FeedbackRow from './FeedbackRow';
 import styles from './FeedbackBlock.module.scss';
 
 interface Props {
@@ -8,9 +8,9 @@ interface Props {
 
 export default function FeedbackBlock({ feedbacks }: Props) {
 	return (
-		<div id={styles['users-data-block']}>
+		<div id={styles['feedback-block']}>
 			<p id={styles['block-title']}>Feedbacks</p>
-			<div id={styles['users-list']}>
+			<div id={styles['feedback-list']}>
 				{feedbacks.map((feedback, index) => {
 					return <FeedbackRow feedback={feedback} key={index} />;
 				})}

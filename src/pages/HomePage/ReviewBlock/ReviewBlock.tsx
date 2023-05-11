@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { animate } from '@/pages/functions/srAnimation';
-import MainBlock from './MainBlock/MainBlock';
+import ReviewSection from './ReviewSection/ReviewSection';
 import PhotoBlock from './PhotoBlock/PhotoBlock';
 
 export default function ReviewBlock() {
@@ -12,9 +12,9 @@ export default function ReviewBlock() {
 
 	return (
 		<div
-			className="flex flex-row justify-between gap-[30px] px-[3rem]"
+			className="flex flex-row justify-between gap-[30px] px-[3rem] max-sm:flex-col"
 			ref={componentRef}>
-			<MainBlock />
+			<ReviewSection />
 			<PhotoBlock />
 		</div>
 	);

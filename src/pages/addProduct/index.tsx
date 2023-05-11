@@ -1,11 +1,9 @@
-import React from 'react';
 import Header from '@/pages/components/Header/Header';
-import { AddForm } from './AddForm/AddForm';
+import { AddForm } from './AddForm';
 
 export default function AddProduct() {
 	return (
-		<div
-			style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+		<div className="min-h-screen flex flex-col">
 			<Header pageName={'Add Product'} />
 			<AddForm />
 		</div>

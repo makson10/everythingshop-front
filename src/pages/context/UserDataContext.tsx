@@ -1,13 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { IUnionUserData } from '@/pages/types/userTypes';
 import {
-	IUserData,
 	UserDataContextType,
 	UserDataUpdateContextType,
-	IUnionUserData,
 } from '@/pages/types/contextTypes';
-import axios from 'axios';
-import { GoogleUserData } from '@/pages/types/contextTypes';
 import { getCookie } from '../functions/cookiesFunction';
+import axios from 'axios';
 
 interface ProviderProps {
 	children: React.ReactNode;
@@ -38,7 +36,7 @@ const initialValue = {
 	picture: '',
 };
 
-export function UserDataProvider({ children }: ProviderProps): JSX.Element {
+export function UserDataProvider({ children }: ProviderProps) {
 	const [data, setData] = useState<IUnionUserData>(initialValue);
 
 	function saveData(credential: IUnionUserData) {
@@ -60,11 +58,9 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 			const googleJWTToken = getCookie('googleJWTToken');
 
 			if (jwtToken) {
-				const csrfProtocol = axios
-					.get('http://127.0.0.1:8000/customers')
-					.catch((err) => {
-						throw err;
-					});
+				await axios.get('http://127.0.0.1:8000/customers').catch((err) => {
+					throw err;
+				});
 				const JWTTokenResult = await axios.post(
 					'http://127.0.0.1:8000/customers/jwtLogin',
 					{
@@ -77,7 +73,7 @@ export function UserDataProvider({ children }: ProviderProps): JSX.Element {
 					setData(JWTTokenResult.data.data);
 				}
 			} else if (googleJWTToken) {
-				const csrfProtocol = axios
+				await axios
 					.get('http://127.0.0.1:8000/googleCustomers')
 					.catch((err) => {
 						throw err;

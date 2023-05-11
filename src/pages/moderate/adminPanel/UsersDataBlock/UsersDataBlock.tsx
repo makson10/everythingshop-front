@@ -1,5 +1,5 @@
-import { UserDataType } from '@/pages/types/contextTypes';
-import UserRow from './UserRow/UserRow';
+import { UserDataType } from '@/pages/types/userTypes';
+import UserRow from './UserRow';
 import styles from './UsersDataBlock.module.scss';
 
 interface Props {

@@ -1,4 +1,3 @@
-import { ChangeEvent } from 'react';
 import styles from './SearchInput.module.scss';
 
 interface Props {

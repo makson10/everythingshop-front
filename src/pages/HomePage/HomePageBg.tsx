@@ -1,20 +1,12 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 interface Props {
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 export default function HomePageBg({ children }: Props) {
 	return (
-		<div
-			id="home-page-bg"
-			style={{
-				backgroundColor: '#F6FFDE',
-				display: 'flex',
-				flexDirection: 'column',
-				gap: '6rem',
-                color: '#545B5A'
-			}}>
+		<div className="flex flex-col gap-[4rem] text-[#545B5A] bg-[#F6FFDE]">
 			{children}
 		</div>
 	);

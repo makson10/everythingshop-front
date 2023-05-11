@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { IFeedback } from '@/pages/types/feedbackTypes';
 import { useUserData } from '@/pages/context/UserDataContext';
-import UserNotLoginWindow from '@/pages/addProduct/UserNotLoginWindow/UserNotLoginWindow';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
-import { validateFeedbaclData } from '@/pages/functions/validateFunctions';
+import { validateFeedbackData } from '@/pages/functions/validateFunctions';
 import { ShowSuccessModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
+import { IValidateFeedbackData } from '../types/validationTypes';
+import UserNotLoginWindow from '@/pages/addProduct/UserNotLoginWindow/UserNotLoginWindow';
+import axios from 'axios';
 
 export default function FeedbackForm() {
 	const authorizedUserData = useUserData();
@@ -16,9 +17,7 @@ export default function FeedbackForm() {
 	const sendDataToServer = async (data: IFeedback) => {
 		try {
 			await axios.get('http://127.0.0.1:8000/feedback');
-			await axios
-				.post('http://127.0.0.1:8000/feedback/addNewFeedback', data)
-				.then((res) => console.log(res));
+			await axios.post('http://127.0.0.1:8000/feedback/addNewFeedback', data);
 
 			setIsOpenSuccessMenu(true);
 		} catch (error) {
@@ -38,15 +37,15 @@ export default function FeedbackForm() {
 				<ShowSuccessModalWindow successText="Thank you for your feedback. It is very important for us" />
 			)}
 
-			<div className="flex-[2_1_auto] flex justify-center items-center">
+			<div className="flex-[2_1_auto] flex justify-center items-center max-sm:p-8">
 				<div className="flex flex-col gap-10">
 					<p className="text-3xl text-center">Leave your feedback here</p>
 					<Formik
 						initialValues={{
 							feedbackText: '',
 						}}
-						validate={(values: { feedbackText: string }) => {
-							return validateFeedbaclData(values);
+						validate={(values: IValidateFeedbackData) => {
+							return validateFeedbackData(values);
 						}}
 						onSubmit={(values, { setSubmitting, setFieldValue }) => {
 							setTimeout(() => {
@@ -61,7 +60,6 @@ export default function FeedbackForm() {
 								setSubmitting(false);
 							}, 400);
 						}}>
-                            
 						{({
 							values,
 							errors,

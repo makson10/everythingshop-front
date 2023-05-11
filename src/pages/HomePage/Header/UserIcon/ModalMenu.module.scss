@@ -4,6 +4,7 @@
 	position: absolute;
 	top: 90px;
 	opacity: 1;
+	z-index: 102;
 
 	&[data-state='close'] {
 		animation: closingMenu 1000ms linear all;
@@ -22,7 +23,8 @@
 	border-radius: 1rem;
 	border: 2px solid black;
 	padding: 0.5rem;
-    color: black;
+	color: black;
+    background-color: white;
 
 	.modal-menu-button {
 		border: none;

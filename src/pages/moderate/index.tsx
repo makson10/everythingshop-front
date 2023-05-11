@@ -1,14 +1,12 @@
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { validateLogInData } from '../functions/validateFunctions';
-import axios from 'axios';
-import { IAdminData } from '../types/adminDataTypes';
+import { IAdminData } from '../types/adminTypes';
 import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
-import styles from './moderatePage.module.scss';
 import { getCookie } from '../functions/cookiesFunction';
-import Link from 'next/link';
 import { Formik } from 'formik';
-import { LogInUserDataType } from '../types/validationTypes';
+import { ILogInUserData } from '../types/validationTypes';
+import axios from 'axios';
 
 export default function ModeratePage() {
 	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -17,12 +15,13 @@ export default function ModeratePage() {
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const router = useRouter();
 
-	const handleTogglePasswordVisible = () => {
+	const handleTogglePasswordVisible = (e: any) => {
+		e.preventDefault();
 		setIsPasswordVisible((prevValue) => !prevValue);
 	};
 
 	const checkAdminData = async (adminData: IAdminData) => {
-		const csrfToken = await axios
+		await axios
 			.get('http://127.0.0.1:8000/customers')
 			.catch((err) => console.error(err));
 
@@ -68,7 +67,6 @@ export default function ModeratePage() {
 
 	useEffect(() => {
 		if (isServerError === null) return;
-
 		isServerError ? handleFailure() : handleSuccess();
 	}, [isServerError]);
 
@@ -96,7 +94,7 @@ export default function ModeratePage() {
 							login: '',
 							password: '',
 						}}
-						validate={(values: LogInUserDataType) => {
+						validate={(values: ILogInUserData) => {
 							return validateLogInData(values);
 						}}
 						onSubmit={(values, { setSubmitting }) => {
@@ -146,16 +144,27 @@ export default function ModeratePage() {
 										</label>
 									</div>
 									<div className="mt-2">
-										<input
-											id="password"
-											name="password"
-											type="password"
-											autoComplete="current-password"
-											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-											onChange={handleChange}
-											onBlur={handleBlur}
-											value={values.password}
-										/>
+										<div className="flex flex-row gap-4">
+											<input
+												id="password"
+												name="password"
+												type={isPasswordVisible ? 'text' : 'password'}
+												autoComplete="current-password"
+												className="block w-[90%] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.password}
+											/>
+											<button
+												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
+                                                tabIndex={-1}
+												onClick={handleTogglePasswordVisible}>
+												<img
+													src={isPasswordVisible ? './hide.png' : './show.png'}
+													alt="#"
+												/>
+											</button>
+										</div>
 										{errors.password && touched.password && errors.password}
 									</div>
 								</div>

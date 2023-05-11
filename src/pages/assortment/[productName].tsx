@@ -1,11 +1,11 @@
 import { GetServerSideProps } from 'next';
-import { IProductData } from '../types/contextTypes';
+import { IProduct } from '@/pages/types/productTypes';
 import Header from '@/pages/components/Header/Header';
-import ProductInfo from './ProductInfo/ProductInfo';
+import ProductInfoBlock from './ProductInfoBlock/ProductInfoBlock';
 
 interface IFetchedData {
 	success: boolean;
-	data: IProductData;
+	data: IProduct;
 }
 
 interface FetchedDataType {
@@ -13,14 +13,14 @@ interface FetchedDataType {
 }
 
 interface Props {
-	productData: IProductData;
+	productData: IProduct;
 }
 
 export default function ProductPage({ productData }: Props) {
 	return (
 		<div className="flex flex-col h-screen">
 			<Header pageName={productData.title || 'unknown'} />
-			<ProductInfo productData={productData} />
+			<ProductInfoBlock productData={productData} />
 		</div>
 	);
 }

@@ -1,0 +1,54 @@
+#our-experience-block-text-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 30px;
+}
+
+#text-title-wrapper {
+	padding-bottom: 1rem;
+}
+
+#text-block-wrapper {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	background-color: white;
+	width: 500px;
+
+	#text-block-line {
+		width: 20px;
+		height: 100%;
+		background-color: wheat;
+	}
+
+	#text-block-text {
+		font-size: 1.2rem;
+	}
+}
+
+#our-experience-subtitle {
+	font-weight: var(--main-font-weight);
+	font-size: 2rem;
+}
+
+#our-experience-title {
+	font-family: var(--second-font);
+	font-size: 1.2rem;
+}
+
+@media screen and (max-width: 481px) {
+	#text-block-wrapper {
+		display: flex;
+		flex-direction: row;
+		gap: 10px;
+		background-color: white;
+		width: 90vw;
+
+		#text-block-line {
+			width: 3rem;
+			height: 100%;
+			background-color: wheat;
+		}
+	}
+}

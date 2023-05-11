@@ -1,13 +1,20 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { IProductData, CartUpdateContextType } from '@/pages/types/contextTypes';
+import {
+	createContext,
+	useContext,
+	useEffect,
+	useState,
+	ReactNode,
+} from 'react';
+import { IProduct, ProductType } from '../types/productTypes';
+import { CartUpdateContextType } from '@/pages/types/contextTypes';
 
 interface ProviderProps {
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
-const CartContext = createContext<IProductData[]>([]);
+const CartContext = createContext<ProductType>([]);
 const CartUpdateContext = createContext<CartUpdateContextType>({
-	addProductToCard: (product: IProductData) => {},
+	addProductToCard: (product: IProduct) => {},
 	deleteProduct: (deleteProductId: string) => {},
 	deleteAllProducts: () => {},
 });
@@ -21,9 +28,9 @@ export function useCartUpdateContext() {
 }
 
 export function CartProvider({ children }: ProviderProps): JSX.Element {
-	const [products, setProducts] = useState<IProductData[]>([]);
+	const [products, setProducts] = useState<ProductType>([]);
 
-	function addProductToCard(product: IProductData) {
+	function addProductToCard(product: IProduct) {
 		setProducts((prevValue) => [...prevValue, product]);
 
 		const alreadyExistProducts = localStorage.getItem('cartProducts');
@@ -40,7 +47,7 @@ export function CartProvider({ children }: ProviderProps): JSX.Element {
 	function deleteProduct(deleteProductId: string) {
 		const newProducts = [...products];
 
-		newProducts.map((product: IProductData, index: number) => {
+		newProducts.map((product: IProduct, index: number) => {
 			if (product.uniqueProductId === deleteProductId) {
 				newProducts.splice(index, 1);
 			}
@@ -57,10 +64,7 @@ export function CartProvider({ children }: ProviderProps): JSX.Element {
 
 	useEffect(() => {
 		const cartProducts = localStorage.getItem('cartProducts');
-
-		if (cartProducts) {
-			setProducts(JSON.parse(cartProducts));
-		}
+		cartProducts && setProducts(JSON.parse(cartProducts));
 	}, []);
 
 	return (

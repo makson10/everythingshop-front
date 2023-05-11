@@ -13,7 +13,6 @@ export default async function callback(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	console.log('login');
 	const { code } = req.query;
 
 	try {
@@ -24,8 +23,7 @@ export default async function callback(
 			.oauth2({ version: 'v2', auth: oAuth2Client })
 			.userinfo.get();
 
-		console.log(data);
-		const csrfToken = await axios.get('http://127.0.0.1:8000/googleCustomers');
+		await axios.get('http://127.0.0.1:8000/googleCustomers');
 		await axios
 			.post('http://127.0.0.1:8000/googleCustomers/login', {
 				id: data.id,

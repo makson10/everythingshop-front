@@ -1,18 +1,19 @@
 import { GetServerSideProps } from 'next';
-import Header from '../components/Header/Header';
 import { ProductsList } from './ProductsList/ProductsList';
 import { PaginationBar } from './PaginationBar/PaginationBar';
 import { useEffect, useState } from 'react';
 import { paginate } from './PaginationBar/paginate';
-import FilterBar from './FilterBar/FilterBar';
-import { ISortAndFilterParameters } from '../types/sortAndFilterParameters';
+import { ISortAndFilterParameters } from '../types/sortOptionsTypes';
 import { ProductType } from '@/pages/types/productTypes';
 import {
 	filterProducts,
 	sortProducts,
 	searchProducts,
 } from '../functions/productsTransformation';
-import { ProductsNotFoundPage } from './ProductsNotFoundPage/ProductsNotFoundPage';
+import { ProductsNotFoundPage } from './ProductsNotFoundPage';
+import Header from '../components/Header/Header';
+import FilterBar from './FilterBar/FilterBar';
+import { error } from 'console';
 
 interface FetchedDataType {
 	productsData: ProductType;

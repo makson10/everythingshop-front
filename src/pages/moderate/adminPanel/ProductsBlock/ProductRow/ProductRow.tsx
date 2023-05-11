@@ -1,8 +1,8 @@
 import { IProduct } from '@/pages/types/productTypes';
-import axios from 'axios';
-import styles from './ProductRow.module.scss';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 import Link from 'next/link';
+import styles from './ProductRow.module.scss';
 
 interface Props {
 	product: IProduct;
@@ -12,6 +12,7 @@ export default function ProductRow({ product }: Props) {
 	const router = useRouter();
 
 	const handleClick = async () => {
+		await axios.get('http://127.0.0.1:8000/products');
 		await axios.post(
 			`http://127.0.0.1:8000/products/deleteProduct/${product.uniqueProductId}`
 		);
@@ -34,7 +35,7 @@ export default function ProductRow({ product }: Props) {
 				/>
 				<p>
 					<Link
-                        id={styles['title-link']}
+						id={styles['title-link']}
 						href={`http://localhost:3000/assortment/${product.uniqueProductId}`}>
 						<b>{product.title}</b>
 					</Link>
@@ -42,9 +43,12 @@ export default function ProductRow({ product }: Props) {
 				</p>
 			</div>
 			<div id={styles['second-info']}>
-				<p>${product.price}</p>
+				<p className="max-sm:text-[0.9rem]">${product.price}</p>
 				<button id={styles['delete-button']} onClick={handleClick}>
-					<img src="https://img.icons8.com/windows/30/null/trash.png" />
+					<img
+						className="max-w-[30px]"
+						src="https://img.icons8.com/windows/30/null/trash.png"
+					/>
 				</button>
 			</div>
 		</div>

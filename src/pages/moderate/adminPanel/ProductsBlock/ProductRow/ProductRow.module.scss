@@ -10,14 +10,14 @@
 		align-items: center;
 		gap: 10px;
 
-        #title-link {
-            color: black;
-            text-decoration: none;
+		#title-link {
+			color: black;
+			text-decoration: none;
 
-            &:hover {
-                text-decoration: underline;
-            }
-        }
+			&:hover {
+				text-decoration: underline;
+			}
+		}
 	}
 
 	#second-info {
@@ -25,7 +25,7 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 5px;
-        margin-left: auto;
+		margin-left: auto;
 	}
 
 	#row-photo {

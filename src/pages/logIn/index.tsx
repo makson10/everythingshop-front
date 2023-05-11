@@ -1,23 +1,14 @@
 import { useEffect, useState } from 'react';
 import { validateLogInData } from '../functions/validateFunctions';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import { useUserData, useUserDataUpdate } from '../context/UserDataContext';
-import {
-	ShowErrorModalWindow,
-	ShowSuccessModalWindow,
-} from '../components/ShowModalWindow/ShowModalWindow';
+import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '../components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '../components/GoogleButton/GoogleButton';
 import { Formik } from 'formik';
-import styles from './logIn.module.scss';
-import { SignUpUserDataType } from '../types/validationTypes';
-
-interface LogInUserDataType {
-	login: string;
-	password: string;
-}
+import { ISignUpUserData, ILogInUserData } from '../types/validationTypes';
+import Link from 'next/link';
+import axios from 'axios';
 
 export default function LogIn() {
 	const userData = useUserData();
@@ -25,27 +16,24 @@ export default function LogIn() {
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 
 	const [logInUserCredential, setLogInUserCredential] =
-		useState<SignUpUserDataType>();
+		useState<ISignUpUserData>();
 	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
-	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
-		useState<boolean>(false);
 
 	const router = useRouter();
 
-	const handleTogglePasswordVisible = () => {
+	const handleTogglePasswordVisible = (e: any) => {
+		e.preventDefault();
 		setIsPasswordVisible((prevValue) => !prevValue);
 	};
 
-	const sendDataToServer = async (data: LogInUserDataType) => {
-		const csrfProtocol = await axios
-			.get('http://127.0.0.1:8000/customers')
-			.catch((err) => {
-				throw err;
-			});
+	const sendDataToServer = async (data: ILogInUserData) => {
+		await axios.get('http://127.0.0.1:8000/customers').catch((err) => {
+			throw err;
+		});
 
 		const loginResult = await axios.post(
 			'http://127.0.0.1:8000/customers/dataLogin',
@@ -97,7 +85,6 @@ export default function LogIn() {
 
 	useEffect(() => {
 		if (isServerError === null) return;
-
 		isServerError ? handleFailure() : handleSuccess();
 	}, [isServerError]);
 
@@ -117,7 +104,6 @@ export default function LogIn() {
 			{isOpenErrorWindow && (
 				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
 			)}
-			{isOpenSuccessWindow && <ShowSuccessModalWindow action={'logging in'} />}
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -144,7 +130,7 @@ export default function LogIn() {
 							login: '',
 							password: '',
 						}}
-						validate={(values: LogInUserDataType) => {
+						validate={(values: ILogInUserData) => {
 							return validateLogInData(values);
 						}}
 						onSubmit={(values, { setSubmitting }) => {
@@ -202,16 +188,27 @@ export default function LogIn() {
 										</div>
 									</div>
 									<div className="mt-2">
-										<input
-											id="password"
-											name="password"
-											type="password"
-											autoComplete="current-password"
-											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-											onChange={handleChange}
-											onBlur={handleBlur}
-											value={values.password}
-										/>
+										<div className="flex flex-row gap-4">
+											<input
+												id="password"
+												name="password"
+												type={isPasswordVisible ? 'text' : 'password'}
+												autoComplete="current-password"
+												className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												value={values.password}
+											/>
+											<button
+												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
+                                                tabIndex={-1}
+												onClick={handleTogglePasswordVisible}>
+												<img
+													src={isPasswordVisible ? './hide.png' : './show.png'}
+													alt="#"
+												/>
+											</button>
+										</div>
 										{errors.password && touched.password && errors.password}
 									</div>
 								</div>

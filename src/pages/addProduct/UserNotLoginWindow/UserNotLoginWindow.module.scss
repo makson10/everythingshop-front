@@ -1,6 +1,5 @@
 #window-wrapper {
 	flex: 2 1 auto;
-
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -29,7 +28,6 @@
 			#message-link {
 				color: white;
 				text-decoration: none;
-				font-family: var(--main-font);
 				font-size: 1.2rem;
 
 				&:focus-visible {

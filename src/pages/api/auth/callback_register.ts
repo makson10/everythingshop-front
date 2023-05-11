@@ -13,7 +13,6 @@ export default async function callback(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	console.log('register');
 	const { code } = req.query;
 
 	try {
@@ -31,7 +30,7 @@ export default async function callback(
 			picture: data.picture,
 		};
 
-		const csrfToken = await axios.get('http://localhost:8000/googleCustomers');
+		await axios.get('http://localhost:8000/googleCustomers');
 		await axios
 			.post('http://localhost:8000/googleCustomers/register', userData)
 			.then((response) => {

@@ -10,3 +10,9 @@
 	font-size: 2.3rem;
 	color: white;
 }
+
+@media screen and (max-width: 481px) {
+	#header {
+		flex-direction: column;
+	}
+}

@@ -1,4 +1,4 @@
-export interface SignUpUserDataType {
+export interface ISignUpUserData {
 	name: string;
 	dateOfBirth: string;
 	email: string;
@@ -6,15 +6,23 @@ export interface SignUpUserDataType {
 	password: string;
 }
 
-export interface LogInUserDataType {
+export interface ILogInUserData {
 	login: string;
 	password: string;
 }
 
-export interface ValidationProductData {
+export interface IValidateProductData {
 	title: string;
 	description: string;
 	creator: string;
 	price: number;
 	uniqueProductId: string;
+}
+
+export interface IValidateFeedbackData {
+	feedbackText: string;
+}
+
+export interface IValidateCommentsData {
+	newCommentText: string;
 }

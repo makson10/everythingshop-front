@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { ProductType } from '@/pages/types/productTypes';
-import { UserDataType } from '@/pages/types/contextTypes';
+import { UserDataType } from '@/pages/types/userTypes';
 import { getCookie } from '@/pages/functions/cookiesFunction';
 import { useRouter } from 'next/router';
 import UsersDataBlock from './UsersDataBlock/UsersDataBlock';
 import ProductsBlock from './ProductsBlock/ProductsBlock';
-import axios from 'axios';
 import CommentsBlock from './CommentsBlock/CommentsBlock';
-import styles from './adminPanel.module.scss';
 import { FeedbackType } from '@/pages/types/feedbackTypes';
 import FeedbackBlock from './FeedbackBlock/FeedbackBlock';
+import axios from 'axios';
 
 interface FetchedData {
 	customers: UserDataType;
@@ -37,7 +36,7 @@ export default function adminPanel({
 
 	return (
 		<>
-			<div id={styles['moderate-page']}>
+			<div className="flex flex-col items-center gap-[40px] p-8 max-sm:px-4">
 				<UsersDataBlock
 					customers={customers}
 					googleCustomers={googleCustomers}

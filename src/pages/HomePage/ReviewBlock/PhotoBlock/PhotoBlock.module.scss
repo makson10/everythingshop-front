@@ -16,3 +16,9 @@
 		border-radius: 30px;
 	}
 }
+
+@media screen and (max-width: 481px) {
+    #review-photo-block {
+        display: none;
+    }
+}

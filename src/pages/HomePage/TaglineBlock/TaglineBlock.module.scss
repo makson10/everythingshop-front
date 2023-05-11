@@ -1,0 +1,15 @@
+#top-section-wrapper {
+	height: 64vh;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+}
+
+@media screen and (max-width: 481px) {
+	#top-section-wrapper {
+		flex-direction: column;
+		height: fit-content;
+	}
+}

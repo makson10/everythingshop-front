@@ -1,26 +1,17 @@
-import { IProduct, ISubmitForm } from '../types/productTypes';
+import { IProduct } from '../types/productTypes';
 import { rusBadWordsRegex, engBadWordsRegex } from './badWordsRegex';
 import {
-	SignUpUserDataType,
-	LogInUserDataType,
-	ValidationProductData,
+	ISignUpUserData,
+	ILogInUserData,
+	IValidateProductData,
+	IValidateFeedbackData,
+	IValidateCommentsData,
 } from '@/pages/types/validationTypes';
+import { ISubmitForm } from '../types/formDataTypes';
 import { FormikErrors } from 'formik/dist/types';
 
-const isString = (data: string | number) => {
-	if (typeof data === 'string') return true;
-};
-
-const isNumber = (data: string | number) => {
-	if (typeof +data === 'number') return true;
-};
-
-const clearInputField = (...inputRefs: any[]) => {
-	inputRefs.map((input) => (input.current.value = ''));
-};
-
-const validateSignUpData = (values: SignUpUserDataType) => {
-	const errors: FormikErrors<SignUpUserDataType> = {};
+const validateSignUpData = (values: ISignUpUserData) => {
+	const errors: FormikErrors<ISignUpUserData> = {};
 
 	if (!values.name) {
 		errors.name = 'Required';
@@ -60,8 +51,8 @@ const validateSignUpData = (values: SignUpUserDataType) => {
 	return errors;
 };
 
-const validateLogInData = (values: LogInUserDataType) => {
-	const errors: FormikErrors<LogInUserDataType> = {};
+const validateLogInData = (values: ILogInUserData) => {
+	const errors: FormikErrors<ILogInUserData> = {};
 
 	if (!values.login) {
 		errors.login = 'Required';
@@ -78,7 +69,7 @@ const validateLogInData = (values: LogInUserDataType) => {
 	return errors;
 };
 
-const validateAddNewProduct = (values: ValidationProductData) => {
+const validateAddNewProduct = (values: IValidateProductData) => {
 	const errors: FormikErrors<IProduct> = {};
 
 	if (!values.title) {
@@ -143,7 +134,7 @@ const validateBuySubmitData = (values: ISubmitForm) => {
 	return errors;
 };
 
-const validateFeedbaclData = (values: { feedbackText: string }) => {
+const validateFeedbackData = (values: IValidateFeedbackData) => {
 	const errors: FormikErrors<{ feedbackText: string }> = {};
 
 	if (!values.feedbackText) {
@@ -155,68 +146,23 @@ const validateFeedbaclData = (values: { feedbackText: string }) => {
 	return errors;
 };
 
-const validateName = (name: string) => {
-	if (!isString(name) || name.length < 3) {
-		return 'Your name is not valid!';
+const validateCommentsData = (values: IValidateCommentsData) => {
+	const errors: FormikErrors<IValidateCommentsData> = {};
+
+	if (!values.newCommentText) {
+		errors.newCommentText = 'Required!';
+	} else if (values.newCommentText.length < 3) {
+		errors.newCommentText = 'Comment is too short!';
 	}
 
-	return false;
-};
-
-const validateDateOfBirth = (dateOfBirth: string) => {
-	if (!isString(dateOfBirth) || dateOfBirth.length === 0) {
-		return 'Your date of birth is not valid!';
-	}
-
-	const timeDifference = Date.now() - +new Date(dateOfBirth);
-	const minimalAge = 6 * (365 * 24 * 60 * 60 * 1000);
-
-	if (timeDifference < minimalAge) {
-		return 'Your date of birth is not valid!';
-	}
-
-	return false;
-};
-
-const validateEmail = (email: string) => {
-	if (!isString(email) || !email.includes('@')) {
-		return 'Your email is not valid!';
-	}
-
-	return false;
-};
-
-const validateLogin = (login: string) => {
-	if (!isString(login) || login.length < 8) {
-		return 'Your login is not valid!';
-	}
-
-	return false;
-};
-
-const validatePassword = (password: string) => {
-	if (!isString(password) || password.length < 8) {
-		return 'Your password is not valid!';
-	}
-
-	return false;
-};
-
-const validateDeliveryAddress = (deliveryAddress: string) => {
-	if (!isString(deliveryAddress) || deliveryAddress.length < 4) {
-		return 'Your deliveryAddress is not valid!';
-	}
-
-	return false;
+	return errors;
 };
 
 export {
-	isString,
-	isNumber,
-	clearInputField,
 	validateSignUpData,
 	validateLogInData,
 	validateAddNewProduct,
 	validateBuySubmitData,
-	validateFeedbaclData,
+	validateFeedbackData,
+	validateCommentsData,
 };

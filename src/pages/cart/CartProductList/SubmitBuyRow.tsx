@@ -1,21 +1,9 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import SubmitMenu from './SubmitMenu/SubmitMenu';
-import { createPortal } from 'react-dom';
+import { useEffect, useRef, useState } from 'react';
+import { ShowSubmitMenu } from '@/pages/components/ShowModalWindow/ShowModalWindow';
 
 interface Props {
 	costSum: number;
 }
-
-interface ShowModalWindowProps {
-	setIsOpenSubmitMenu: Dispatch<SetStateAction<boolean>>;
-}
-
-const ShowSubmitMenu = ({ setIsOpenSubmitMenu }: ShowModalWindowProps) => {
-	return createPortal(
-		<SubmitMenu setIsOpenSubmitMenu={setIsOpenSubmitMenu} />,
-		document.querySelector('#portal')!
-	);
-};
 
 export function SubmitBuyRow({ costSum }: Props) {
 	const [isOpenSubmitMenu, setIsOpenSubmitMenu] = useState<boolean>(false);

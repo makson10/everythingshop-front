@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import styles from './Header.module.scss';
 import { useCartContext } from '@/pages/context/CartContext';
+import styles from './Header.module.scss';
 
 interface Props {
 	pageName: string | string[] | undefined;
@@ -31,7 +31,9 @@ export default function Header({ pageName, showCartIcon = true }: Props) {
 								onClick={() => router.push('/cart')}>
 								<img src="https://img.icons8.com/sf-black/48/null/buy.png" />
 								{cart.length !== 0 && (
-									<div id={styles['cart-product-amount']}>{cart.length}</div>
+									<div id={styles['cart-product-amount']}>
+										<p>{cart.length}</p>
+									</div>
 								)}
 							</button>
 						</>

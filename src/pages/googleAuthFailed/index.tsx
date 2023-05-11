@@ -1,6 +1,5 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
 
 export default function GoogleAuthFailed() {
 	const router = useRouter();

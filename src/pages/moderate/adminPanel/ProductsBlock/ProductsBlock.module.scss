@@ -21,3 +21,13 @@
 		gap: 10px;
 	}
 }
+
+@media screen and (max-width: 481px) {
+	#products-block {
+		width: 100%;
+
+		#products-list {
+			height: 300px;
+		}
+	}
+}

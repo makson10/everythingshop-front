@@ -79,10 +79,6 @@ export const searchProducts = (
 	searchName: string,
 	arrayForSearch: ProductType
 ) => {
-    console.log(searchName);
-    console.log(arrayForSearch);
-    // if (searchName === '') return arrayForSearch;
-
 	const newArray: ProductType = [];
 
 	arrayForSearch.map((product) => {
@@ -90,9 +86,7 @@ export const searchProducts = (
 		const productTitleStart = productTitle.slice(0, searchName.length);
 		searchName = searchName.toLowerCase();
 
-		if (productTitleStart === searchName) {
-			newArray.push(product);
-		}
+		if (productTitleStart === searchName) newArray.push(product);
 	});
 
 	return newArray;

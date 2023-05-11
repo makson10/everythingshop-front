@@ -20,7 +20,7 @@ export function PaginationBar({
 
 	return (
 		<div className="flex items-center justify-center border-t-4 border-gray-200 px-4 py-3 sm:px-6">
-			<div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
+			<div className="sm:flex sm:flex-1 sm:items-center sm:justify-center">
 				<div>
 					<nav
 						className="isolate inline-flex -space-x-px rounded-md shadow-sm"

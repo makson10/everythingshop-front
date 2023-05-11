@@ -1,6 +1,9 @@
 module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {
+            'flexbox': true
+        },
+        ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {})
+    },
 }
