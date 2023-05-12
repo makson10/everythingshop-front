@@ -8,6 +8,7 @@ import { Formik } from 'formik';
 import { ILogInUserData } from '../types/validationTypes';
 import axios from 'axios';
 
+
 export default function ModeratePage() {
 	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
