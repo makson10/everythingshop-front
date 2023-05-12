@@ -1,4 +1,4 @@
-import styles from './ReviewSection.module.scss';
+import styles from './ReviewSection.module.css';
 
 export default function ReviewSection() {
 	return (

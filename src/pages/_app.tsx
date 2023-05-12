@@ -1,6 +1,6 @@
-import '@/styles/variables.scss';
-import '@/styles/index.scss';
-import '@/styles/globals.scss';
+import '@/styles/variables.css';
+import '@/styles/index.css';
+import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { UserDataProvider } from '@/pages/context/UserDataContext';

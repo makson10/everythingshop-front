@@ -1,0 +1,35 @@
+#search-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 10px;
+}
+
+#search-wrapper > img {
+	width: 32px;
+	height: 32px;
+}
+
+#search-box {
+	background-color: transparent;
+	border: none;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: 0 0.2rem 0.2rem 0.2rem;
+	width: 260px;
+
+	border: none;
+	outline: none;
+	border: none;
+	border-bottom: 3px solid black;
+	font-size: 1.5rem;
+}
+
+#search-box:focus {
+	border-bottom: 3px solid blue;
+}
+
+#search-box::placeholder {
+	user-select: none;
+}

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { animate } from '@/pages/functions/srAnimation';
 import LeftTagline from './LeftTagline/LeftTagline';
 import RightTagline from './RightTagline/RightTagline';
-import styles from './TaglineBlock.module.scss';
+import styles from './TaglineBlock.module.css';
 
 export default function TaglineBlock() {
 	const componentRef = useRef(null);

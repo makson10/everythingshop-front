@@ -1,5 +1,5 @@
 import { LegacyRef, useEffect, useRef, useState } from 'react';
-import styles from './SuccessMenu.module.scss';
+import styles from './SuccessMenu.module.css';
 
 interface Props {
 	successText: string;
@@ -22,19 +22,6 @@ export default function SuccessMenu({ successText }: Props) {
 				ref={menuRef as LegacyRef<HTMLDivElement>}>
 				<p id={styles['success-menu-message']}>{successText}</p>
 			</div>
-			<style jsx>
-				{`
-					.show {
-						transition: transform ease 0.3s;
-						transform: translateX(-430px);
-					}
-
-					.close {
-						transition: transform ease 0.3s;
-						transform: translateX(0);
-					}
-				`}
-			</style>
 		</>
 	);
 }

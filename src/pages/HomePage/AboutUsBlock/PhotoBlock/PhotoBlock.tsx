@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './PhotoBlock.module.scss';
+import styles from './PhotoBlock.module.css';
 
 export default function PhotoBlock() {
 	return (

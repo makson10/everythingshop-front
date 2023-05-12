@@ -1,0 +1,43 @@
+#logined-user {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	gap: 10px;
+
+	width: 160px;
+	padding-left: 12px;
+	padding-right: 12px;
+	color: black;
+}
+
+#logined-user-button {
+	border-radius: 50%;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+#logined-user-name {
+	font-weight: 600;
+}
+
+#button-wrapper {
+	display: flex;
+	flex-direction: row;
+	gap: 12px;
+}
+
+#sign-up-button {
+	border: 3px solid black;
+	border-radius: 10px;
+	background-color: #fff992;
+	color: black;
+	padding: 0.5rem;
+	font-size: 1.2rem;
+	font-weight: var(--main-font-weight);
+	transition: all 100ms linear;
+}
+
+#sign-up-button:hover {
+	transform: scale(1.1);
+}

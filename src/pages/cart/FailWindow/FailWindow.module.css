@@ -1,0 +1,18 @@
+#fail-window-wrapper {
+	flex: 2 1 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#fail-window {
+	background-color: gray;
+	border-radius: 15px;
+	padding: 0.7rem;
+}
+
+#fail-window-text {
+	color: white;
+	font-size: 1.8rem;
+	font-weight: bold;
+}

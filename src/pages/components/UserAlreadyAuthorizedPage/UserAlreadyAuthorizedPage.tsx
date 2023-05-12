@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useUserDataUpdate } from '@/pages/context/UserDataContext';
-import styles from './UserAlreadyAuthorizedPage.module.scss';
+import styles from './UserAlreadyAuthorizedPage.module.css';
 
 export default function UserAlreadyAuthorizedPage() {
 	const { deleteData, deleteTokens } = useUserDataUpdate();

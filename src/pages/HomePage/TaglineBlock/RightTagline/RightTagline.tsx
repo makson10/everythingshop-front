@@ -1,4 +1,4 @@
-import styles from './RightTagline.module.scss';
+import styles from './RightTagline.module.css';
 
 export default function RightTagline() {
 	return (

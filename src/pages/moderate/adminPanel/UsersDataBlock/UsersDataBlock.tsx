@@ -1,6 +1,6 @@
 import { UserDataType } from '@/pages/types/userTypes';
 import UserRow from './UserRow';
-import styles from './UsersDataBlock.module.scss';
+import styles from './UsersDataBlock.module.css';
 
 interface Props {
 	customers: UserDataType;

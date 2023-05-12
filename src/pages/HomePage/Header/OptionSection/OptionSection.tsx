@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from './OptionSection.module.scss';
+import styles from './OptionSection.module.css';
 
 export default function OptionSection() {
 	return (

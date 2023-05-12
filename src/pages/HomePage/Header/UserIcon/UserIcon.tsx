@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { ModalMenu } from './ModalMenu';
+// import { ModalMenu } from './ModalMenu';
 import { useUserData } from '@/pages/context/UserDataContext';
-import styles from './UserIcon.module.scss';
+import styles from './UserIcon.module.css';
 
 export default function UserIcon() {
 	const userData = useUserData();
@@ -47,13 +47,13 @@ export default function UserIcon() {
 						</button>
 						<p id={styles['logined-user-name']}>{userName}</p>
 					</div>
-					{isOpenMenu && (
+					{/* {isOpenMenu && (
 						<ModalMenu
 							isOpen={isOpenMenu}
 							setIsOpenMenu={setIsOpenMenu}
 							setIsUserLogin={setIsUserLogin}
 						/>
-					)}
+					)} */}
 				</>
 			) : (
 				<div id={styles['button-wrapper']}>

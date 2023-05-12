@@ -1,6 +1,6 @@
 import { FeedbackType } from '@/pages/types/feedbackTypes';
 import FeedbackRow from './FeedbackRow';
-import styles from './FeedbackBlock.module.scss';
+import styles from './FeedbackBlock.module.css';
 
 interface Props {
 	feedbacks: FeedbackType;

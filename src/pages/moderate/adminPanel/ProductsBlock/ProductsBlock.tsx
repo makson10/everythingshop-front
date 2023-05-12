@@ -1,6 +1,6 @@
 import { ProductType } from '@/pages/types/productTypes';
 import ProductRow from './ProductRow/ProductRow';
-import styles from './ProductsBlock.module.scss';
+import styles from './ProductsBlock.module.css';
 
 interface Props {
 	products: ProductType;

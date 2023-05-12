@@ -1,4 +1,4 @@
-import styles from './SearchInput.module.scss';
+import styles from './SearchInput.module.css';
 
 interface Props {
 	handleFunction: (searchParameter: string) => void;

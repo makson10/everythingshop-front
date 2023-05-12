@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from './UserNotLoginWindow.module.scss';
+import styles from './UserNotLoginWindow.module.css';
 
 export default function UserNotLoginWindow() {
 	return (

@@ -15,16 +15,16 @@
 	gap: 10px;
 	background-color: white;
 	width: 500px;
+}
 
-	#text-block-line {
-		width: 20px;
-		height: 100%;
-		background-color: wheat;
-	}
+#text-block-line {
+	width: 20px;
+	height: 100%;
+	background-color: wheat;
+}
 
-	#text-block-text {
-		font-size: 1.2rem;
-	}
+#text-block-text {
+	font-size: 1.2rem;
 }
 
 #our-experience-subtitle {
@@ -44,11 +44,11 @@
 		gap: 10px;
 		background-color: white;
 		width: 90vw;
+	}
 
-		#text-block-line {
-			width: 3rem;
-			height: 100%;
-			background-color: wheat;
-		}
+	#text-block-line {
+		width: 3rem;
+		height: 100%;
+		background-color: wheat;
 	}
 }

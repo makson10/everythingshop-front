@@ -1,5 +1,5 @@
 import { LegacyRef, useEffect, useRef, useState } from 'react';
-import styles from './ErrorMenu.module.scss';
+import styles from './ErrorMenu.module.css';
 
 interface Props {
 	errorList: string[];
@@ -28,19 +28,6 @@ export default function ErrorMenu({ errorList }: Props) {
 					);
 				})}
 			</div>
-			<style jsx>
-				{`
-					.show {
-						transition: transform ease 0.3s;
-						transform: translateX(-430px);
-					}
-
-					.close {
-						transition: transform ease 0.3s;
-						transform: translateX(0);
-					}
-				`}
-			</style>
 		</>
 	);
 }

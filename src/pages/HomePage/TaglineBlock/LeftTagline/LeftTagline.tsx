@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './LeftTagline.module.scss';
+import styles from './LeftTagline.module.css';
 
 export default function LeftTagline() {
 	return (

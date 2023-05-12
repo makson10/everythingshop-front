@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { ISubmitForm, SubmitFormData } from '@/pages/types/formDataTypes';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
 import { Formik } from 'formik';
-import styles from './SubmitMenu.module.scss';
+import styles from './SubmitMenu.module.css';
 
 interface Props {
 	setIsOpenSubmitMenu: Dispatch<SetStateAction<boolean>>;

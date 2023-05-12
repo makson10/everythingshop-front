@@ -2,7 +2,7 @@ import { IProduct } from '@/pages/types/productTypes';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
-import styles from './ProductRow.module.scss';
+import styles from './ProductRow.module.css';
 
 interface Props {
 	product: IProduct;

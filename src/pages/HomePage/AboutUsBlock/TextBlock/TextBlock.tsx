@@ -1,4 +1,4 @@
-import styles from './TextBlock.module.scss';
+import styles from './TextBlock.module.css';
 
 export default function TextBlock() {
 	return (

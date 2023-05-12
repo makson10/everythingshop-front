@@ -1,5 +1,6 @@
-import HomePage from './homePage/HomePage';
+import Feedback from './feedback';
+// import HomePage from './homePage/HomePage';
 
 export default function Home() {
-	return <HomePage />;
+	return <Feedback />;
 }

@@ -1,4 +1,4 @@
-import styles from './FailWindow.module.scss';
+import styles from './FailWindow.module.css';
 
 interface Props {
 	failMessage: string;

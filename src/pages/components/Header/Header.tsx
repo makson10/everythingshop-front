@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCartContext } from '@/pages/context/CartContext';
-import styles from './Header.module.scss';
+import styles from './Header.module.css';
 
 interface Props {
 	pageName: string | string[] | undefined;
