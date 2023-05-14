@@ -45,7 +45,7 @@ export function CartProductList() {
 							<div className="flex gap-x-4">
 								<img
 									className="h-12 w-12 flex-none rounded-full bg-gray-50"
-									src={`http://127.0.0.1:8000/products/image/${product.photo_id}`}
+									src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/image/${product.photo_id}`}
 									onError={(event) => {
 										event.currentTarget.src =
 											'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo2vEKNv6zaKu2i_NKvQXN8lYd0g2NMeNXzrkrZlw&s';

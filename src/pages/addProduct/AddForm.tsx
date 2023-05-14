@@ -68,9 +68,9 @@ export function AddForm() {
 		formData.append('comments', JSON.stringify([]));
 
 		try {
-			await axios.get('http://127.0.0.1:8000/products');
+			await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`);
 			const addProductResult = await axios.post(
-				'http://127.0.0.1:8000/products/addNewProduct',
+				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/addNewProduct`,
 				formData
 			);
 

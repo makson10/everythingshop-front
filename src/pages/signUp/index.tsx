@@ -34,12 +34,12 @@ export default function SignUp() {
 	};
 
 	const sendDataToServer = async (data: ISignUpUserData) => {
-		await axios.get('http://127.0.0.1:8000/customers').catch((err) => {
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`).catch((err) => {
 			throw err;
 		});
 
 		const saveDataResult = await axios.post(
-			'http://127.0.0.1:8000/customers/saveData',
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/saveData`,
 			data,
 			{
 				headers: {
@@ -55,7 +55,7 @@ export default function SignUp() {
 		}
 
 		const JWTTokenResult = await axios.post(
-			'http://127.0.0.1:8000/customers/register',
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/register`,
 			data,
 			{
 				headers: {

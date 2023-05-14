@@ -17,7 +17,7 @@ export function ProductCard({ productData }: Props) {
 		<div className="group relative">
 			<div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
 				<img
-					src={`http://127.0.0.1:8000/products/image/${productData.photo_id}`}
+					src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/image/${productData.photo_id}`}
 					className="h-full w-full object-cover object-center lg:h-full lg:w-full"
 					onClick={handleGoToProductPage}
 					onError={(event) => {

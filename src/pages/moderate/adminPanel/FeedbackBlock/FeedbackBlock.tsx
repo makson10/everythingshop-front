@@ -11,9 +11,15 @@ export default function FeedbackBlock({ feedbacks }: Props) {
 		<div id={styles['feedback-block']}>
 			<p id={styles['block-title']}>Feedbacks</p>
 			<div id={styles['feedback-list']}>
-				{feedbacks.map((feedback, index) => {
-					return <FeedbackRow feedback={feedback} key={index} />;
-				})}
+				{feedbacks.length === 0 ? (
+					<div className="flex justify-center items-center h-full">
+						<p className="text-xl">No feedbacks yet</p>
+					</div>
+				) : (
+					feedbacks.map((feedback, index) => {
+						return <FeedbackRow feedback={feedback} key={index} />;
+					})
+				)}
 			</div>
 		</div>
 	);

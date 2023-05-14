@@ -23,11 +23,16 @@ export default async function callback(
 			.oauth2({ version: 'v2', auth: oAuth2Client })
 			.userinfo.get();
 
-		await axios.get('http://127.0.0.1:8000/googleCustomers');
+		await axios.get(
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`
+		);
 		await axios
-			.post('http://127.0.0.1:8000/googleCustomers/login', {
-				id: data.id,
-			})
+			.post(
+				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/login`,
+				{
+					id: data.id,
+				}
+			)
 			.then((response) => {
 				if (response.data.errorMessage) {
 					res.redirect(

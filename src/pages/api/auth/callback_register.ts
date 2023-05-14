@@ -30,9 +30,9 @@ export default async function callback(
 			picture: data.picture,
 		};
 
-		await axios.get('http://localhost:8000/googleCustomers');
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`);
 		await axios
-			.post('http://localhost:8000/googleCustomers/register', userData)
+			.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/register`, userData)
 			.then((response) => {
 				const responseData = response.data.data;
                 

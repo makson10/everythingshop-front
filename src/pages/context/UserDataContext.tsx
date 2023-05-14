@@ -58,11 +58,13 @@ export function UserDataProvider({ children }: ProviderProps) {
 			const googleJWTToken = getCookie('googleJWTToken');
 
 			if (jwtToken) {
-				await axios.get('http://127.0.0.1:8000/customers').catch((err) => {
-					throw err;
-				});
+				await axios
+					.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
+					.catch((err) => {
+						throw err;
+					});
 				const JWTTokenResult = await axios.post(
-					'http://127.0.0.1:8000/customers/jwtLogin',
+					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/jwtLogin`,
 					{
 						jwtToken: jwtToken,
 					}
@@ -74,12 +76,12 @@ export function UserDataProvider({ children }: ProviderProps) {
 				}
 			} else if (googleJWTToken) {
 				await axios
-					.get('http://127.0.0.1:8000/googleCustomers')
+					.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`)
 					.catch((err) => {
 						throw err;
 					});
 				const googleJWTTokenResult = await axios.post(
-					'http://127.0.0.1:8000/googleCustomers/jwtLogin',
+					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/jwtLogin`,
 					{
 						googleJWTToken: googleJWTToken,
 					}

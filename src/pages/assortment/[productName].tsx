@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps<FetchedDataType> = async (
 	const { productName = 'unknownProduct' } = context.params!;
 
 	const fetchedData = await fetch(
-		`http://127.0.0.1:8000/products/${productName}`
+		`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productName}`
 	);
 	const productData = await fetchedData.json();
 	productData.data.comments = JSON.parse(productData.data.comments);

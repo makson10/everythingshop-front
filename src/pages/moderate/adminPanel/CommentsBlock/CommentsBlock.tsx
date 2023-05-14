@@ -11,15 +11,21 @@ export default function CommentsBlock({ products }: Props) {
 		<div id={styles['comments-block']}>
 			<p id={styles['block-title']}>Comments</p>
 			<div id={styles['comments-list']}>
-				{products.map((product, index) => {
-					return (
-						<CommentRow
-							key={index}
-							comments={product.comments}
-							toPost={product.title}
-						/>
-					);
-				})}
+				{products.every((product) => product.comments.length === 0) ? (
+					<div className="flex justify-center items-center h-full">
+						<p className="text-xl">No comments yet</p>
+					</div>
+				) : (
+					products.map((product, index) => {
+						return (
+							<CommentRow
+								key={index}
+								comments={product.comments}
+								toPost={product.title}
+							/>
+						);
+					})
+				)}
 			</div>
 		</div>
 	);

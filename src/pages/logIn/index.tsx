@@ -31,12 +31,14 @@ export default function LogIn() {
 	};
 
 	const sendDataToServer = async (data: ILogInUserData) => {
-		await axios.get('http://127.0.0.1:8000/customers').catch((err) => {
-			throw err;
-		});
+		await axios
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
+			.catch((err) => {
+				throw err;
+			});
 
 		const loginResult = await axios.post(
-			'http://127.0.0.1:8000/customers/dataLogin',
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/dataLogin`,
 			data,
 			{
 				headers: {
@@ -55,7 +57,7 @@ export default function LogIn() {
 		setLogInUserCredential(userData);
 
 		const JWTTokenResult = await axios.post(
-			'http://127.0.0.1:8000/customers/register',
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/register`,
 			userData
 		);
 		document.cookie = `jwtToken=${JWTTokenResult.data.jwtToken}; path=/; samesite=lax;`;
@@ -201,7 +203,7 @@ export default function LogIn() {
 											/>
 											<button
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
-                                                tabIndex={-1}
+												tabIndex={-1}
 												onClick={handleTogglePasswordVisible}>
 												<img
 													src={isPasswordVisible ? './hide.png' : './show.png'}

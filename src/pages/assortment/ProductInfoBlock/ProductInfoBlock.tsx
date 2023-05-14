@@ -44,14 +44,14 @@ export default function ProductInfoBlock({ productData }: Props) {
 	};
 
 	const sendCommentToServer = async (newCommentData: IComment) => {
-		await axios.get('http://127.0.0.1:8000/products');
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`);
 		await axios.post(
-			`http://127.0.0.1:8000/products/addComment/${productData.uniqueProductId}`,
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/addComment/${productData.uniqueProductId}`,
 			newCommentData
 		);
 
 		const newComments = await axios
-			.get(`http://127.0.0.1:8000/products/${productData.uniqueProductId}`)
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productData.uniqueProductId}`)
 			.then((res) => JSON.parse(res.data.data.comments));
 
 		setProductComments(newComments);
@@ -116,7 +116,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 				<div className="mx-auto mt-6 max-w-2xl sm:px-6">
 					<div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg lg:block">
 						<img
-							src={`http://127.0.0.1:8000/products/image/${productData.photo_id}`}
+							src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/image/${productData.photo_id}`}
 							onError={(event) => {
 								event.currentTarget.src =
 									'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo2vEKNv6zaKu2i_NKvQXN8lYd0g2NMeNXzrkrZlw&s';

@@ -1,7 +1,7 @@
 import { useUserDataUpdate } from '@/pages/context/UserDataContext';
 import { useEffect, useRef } from 'react';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
-// import styles from './ModalMenu.module.css';
+import styles from './ModalMenu.module.css';
 
 interface Props {
 	isOpen: boolean;

@@ -51,19 +51,19 @@ export default function adminPanel({
 
 export const getServerSideProps: GetServerSideProps<FetchedData> = async () => {
 	const customers: UserDataType = await axios
-		.get('http://127.0.0.1:8000/customers')
+		.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
 		.then((data) => data.data);
 
 	const googleCustomers: UserDataType = await axios
-		.get('http://127.0.0.1:8000/googleCustomers')
+		.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`)
 		.then((data) => data.data);
 
 	const products: ProductType = await axios
-		.get('http://127.0.0.1:8000/products')
+		.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`)
 		.then((data) => data.data);
 
 	const feedbacks: FeedbackType = await axios
-		.get('http://127.0.0.1:8000/feedback')
+		.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedback`)
 		.then((data) => data.data);
 
 	return {

@@ -11,9 +11,15 @@ export default function ProductsBlock({ products }: Props) {
 		<div id={styles['products-block']}>
 			<p id={styles['block-title']}>Products</p>
 			<div id={styles['products-list']}>
-				{products.map((product, index) => {
-					return <ProductRow key={index} product={product} />;
-				})}
+				{products.length === 0 ? (
+					<div className="flex justify-center items-center h-full">
+						<p className="text-xl">No products yet</p>
+					</div>
+				) : (
+					products.map((product, index) => {
+						return <ProductRow key={index} product={product} />;
+					})
+				)}
 			</div>
 		</div>
 	);

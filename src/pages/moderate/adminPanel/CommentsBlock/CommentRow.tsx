@@ -28,9 +28,9 @@ function Comment({ comment, toPost }: CommentProps) {
 	const router = useRouter();
 
 	const handleClick = async () => {
-		await axios.get('http://127.0.0.1:8000/products');
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`);
 		await axios.post(
-			`http://127.0.0.1:8000/products/deleteComment/${comment.uniqueCommentId}`
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/deleteComment/${comment.uniqueCommentId}`
 		);
 
 		router.reload();

@@ -8,7 +8,6 @@ import { Formik } from 'formik';
 import { ILogInUserData } from '../types/validationTypes';
 import axios from 'axios';
 
-
 export default function ModeratePage() {
 	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
@@ -23,11 +22,12 @@ export default function ModeratePage() {
 
 	const checkAdminData = async (adminData: IAdminData) => {
 		await axios
-			.get('http://127.0.0.1:8000/customers')
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
 			.catch((err) => console.error(err));
 
+		console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL);
 		const res = await axios.post(
-			'http://127.0.0.1:8000/admins/checkAdminData',
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/admins/checkAdminData`,
 			adminData,
 			{
 				headers: {
@@ -158,7 +158,7 @@ export default function ModeratePage() {
 											/>
 											<button
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
-                                                tabIndex={-1}
+												tabIndex={-1}
 												onClick={handleTogglePasswordVisible}>
 												<img
 													src={isPasswordVisible ? './hide.png' : './show.png'}

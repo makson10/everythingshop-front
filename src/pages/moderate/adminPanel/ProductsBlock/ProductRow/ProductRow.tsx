@@ -12,9 +12,9 @@ export default function ProductRow({ product }: Props) {
 	const router = useRouter();
 
 	const handleClick = async () => {
-		await axios.get('http://127.0.0.1:8000/products');
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`);
 		await axios.post(
-			`http://127.0.0.1:8000/products/deleteProduct/${product.uniqueProductId}`
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/deleteProduct/${product.uniqueProductId}`
 		);
 
 		router.reload();
@@ -25,7 +25,7 @@ export default function ProductRow({ product }: Props) {
 			<div id={styles['main-info']}>
 				<img
 					id={styles['row-photo']}
-					src={`http://127.0.0.1:8000/products/image/${product.photo_id}`}
+					src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/image/${product.photo_id}`}
 					onError={(event) => {
 						event.currentTarget.src =
 							'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo2vEKNv6zaKu2i_NKvQXN8lYd0g2NMeNXzrkrZlw&s';
