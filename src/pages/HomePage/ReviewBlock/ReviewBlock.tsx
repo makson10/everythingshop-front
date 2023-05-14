@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { animate } from '@/pages/functions/srAnimation';
-import ReviewSection from './ReviewSection/ReviewSection';
-import PhotoBlock from './PhotoBlock/PhotoBlock';
+import ReviewSection from './ReviewSection';
+import PhotoBlock from './PhotoBlock';
 
 export default function ReviewBlock() {
 	const componentRef = useRef(null);

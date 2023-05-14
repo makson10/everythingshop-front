@@ -1,5 +1,4 @@
 import { LegacyRef, useEffect, useRef, useState } from 'react';
-import styles from './ErrorMenu.module.css';
 
 interface Props {
 	errorList: string[];
@@ -17,14 +16,13 @@ export default function ErrorMenu({ errorList }: Props) {
 	return (
 		<>
 			<div
-				className={show ? 'show' : 'close'}
-				id={styles['error-menu']}
+				className="bg-white text-red z-100 break-word w-[250px] fixed top-1/4 right-[0px] border-[2px] rounded-l-2xl border-black p-[0.6rem] pr-4 flex flex-col justify-between items-center"
 				ref={menuRef as LegacyRef<HTMLDivElement>}>
 				{errorList.map((error, index) => {
 					return (
 						<p
 							key={index}
-							className={styles['error-menu-message']}>{`${error}\n`}</p>
+							className="text-center font-sans text-[1.2rem]">{`${error}\n`}</p>
 					);
 				})}
 			</div>

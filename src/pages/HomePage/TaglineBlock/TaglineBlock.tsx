@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { animate } from '@/pages/functions/srAnimation';
-import LeftTagline from './LeftTagline/LeftTagline';
-import RightTagline from './RightTagline/RightTagline';
-import styles from './TaglineBlock.module.css';
+import LeftTagline from './LeftTagline';
+import RightTagline from './RightTagline';
 
 export default function TaglineBlock() {
 	const componentRef = useRef(null);
@@ -12,7 +11,9 @@ export default function TaglineBlock() {
 	}, []);
 
 	return (
-		<div id={styles['top-section-wrapper']} ref={componentRef}>
+		<div
+			className="h-[64vh] flex flex-row justify-between items-center gap-4 max-sm:flex-col max-sm:h-fit"
+			ref={componentRef}>
 			<LeftTagline />
 			<RightTagline />
 		</div>

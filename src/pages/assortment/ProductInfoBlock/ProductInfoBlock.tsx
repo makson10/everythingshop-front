@@ -51,7 +51,9 @@ export default function ProductInfoBlock({ productData }: Props) {
 		);
 
 		const newComments = await axios
-			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productData.uniqueProductId}`)
+			.get(
+				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productData.uniqueProductId}`
+			)
 			.then((res) => JSON.parse(res.data.data.comments));
 
 		setProductComments(newComments);
@@ -179,30 +181,26 @@ export default function ProductInfoBlock({ productData }: Props) {
 							{productComments.length ? (
 								productComments.map((comment, index) => {
 									return (
-										<>
-											<div
-												className="bg-white rounded-lg shadow-lg"
-												key={index}>
-												<div className="p-4 col-span-2 row-span-2">
-													<div className="flex items-center mb-2">
-														<div className="w-10 h-10 mr-4">
-															<img src={comment.picture} />
-														</div>
-														<div>
-															<h2 className="text-lg font-medium text-gray-900">
-																{comment.name}
-															</h2>
-															<p className="text-sm text-gray-500">
-																{new Date(comment.date).toLocaleString()}
-															</p>
-														</div>
+										<div className="bg-white rounded-lg shadow-lg" key={index}>
+											<div className="p-4 col-span-2 row-span-2">
+												<div className="flex items-center mb-2">
+													<div className="w-10 h-10 mr-4">
+														<img src={comment.picture} />
 													</div>
-													<p className="text-gray-700 leading-6">
-														{comment.text}
-													</p>
+													<div>
+														<h2 className="text-lg font-medium text-gray-900">
+															{comment.name}
+														</h2>
+														<p className="text-sm text-gray-500">
+															{new Date(comment.date).toLocaleString()}
+														</p>
+													</div>
 												</div>
+												<p className="text-gray-700 leading-6">
+													{comment.text}
+												</p>
 											</div>
-										</>
+										</div>
 									);
 								})
 							) : (

@@ -1,6 +1,5 @@
 import { FeedbackType } from '@/pages/types/feedbackTypes';
 import FeedbackRow from './FeedbackRow';
-import styles from './FeedbackBlock.module.css';
 
 interface Props {
 	feedbacks: FeedbackType;
@@ -8,9 +7,9 @@ interface Props {
 
 export default function FeedbackBlock({ feedbacks }: Props) {
 	return (
-		<div id={styles['feedback-block']}>
-			<p id={styles['block-title']}>Feedbacks</p>
-			<div id={styles['feedback-list']}>
+		<div className="w-3/4 flex flex-col gap-[10px] max-sm:w-full">
+			<p className="text-center text-[1.6rem] font-bold">Feedbacks</p>
+			<div className="h-[200px] overflow-x-hidden overflow-y-scroll border-black border-[2px] p-4 flex flex-col gap-[10px] max-sm:h-[300px]">
 				{feedbacks.length === 0 ? (
 					<div className="flex justify-center items-center h-full">
 						<p className="text-xl">No feedbacks yet</p>

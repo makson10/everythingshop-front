@@ -90,9 +90,9 @@ export default function Assortment({ productsData }: FetchedDataType) {
 export const getServerSideProps: GetServerSideProps<
 	FetchedDataType
 > = async () => {
-	const productsData = await fetch('http://localhost:8000/products').then(
-		(data) => data.json()
-	);
+	const productsData = await fetch(
+		`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`
+	).then((data) => data.json());
 
 	return {
 		props: {

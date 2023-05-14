@@ -38,10 +38,8 @@ export function CartProductList() {
 		<div className="flex flex-col justify-center items-center gap-8 min-w-full">
 			<div className="w-1/2">
 				<ul role="list" className="divide-y divide-gray-100">
-					{products.map((product) => (
-						<li
-							key={product.price}
-							className="flex justify-between gap-x-6 py-5">
+					{products.map((product, index) => (
+						<li key={index} className="flex justify-between gap-x-6 py-5">
 							<div className="flex gap-x-4">
 								<img
 									className="h-12 w-12 flex-none rounded-full bg-gray-50"

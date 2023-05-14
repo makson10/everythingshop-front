@@ -2,13 +2,13 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { validateAddNewProduct } from '@/pages/functions/validateFunctions';
 import { useUserData } from '@/pages/context/UserDataContext';
 import { v4 as uuidv4 } from 'uuid';
-import UserNotLoginWindow from './UserNotLoginWindow/UserNotLoginWindow';
 import axios from 'axios';
 import {
 	ShowSuccessModalWindow,
 	ShowErrorModalWindow,
 } from '@/pages/components/ShowModalWindow/ShowModalWindow';
 import { Formik } from 'formik';
+import UserNotLoginWindow from '../components/UserNotLoginWindow/UserNotLoginWindow';
 
 interface ProductDataType {
 	photoFile?: File;

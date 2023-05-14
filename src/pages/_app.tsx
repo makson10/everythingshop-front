@@ -1,6 +1,6 @@
-import '@/styles/variables.css';
-import '@/styles/index.css';
-import '@/styles/globals.css';
+import '@/styles/variables.scss';
+import '@/styles/index.scss';
+import '@/styles/globals.scss';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { UserDataProvider } from '@/pages/context/UserDataContext';
@@ -13,11 +13,11 @@ export default function App({ Component, pageProps }: AppProps) {
 				<title>Everything Shop</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			</Head>
-			<CartProvider>
-				<UserDataProvider>
+			<UserDataProvider>
+				<CartProvider>
 					<Component {...pageProps} />
-				</UserDataProvider>
-			</CartProvider>
+				</CartProvider>
+			</UserDataProvider>
 		</>
 	);
 }

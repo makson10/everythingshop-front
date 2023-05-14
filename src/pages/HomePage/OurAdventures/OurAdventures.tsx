@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { animate } from '@/pages/functions/srAnimation';
 import { cardData } from '@/pages/assets/cardData';
-import InfoCard from './InfoCard/InfoCard';
-import Heading from './Heading/Heading';
+import InfoCard from './InfoCard';
+import Heading from './Heading';
 
 export default function ChooseInfoSection() {
 	const componentRef = useRef(null);

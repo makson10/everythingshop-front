@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ModalMenu } from './ModalMenu';
 import { useUserData } from '@/pages/context/UserDataContext';
-import styles from './UserIcon.module.css';
 
-export default function UserIcon() {
+export default function UserButton() {
 	const userData = useUserData();
 	const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
 	const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -31,10 +30,8 @@ export default function UserIcon() {
 		<>
 			{isUserLogin ? (
 				<>
-					<div id={styles['logined-user']}>
-						<button
-							id={styles['logined-user-button']}
-							onClick={() => setIsOpenMenu((prevValue) => !prevValue)}>
+					<div className="flex justify-around items-center gap-[10px] w-[160px] px-[12px] text-black">
+						<button onClick={() => setIsOpenMenu((prevValue) => !prevValue)}>
 							<img
 								className="w-12 rounded-xl"
 								src={
@@ -45,7 +42,7 @@ export default function UserIcon() {
 								loading="lazy"
 							/>
 						</button>
-						<p id={styles['logined-user-name']}>{userName}</p>
+						<p className="font-[600]">{userName}</p>
 					</div>
 					{isOpenMenu && (
 						<ModalMenu
@@ -56,9 +53,10 @@ export default function UserIcon() {
 					)}
 				</>
 			) : (
-				<div id={styles['button-wrapper']}>
+				<div className="flex flex-row gap-3">
 					<button
-						id={styles['sign-up-button']}
+						className="bg-[#fff992] text-black text-[1.2rem] border-black border-[3px] rounded-[10px] p-2 transition-all diration-100 ease-linear hover:scale-[1.1]"
+						style={{ fontWeight: 'var(--main-font-weight)' }}
 						onClick={() => router.push('/signUp')}>
 						SignUp/LogIn
 					</button>

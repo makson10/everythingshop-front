@@ -1,7 +1,6 @@
-import { useUserDataUpdate } from '@/pages/context/UserDataContext';
 import { useEffect, useRef } from 'react';
+import { useUserDataUpdate } from '@/pages/context/UserDataContext';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
-import styles from './ModalMenu.module.css';
 
 interface Props {
 	isOpen: boolean;
@@ -39,21 +38,20 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 
 	return (
 		<>
-			{/* <div
+			<div
 				ref={menuRef}
-				id={styles['modal-menu-wrapper']}
-				data-state={`${isOpen ? 'open' : 'close'}`}>
+				className="flex flex-col absolute top-[90px] opacity-100 z-50">
 				<div className="flex justify-center">
-					<div id={styles['modal-menu-triangle']}></div>
+					<div className="w-0 h-0 bg-transparent relative border-transparent border-[10px] border-b-black border-b-[10px]"></div>
 				</div>
-				<div id={styles['modal-menu']}>
-					<button
-						className={styles['modal-menu-button']}
+				<div className='flex flex-col gap-[5px] rounded-[1rem] border-[2px] border-black p-2 text-black bg-white'>
+				<button
+						className='bg-transparent p-[0.2rem] text-[1.2rem]'
 						onClick={handleLogOut}>
 						Log Out
 					</button>
 				</div>
-			</div> */}
+			</div>
 		</>
 	);
 };

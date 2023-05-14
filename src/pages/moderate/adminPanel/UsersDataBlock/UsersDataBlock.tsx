@@ -1,6 +1,5 @@
 import { UserDataType } from '@/pages/types/userTypes';
 import UserRow from './UserRow';
-import styles from './UsersDataBlock.module.css';
 
 interface Props {
 	customers: UserDataType;
@@ -9,9 +8,9 @@ interface Props {
 
 export default function UsersDataBlock({ customers, googleCustomers }: Props) {
 	return (
-		<div id={styles['users-data-block']}>
-			<p id={styles['block-title']}>Users</p>
-			<div id={styles['users-list']}>
+		<div className="w-3/4 flex flex-col gap-[10px] max-sm:w-full">
+			<p className="text-center text-[1.6rem] font-bold">Users</p>
+			<div className="h-[200px] overflow-x-hidden overflow-y-scroll border-black border-[2px] p-4 flex flex-col gap-[10px] max-sm:h-[300px]">
 				{customers.length === 0 && googleCustomers.length === 0 ? (
 					<div className="flex justify-center items-center h-full">
 						<p className="text-xl">No users yet</p>

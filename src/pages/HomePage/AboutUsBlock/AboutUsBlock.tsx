@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { animate } from '@/pages/functions/srAnimation';
-import PhotoBlock from './PhotoBlock/PhotoBlock';
-import TextBlock from './TextBlock/TextBlock';
+import PhotoBlock from './PhotoBlock';
+import TextBlock from './TextBlock';
 
 export default function AboutUsBlock() {
 	const componentRef = useRef(null);
