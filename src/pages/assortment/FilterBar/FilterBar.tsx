@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { ISortAndFilterParameters } from '@/pages/types/sortOptionsTypes';
 import SortSelect from './Selects/SortSelect';
 import FilterSelect from './Selects/FilterSelect';
-import SearchInput from './Selects/SearchInput/SearchInput';
+import SearchInput from './Selects/SearchInput';
 
 interface Props {
 	setParameters: Dispatch<SetStateAction<ISortAndFilterParameters>>;

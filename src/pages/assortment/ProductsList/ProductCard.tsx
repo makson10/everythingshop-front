@@ -1,6 +1,6 @@
+import { IProduct } from '@/pages/types/productTypes';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { IProduct } from '@/pages/types/productTypes';
 
 interface Props {
 	productData: IProduct;

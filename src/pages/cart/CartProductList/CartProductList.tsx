@@ -36,10 +36,12 @@ export function CartProductList() {
 
 	return (
 		<div className="flex flex-col justify-center items-center gap-8 min-w-full">
-			<div className="w-1/2">
+			<div className="w-1/2 max-sm:w-full">
 				<ul role="list" className="divide-y divide-gray-100">
 					{products.map((product, index) => (
-						<li key={index} className="flex justify-between gap-x-6 py-5">
+						<li
+							key={index}
+							className="flex justify-between gap-x-6 py-5 max-sm:justify-center">
 							<div className="flex gap-x-4">
 								<img
 									className="h-12 w-12 flex-none rounded-full bg-gray-50"
@@ -60,8 +62,8 @@ export function CartProductList() {
 									</p>
 								</div>
 							</div>
-							<div className="hidden sm:flex sm:flex-col sm:items-end">
-								<p className="text-sm leading-6 text-gray-900">
+							<div className="flex flex-col items-end max-sm:justify-center">
+								<p className="text-sm leading-6 text-gray-900 max-sm:text-center">
 									${product.price}
 								</p>
 								<div className="flex">

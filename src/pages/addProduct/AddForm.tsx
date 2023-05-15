@@ -150,15 +150,19 @@ export function AddForm() {
 								validate={(values: ProductDataType) => {
 									return validateAddNewProduct(values);
 								}}
-								onSubmit={(values, { setSubmitting, setFieldValue }) => {
+								onSubmit={(
+									values,
+									{ setSubmitting, setFieldValue, resetForm }
+								) => {
 									setTimeout(() => {
 										if (photoFile) values.photoFile = photoFile;
 										sendDataToServer(values);
 
 										clearFileInput();
-										setFieldValue('title', '', false);
-										setFieldValue('description', '', false);
-										setFieldValue('price', 0, false);
+										// setFieldValue('title', '', false);
+										// setFieldValue('description', '', false);
+										// setFieldValue('price', 0, false);
+										resetForm();
 
 										setSubmitting(false);
 									}, 400);
@@ -205,14 +209,13 @@ export function AddForm() {
 											</div>
 											<div>
 												<input
-													type="number"
 													name="price"
+													type="number"
 													placeholder="Enter product price"
 													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-													min={1}
-													max={9999999}
 													onChange={handleChange}
 													onBlur={handleBlur}
+													value={values.price === 0 ? '' : values.price}
 												/>
 												{errors.price && touched.price && errors.price}
 											</div>

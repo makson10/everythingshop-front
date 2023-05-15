@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { ISubmitForm, SubmitFormData } from '@/pages/types/formDataTypes';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
 import { Formik } from 'formik';
-import styles from './SubmitMenu.module.css';
 
 interface Props {
 	setIsOpenSubmitMenu: Dispatch<SetStateAction<boolean>>;
@@ -84,15 +83,15 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 		<>
 			{isOpenErrorWindow && <ShowErrorModalWindow errorList={[errorMessage]} />}
 
-			<div id={styles['submit-form']}>
-				<div id={styles['form-wrapper']}>
+			<div className="z-100 fixed w-full h-screen bg-black/[0.6] flex justify-center items-center overflow-hidden">
+				<div className="relative block w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-[30px]">
 					<button
-						id={styles['close-modal-menu-button']}
+						className="absolute left-[30px] top-[1rem] text-[2.5rem] h-fit transition-all ease-linear duration-100 hover:scale-[1.2] hover:text-[darkblue]"
 						onClick={handleCloseButton}>
 						&times;
 					</button>
-					<h1 id={styles['form-wrapper-title']}>Buy Form</h1>
-					<div className={styles['form-input-wrapper']}>
+					<h1 className="text-[1.8rem]">Buy Form</h1>
+					<div className="flex flex-col gap-4">
 						<Formik
 							initialValues={{
 								firstName: '',
@@ -125,7 +124,7 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 									<div className="flex flex-col gap-4">
 										<input
 											placeholder="Enter your first name"
-											className={styles['form-input']}
+											className="min-w-[20rem] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-[#c9c9c9]"
 											type="text"
 											name="firstName"
 											ref={inputFirstNameRef}
@@ -138,7 +137,7 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 											<input
 												placeholder="Enter your last name"
 												ref={inputLastNameRef}
-												className={styles['form-input']}
+												className="min-w-[20rem] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-[#c9c9c9]"
 												type="text"
 												name="lastName"
 												onChange={handleChange}
@@ -180,7 +179,7 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 											<input
 												ref={inputEmailRef}
 												placeholder="Enter your email"
-												className={styles['form-input']}
+												className="min-w-[20rem] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-[#c9c9c9]"
 												type="text"
 												name="email"
 												onChange={handleChange}
@@ -221,7 +220,7 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 										<input
 											type="text"
 											placeholder="Enter your delivery address"
-											className={styles['form-input']}
+											className="min-w-[20rem] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-[#c9c9c9]"
 											name="deliveryAddress"
 											onChange={handleChange}
 											onBlur={handleBlur}
@@ -231,7 +230,7 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 											touched.deliveryAddress &&
 											errors.deliveryAddress}
 										<button
-											className={styles['submit-button']}
+											className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
 											type="submit"
 											disabled={isSubmitting}>
 											Submit

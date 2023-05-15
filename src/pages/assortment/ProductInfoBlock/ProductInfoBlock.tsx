@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef, LegacyRef } from 'react';
 import { useUserData } from '@/pages/context/UserDataContext';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
-import { v4 as uuidv4 } from 'uuid';
 import { IProduct } from '@/pages/types/productTypes';
 import { IComment, CommentType } from '@/pages/types/commentTypes';
-import { Formik, FormikErrors } from 'formik';
+import { Formik } from 'formik';
 import { ShowSuccessModalWindow } from '@/pages/components/ShowModalWindow/ShowModalWindow';
-import axios from 'axios';
 import { IValidateCommentsData } from '@/pages/types/validationTypes';
 import { validateCommentsData } from '@/pages/functions/validateFunctions';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 interface Props {
 	productData: IProduct;

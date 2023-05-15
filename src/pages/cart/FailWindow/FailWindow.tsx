@@ -1,14 +1,12 @@
-import styles from './FailWindow.module.css';
-
 interface Props {
 	failMessage: string;
 }
 
 export function FailWindow({ failMessage }: Props) {
 	return (
-		<div id={styles['fail-window-wrapper']}>
-			<div id={styles['fail-window']}>
-				<p id={styles['fail-window-text']}>{failMessage}</p>
+		<div className="flex-[2_1_auto] flex justify-center items-center">
+			<div className="bg-[gray] rounded-[1rem] p-[0.7rem]">
+				<p className="text-white text-center text-[1.8rem] font-bold">{failMessage}</p>
 			</div>
 		</div>
 	);

@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useCartContext } from '@/pages/context/CartContext';
-import styles from './Header.module.css';
 
 interface Props {
 	pageName: string | string[] | undefined;
@@ -15,23 +14,25 @@ export default function Header({ pageName, showCartIcon = true }: Props) {
 		<div className="flex flex-col">
 			<div className="flex flex-row justify-between p-4 px-8">
 				<div className="flex flex-row">
-					<button id={styles['back-button']} onClick={() => router.back()}>
+					<button className="rounded-full" onClick={() => router.back()}>
 						<img
-							id={styles['back-button-icon']}
+							className="w-[60px] h-[60px] max-sm:w-[40px] max-sm:h-[40px]"
 							src={'https://img.icons8.com/ios/100/null/circled-left-2.png'}
 						/>
 					</button>
 				</div>
-				<p id={styles['page-title']}>{pageName}</p>
+				<p className="flex items-center text-[1.8rem] max-sm:text-[1.4rem]">
+					{pageName}
+				</p>
 				<div className="flex justify-center items-center">
 					{showCartIcon && (
 						<>
 							<button
-								id={styles['cart-button']}
+								className="relative max-sm:w-[32px] h-[32px]"
 								onClick={() => router.push('/cart')}>
 								<img src="https://img.icons8.com/sf-black/48/null/buy.png" />
 								{cart.length !== 0 && (
-									<div id={styles['cart-product-amount']}>
+									<div className="flex justify-center items-center absolute top-[-20%] left-[65%] w-1/2 bg-[coral] rounded-full max-sm:text-[0.8rem] max-sm:h-1/2 max-sm:top-[-15%]">
 										<p>{cart.length}</p>
 									</div>
 								)}
