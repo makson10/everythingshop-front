@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
 export interface ErrorListType {
 	errorList: string[];
@@ -10,4 +10,5 @@ export interface SuccessType {
 
 export interface ShowModalWindowProps {
 	setIsOpenSubmitMenu: Dispatch<SetStateAction<boolean>>;
+	buyCost: number;
 }

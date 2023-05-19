@@ -8,7 +8,7 @@ import {
 	ShowErrorModalWindow,
 } from '@/pages/components/ShowModalWindow/ShowModalWindow';
 import { Formik } from 'formik';
-import UserNotLoginWindow from '../components/UserNotLoginWindow/UserNotLoginWindow';
+import UserNotLoginWindow from '@/pages/components/UserNotLoginWindow/UserNotLoginWindow';
 
 interface ProductDataType {
 	photoFile?: File;
@@ -152,16 +152,13 @@ export function AddForm() {
 								}}
 								onSubmit={(
 									values,
-									{ setSubmitting, setFieldValue, resetForm }
+									{ setSubmitting, resetForm }
 								) => {
 									setTimeout(() => {
 										if (photoFile) values.photoFile = photoFile;
 										sendDataToServer(values);
 
 										clearFileInput();
-										// setFieldValue('title', '', false);
-										// setFieldValue('description', '', false);
-										// setFieldValue('price', 0, false);
 										resetForm();
 
 										setSubmitting(false);

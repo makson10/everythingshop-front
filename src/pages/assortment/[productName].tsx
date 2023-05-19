@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import { IProduct } from '@/pages/types/productTypes';
 import Header from '@/pages/components/Header/Header';
 import ProductInfoBlock from './ProductInfoBlock/ProductInfoBlock';
+import axios from 'axios';
 
 interface IFetchedData {
 	success: boolean;
@@ -30,11 +31,15 @@ export const getServerSideProps: GetServerSideProps<FetchedDataType> = async (
 ) => {
 	const { productName = 'unknownProduct' } = context.params!;
 
-	const fetchedData = await fetch(
+	const productData = await axios(
 		`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productName}`
-	);
-	const productData = await fetchedData.json();
-	productData.data.comments = JSON.parse(productData.data.comments);
+	).then((res) => res.data);
+
+	if (productData.data?.comments.length === 0) {
+		productData.data.comments = [];
+	} else {
+		productData.data.comments = await JSON.parse(productData.data.comments);
+	}
 
 	if (!productData.success) {
 		return {

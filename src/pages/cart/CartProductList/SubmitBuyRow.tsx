@@ -21,7 +21,7 @@ export function SubmitBuyRow({ costSum }: Props) {
 	return (
 		<>
 			{isOpenSubmitMenu && (
-				<ShowSubmitMenu setIsOpenSubmitMenu={setIsOpenSubmitMenu} />
+				<ShowSubmitMenu setIsOpenSubmitMenu={setIsOpenSubmitMenu} buyCost={costSum} />
 			)}
 
 			<div>

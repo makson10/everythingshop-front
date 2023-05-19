@@ -6,14 +6,17 @@ import { useRouter } from 'next/router';
 import { ISubmitForm, SubmitFormData } from '@/pages/types/formDataTypes';
 import { useCartUpdateContext } from '@/pages/context/CartContext';
 import { Formik } from 'formik';
+import { useSendEmail } from '@/pages/hooks/useSendEmail';
 
 interface Props {
 	setIsOpenSubmitMenu: Dispatch<SetStateAction<boolean>>;
+	buyCost: number;
 }
 
-export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
+export default function SubmitMenu({ setIsOpenSubmitMenu, buyCost }: Props) {
 	const authorizedUserData = useUserData();
 	const { deleteAllProducts } = useCartUpdateContext();
+    const { sendBuyEmail } = useSendEmail();
 
 	const [useOldFullName, setUseOldFullName] = useState<boolean>(false);
 	const [useOldEmail, setUseOldEmail] = useState<boolean>(false);
@@ -60,6 +63,7 @@ export default function SubmitMenu({ setIsOpenSubmitMenu }: Props) {
 			deliveryAddress: values.deliveryAddress,
 		};
 
+		sendBuyEmail(userEmail, { buyCost: buyCost, fullUserName: userFullName });
 		handleSuccess();
 	};
 

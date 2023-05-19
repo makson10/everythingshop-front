@@ -6,13 +6,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { validateFeedbackData } from '@/pages/functions/validateFunctions';
 import { ShowSuccessModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
 import { IValidateFeedbackData } from '../types/validationTypes';
-import UserNotLoginWindow from '@/pages/addProduct/UserNotLoginWindow/UserNotLoginWindow';
+import UserNotLoginWindow from '@/pages/components/UserNotLoginWindow/UserNotLoginWindow';
 import axios from 'axios';
+import { useSendEmail } from '@/pages/hooks/useSendEmail';
 
 export default function FeedbackForm() {
 	const authorizedUserData = useUserData();
 	const [didUserAuthorized, setDidUserAuthorized] = useState(false);
 	const [isOpenSuccessMenu, setIsOpenSuccessMenu] = useState<boolean>(false);
+	const { sendFeedbackEmail } = useSendEmail();
 
 	const sendDataToServer = async (data: IFeedback) => {
 		try {
@@ -47,7 +49,7 @@ export default function FeedbackForm() {
 						validate={(values: IValidateFeedbackData) => {
 							return validateFeedbackData(values);
 						}}
-						onSubmit={(values, { setSubmitting, setFieldValue }) => {
+						onSubmit={(values, { setSubmitting, resetForm }) => {
 							setTimeout(() => {
 								const feedbackData: IFeedback = {
 									userName: authorizedUserData.data?.name!,
@@ -56,7 +58,9 @@ export default function FeedbackForm() {
 									uniqueFeedbackId: uuidv4(),
 								};
 								sendDataToServer(feedbackData);
-								setFieldValue('feedbackText', '', false);
+								sendFeedbackEmail(feedbackData);
+
+								resetForm();
 								setSubmitting(false);
 							}, 400);
 						}}>
@@ -97,109 +101,3 @@ export default function FeedbackForm() {
 		</>
 	);
 }
-
-/*
-<div className="flex-[2_1_auto] flex justify-center items-center">
-				<div className="flex flex-col gap-8">
-					<h1 className="text-4xl">Add new product</h1>
-					<div className="flex flex-col">
-						<div className="flex flex-col gap-4">
-							<label className={styles['form-file-input']}>
-								<img src="https://img.icons8.com/ios/50/null/upload-to-cloud--v1.png" />
-								<p className={styles['form-file-input-label']}>
-									{fileInputLabel}
-								</p>
-								<input
-									className={styles['file-input']}
-									type="file"
-									name="photoFile"
-									accept="image/*"
-									onChange={handleFileInput}
-								/>
-							</label>
-							<Formik
-								initialValues={{
-									title: '',
-									description: '',
-									creator: authorizationUserData.data.name,
-									price: 0,
-									uniqueProductId: uuidv4(),
-								}}
-								validate={(values: ProductDataType) => {
-									return validateAddNewProduct(values);
-								}}
-								onSubmit={(values, { setSubmitting }) => {
-									setTimeout(() => {
-										if (photoFile) values.photoFile = photoFile;
-										sendDataToServer(values);
-										setSubmitting(false);
-									}, 400);
-								}}>
-								{({
-									values,
-									errors,
-									touched,
-									handleChange,
-									handleBlur,
-									handleSubmit,
-									isSubmitting,
-								}) => (
-									<form className="space-y-6" onSubmit={handleSubmit}>
-										<div className="flex flex-col gap-4">
-											<div>
-												<input
-													type="text"
-													name="title"
-													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-													placeholder="Enter product title"
-													maxLength={18}
-													onChange={handleChange}
-													onBlur={handleBlur}
-													value={values.title}
-												/>
-												{errors.title && touched.title && errors.title}
-											</div>
-											<div>
-												<textarea
-													name="description"
-													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-													placeholder="Enter product description"
-													maxLength={255}
-													rows={5}
-													style={{ resize: 'none' }}
-													onChange={handleChange}
-													onBlur={handleBlur}
-													value={values.description}
-												/>
-												{errors.description &&
-													touched.description &&
-													errors.description}
-											</div>
-											<div>
-												<input
-													type="number"
-													name="price"
-													placeholder="Enter product price"
-													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-													min={1}
-													max={9999999}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{errors.price && touched.price && errors.price}
-											</div>
-										</div>
-										<button
-											className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-											type="submit"
-											disabled={isSubmitting}>
-											Add product
-										</button>
-									</form>
-								)}
-							</Formik>
-						</div>
-					</div>
-				</div>
-			</div>
-*/

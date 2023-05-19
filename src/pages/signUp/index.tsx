@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { validateSignUpData } from '../functions/validateFunctions';
+import { validateSignUpData } from '@/pages/functions/validateFunctions';
 import {
 	useUserData,
 	useUserDataUpdate,
 } from '@/pages/context/UserDataContext';
-import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
+import { ShowErrorModalWindow } from '@/pages/components/ShowModalWindow/ShowModalWindow';
 import { ISignUpUserData } from '@/pages/types/validationTypes';
 import UserAlreadyAuthorizedPage from '@/pages/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '../components/GoogleButton/GoogleButton';
@@ -12,12 +12,14 @@ import { Formik } from 'formik';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import axios from 'axios';
+import { useSendEmail } from '@/pages/hooks/useSendEmail';
 
 export default function SignUp() {
 	const userData = useUserData();
 	const { saveData } = useUserDataUpdate();
-	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
+	const { sendSignUpEmail } = useSendEmail();
 
+	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 	const [signUpUserCredential, setSignUpUserCredential] =
 		useState<ISignUpUserData>();
 	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -34,9 +36,11 @@ export default function SignUp() {
 	};
 
 	const sendDataToServer = async (data: ISignUpUserData) => {
-		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`).catch((err) => {
-			throw err;
-		});
+		await axios
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
+			.catch((err) => {
+				throw err;
+			});
 
 		const saveDataResult = await axios.post(
 			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/saveData`,
@@ -143,6 +147,7 @@ export default function SignUp() {
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
 								sendDataToServer(values);
+								sendSignUpEmail(values.email, { userName: values.name });
 								setSubmitting(false);
 							}, 400);
 						}}>
@@ -264,7 +269,7 @@ export default function SignUp() {
 											/>
 											<button
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
-                                                tabIndex={-1}
+												tabIndex={-1}
 												onClick={handleTogglePasswordVisible}>
 												<img
 													src={isPasswordVisible ? './hide.png' : './show.png'}

@@ -1,5 +1,9 @@
 import { createPortal } from 'react-dom';
-import { ErrorListType, ShowModalWindowProps, SuccessType } from '../../types/modalWindowTypes';
+import {
+	ErrorListType,
+	ShowModalWindowProps,
+	SuccessType,
+} from '../../types/modalWindowTypes';
 import SuccessMenu from '../SuccessMenu/SuccessMenu';
 import ErrorMenu from '../ErrorMenu/ErrorMenu';
 import SubmitMenu from '@/pages/components/SubmitMenu/SubmitMenu';
@@ -18,9 +22,12 @@ export const ShowSuccessModalWindow = ({ successText }: SuccessType) => {
 	);
 };
 
-export const ShowSubmitMenu = ({ setIsOpenSubmitMenu }: ShowModalWindowProps) => {
+export const ShowSubmitMenu = ({
+	setIsOpenSubmitMenu,
+	buyCost,
+}: ShowModalWindowProps) => {
 	return createPortal(
-		<SubmitMenu setIsOpenSubmitMenu={setIsOpenSubmitMenu} />,
+		<SubmitMenu setIsOpenSubmitMenu={setIsOpenSubmitMenu} buyCost={buyCost} />,
 		document.querySelector('#portal')!
 	);
 };
