@@ -1,4 +1,4 @@
-import { ProductType } from '@/pages/types/productTypes';
+import { ProductType } from '@/types/productTypes';
 import ProductRow from './ProductRow';
 
 interface Props {

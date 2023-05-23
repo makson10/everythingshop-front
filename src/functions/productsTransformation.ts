@@ -1,4 +1,4 @@
-import { IProduct, ProductType } from '../types/productTypes';
+import { IProduct, ProductType } from '@/types/productTypes';
 
 export const filterProducts = (
 	filterAction: string,

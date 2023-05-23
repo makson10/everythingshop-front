@@ -9,6 +9,6 @@ export interface SuccessType {
 }
 
 export interface ShowModalWindowProps {
-	setIsOpenSubmitMenu: Dispatch<SetStateAction<boolean>>;
+	setIsOpenSubmitBuyForm: Dispatch<SetStateAction<boolean>>;
 	buyCost: number;
 }

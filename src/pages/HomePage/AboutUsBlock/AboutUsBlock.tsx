@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { animate } from '@/pages/functions/srAnimation';
+import { animate } from '@/functions/srAnimation';
 import PhotoBlock from './PhotoBlock';
 import TextBlock from './TextBlock';
 

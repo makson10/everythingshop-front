@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { validateLogInData } from '../functions/validateFunctions';
-import { IAdminData } from '../types/adminTypes';
-import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
-import { getCookie } from '../functions/cookiesFunction';
+import { validateLogInData } from '@/functions/validateFunctions';
+import { getCookie } from '@/functions/cookiesFunction';
+import { IAdminData } from '@/types/adminTypes';
+import { ILogInUserData } from '@/types/validationTypes';
+import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import { Formik } from 'formik';
-import { ILogInUserData } from '../types/validationTypes';
 import axios from 'axios';
 
 export default function ModeratePage() {

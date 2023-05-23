@@ -1,6 +1,5 @@
-import { ProductType } from '@/pages/types/productTypes';
+import { ProductType } from '@/types/productTypes';
 import CommentRow from './CommentRow';
-import styles from './CommentsBlock.module.css';
 
 interface Props {
 	products: ProductType;

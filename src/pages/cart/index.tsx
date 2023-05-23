@@ -1,4 +1,4 @@
-import Header from '@/pages/components/Header/Header';
+import Header from '@/components/Header/Header';
 import { CartProductList } from './CartProductList/CartProductList';
 
 export default function index() {

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Formik } from 'formik';
-import { IFeedback } from '@/pages/types/feedbackTypes';
-import { useUserData } from '@/pages/context/UserDataContext';
+import { IFeedback } from '@/types/feedbackTypes';
+import { useUserData } from '@/context/UserDataContext';
 import { v4 as uuidv4 } from 'uuid';
-import { validateFeedbackData } from '@/pages/functions/validateFunctions';
-import { ShowSuccessModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
-import { IValidateFeedbackData } from '../types/validationTypes';
-import UserNotLoginWindow from '@/pages/components/UserNotLoginWindow/UserNotLoginWindow';
+import { validateFeedbackData } from '@/functions/validateFunctions';
+import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import { IValidateFeedbackData } from '@/types/validationTypes';
+import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import axios from 'axios';
-import { useSendEmail } from '@/pages/hooks/useSendEmail';
+import { useSendEmail } from '@/hooks/useSendEmail';
 
 export default function FeedbackForm() {
 	const authorizedUserData = useUserData();

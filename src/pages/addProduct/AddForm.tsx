@@ -1,14 +1,14 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { validateAddNewProduct } from '@/pages/functions/validateFunctions';
-import { useUserData } from '@/pages/context/UserDataContext';
+import { validateAddNewProduct } from '@/functions/validateFunctions';
+import { useUserData } from '@/context/UserDataContext';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import {
 	ShowSuccessModalWindow,
 	ShowErrorModalWindow,
-} from '@/pages/components/ShowModalWindow/ShowModalWindow';
+} from '@/components/ShowModalWindow/ShowModalWindow';
 import { Formik } from 'formik';
-import UserNotLoginWindow from '@/pages/components/UserNotLoginWindow/UserNotLoginWindow';
+import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 
 interface ProductDataType {
 	photoFile?: File;
@@ -150,10 +150,7 @@ export function AddForm() {
 								validate={(values: ProductDataType) => {
 									return validateAddNewProduct(values);
 								}}
-								onSubmit={(
-									values,
-									{ setSubmitting, resetForm }
-								) => {
+								onSubmit={(values, { setSubmitting, resetForm }) => {
 									setTimeout(() => {
 										if (photoFile) values.photoFile = photoFile;
 										sendDataToServer(values);

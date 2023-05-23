@@ -1,4 +1,4 @@
-import { IProduct } from '@/pages/types/productTypes';
+import { IProduct } from '@/types/productTypes';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
@@ -34,16 +34,16 @@ export default function ProductRow({ product }: Props) {
 				/>
 				<p>
 					<Link
-						className='text-black hover:underline'
+						className="text-black hover:underline"
 						href={`http://localhost:3000/assortment/${product.uniqueProductId}`}>
 						<b>{product.title}</b>
 					</Link>
 					, {product.creator}
 				</p>
 			</div>
-			<div className='flex flex-row items-center gap-[5px] ml-auto'>
+			<div className="flex flex-row items-center gap-[5px] ml-auto">
 				<p className="max-sm:text-[0.9rem]">${product.price}</p>
-				<button className='transparent border-none' onClick={handleClick}>
+				<button className="transparent border-none" onClick={handleClick}>
 					<img
 						className="max-w-[30px]"
 						src="https://img.icons8.com/windows/30/null/trash.png"

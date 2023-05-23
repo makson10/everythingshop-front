@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { useUserDataUpdate } from '@/pages/context/UserDataContext';
-import { useCartUpdateContext } from '@/pages/context/CartContext';
+import { useUserDataUpdate } from '@/context/UserDataContext';
+import { useCartUpdateContext } from '@/context/CartContext';
 
 interface Props {
 	isOpen: boolean;
@@ -44,9 +44,9 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 				<div className="flex justify-center">
 					<div className="w-0 h-0 bg-transparent relative border-transparent border-[10px] border-b-black border-b-[10px]"></div>
 				</div>
-				<div className='flex flex-col gap-[5px] rounded-[1rem] border-[2px] border-black p-2 text-black bg-white'>
-				<button
-						className='bg-transparent p-[0.2rem] text-[1.2rem]'
+				<div className="flex flex-col gap-[5px] rounded-[1rem] border-[2px] border-black p-2 text-black bg-white">
+					<button
+						className="bg-transparent p-[0.2rem] text-[1.2rem]"
 						onClick={handleLogOut}>
 						Log Out
 					</button>

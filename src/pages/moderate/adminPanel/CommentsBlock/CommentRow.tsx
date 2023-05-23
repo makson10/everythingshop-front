@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { IComment, CommentType } from '@/pages/types/commentTypes';
+import { IComment, CommentType } from '@/types/commentTypes';
 import axios from 'axios';
 
 interface Props {
@@ -16,7 +16,7 @@ export default function CommentRow({ comments, toPost }: Props) {
 	if (!comments.length) return null;
 
 	return (
-		<div className='flex flex-col gap-[5px] p-[0.5rem] border-b-2 border-b-[gray]'>
+		<div className="flex flex-col gap-[5px] p-[0.5rem] border-b-2 border-b-[gray]">
 			{comments.map((comment, index) => {
 				return <Comment comment={comment} toPost={toPost} key={index} />;
 			})}

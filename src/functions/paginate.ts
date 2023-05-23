@@ -1,4 +1,4 @@
-import { IProduct } from '@/pages/types/productTypes';
+import { IProduct } from '@/types/productTypes';
 
 export const paginate = (
 	products: IProduct[],

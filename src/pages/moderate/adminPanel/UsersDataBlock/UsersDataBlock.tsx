@@ -1,4 +1,4 @@
-import { UserDataType } from '@/pages/types/userTypes';
+import { UserDataType } from '@/types/userTypes';
 import UserRow from './UserRow';
 
 interface Props {

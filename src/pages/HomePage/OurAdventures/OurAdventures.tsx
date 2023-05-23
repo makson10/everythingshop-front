@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { animate } from '@/pages/functions/srAnimation';
-import { cardData } from '@/pages/assets/cardData';
+import { animate } from '@/functions/srAnimation';
+import { cardData } from '@/assets/cardData';
 import InfoCard from './InfoCard';
 import Heading from './Heading';
 

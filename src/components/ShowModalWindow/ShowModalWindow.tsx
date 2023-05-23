@@ -3,10 +3,10 @@ import {
 	ErrorListType,
 	ShowModalWindowProps,
 	SuccessType,
-} from '../../types/modalWindowTypes';
+} from '@/types/modalWindowTypes';
 import SuccessMenu from '../SuccessMenu/SuccessMenu';
 import ErrorMenu from '../ErrorMenu/ErrorMenu';
-import SubmitMenu from '@/pages/components/SubmitMenu/SubmitMenu';
+import SubmitBuyForm from '@/components/SubmitBuyForm/SubmitBuyForm';
 
 export const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
 	return createPortal(
@@ -22,12 +22,15 @@ export const ShowSuccessModalWindow = ({ successText }: SuccessType) => {
 	);
 };
 
-export const ShowSubmitMenu = ({
-	setIsOpenSubmitMenu,
+export const ShowSubmitBuyForm = ({
+	setIsOpenSubmitBuyForm,
 	buyCost,
 }: ShowModalWindowProps) => {
 	return createPortal(
-		<SubmitMenu setIsOpenSubmitMenu={setIsOpenSubmitMenu} buyCost={buyCost} />,
+		<SubmitBuyForm
+			setIsOpenSubmitBuyForm={setIsOpenSubmitBuyForm}
+			buyCost={buyCost}
+		/>,
 		document.querySelector('#portal')!
 	);
 };

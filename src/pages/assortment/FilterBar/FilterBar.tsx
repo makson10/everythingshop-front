@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { ISortAndFilterParameters } from '@/pages/types/sortOptionsTypes';
+import { ISortAndFilterParameters } from '@/types/sortOptionsTypes';
 import SortSelect from './Selects/SortSelect';
 import FilterSelect from './Selects/FilterSelect';
 import SearchInput from './Selects/SearchInput';

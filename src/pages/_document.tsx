@@ -21,6 +21,9 @@ export default function Document() {
 				<Main />
 				<NextScript />
 			</body>
+			<script
+				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqh7FV0obZvEf8CbSqqn3fGKhNA3L-4I&libraries=places"
+				async></script>
 		</Html>
 	);
 }

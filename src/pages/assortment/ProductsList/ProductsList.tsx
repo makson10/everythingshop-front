@@ -1,5 +1,5 @@
-import { ProductCard } from '@/pages/assortment/ProductsList/ProductCard';
-import { ProductType } from '@/pages/types/productTypes';
+import { ProductType } from '@/types/productTypes';
+import { ProductCard } from './ProductCard';
 
 interface Props {
 	products: ProductType;

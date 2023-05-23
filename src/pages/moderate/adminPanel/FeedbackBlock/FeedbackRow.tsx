@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { IFeedback } from '@/pages/types/feedbackTypes';
+import { IFeedback } from '@/types/feedbackTypes';
 import axios from 'axios';
 
 interface Props {

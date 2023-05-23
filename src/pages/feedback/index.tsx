@@ -1,4 +1,4 @@
-import Header from '@/pages/components/Header/Header';
+import Header from '@/components/Header/Header';
 import FeedbackForm from './FeedbackForm';
 
 export default function Feedback() {

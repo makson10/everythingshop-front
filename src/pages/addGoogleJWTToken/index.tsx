@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { getCookie } from '@/pages/functions/cookiesFunction';
-import { useSendEmail } from '@/pages/hooks/useSendEmail';
+import { getCookie } from '@/functions/cookiesFunction';
+import { useSendEmail } from '@/hooks/useSendEmail';
 
 export default function AddGoogleJWTToken() {
 	const router = useRouter();

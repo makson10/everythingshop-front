@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useCartContext } from '@/pages/context/CartContext';
+import { useCartContext } from '@/context/CartContext';
 
 interface Props {
 	pageName: string | string[] | undefined;

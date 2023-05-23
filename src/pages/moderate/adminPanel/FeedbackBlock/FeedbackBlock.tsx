@@ -1,4 +1,4 @@
-import { FeedbackType } from '@/pages/types/feedbackTypes';
+import { FeedbackType } from '@/types/feedbackTypes';
 import FeedbackRow from './FeedbackRow';
 
 interface Props {

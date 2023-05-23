@@ -1,27 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
-import { ShowSubmitMenu } from '@/pages/components/ShowModalWindow/ShowModalWindow';
+import { ShowSubmitBuyForm } from '@/components/ShowModalWindow/ShowModalWindow';
 
 interface Props {
 	costSum: number;
 }
 
 export function SubmitBuyRow({ costSum }: Props) {
-	const [isOpenSubmitMenu, setIsOpenSubmitMenu] = useState<boolean>(false);
+	const [isOpenSubmitBuyForm, setIsOpenSubmitBuyForm] = useState<boolean>(false);
 	const submitButtonRef = useRef<HTMLButtonElement>();
 
 	const handleSubmitBuy = () => {
-		setIsOpenSubmitMenu(true);
+		setIsOpenSubmitBuyForm(true);
 	};
 
 	useEffect(() => {
 		if (submitButtonRef.current)
-			submitButtonRef.current.disabled = isOpenSubmitMenu;
-	}, [isOpenSubmitMenu]);
+			submitButtonRef.current.disabled = isOpenSubmitBuyForm;
+	}, [isOpenSubmitBuyForm]);
 
 	return (
 		<>
-			{isOpenSubmitMenu && (
-				<ShowSubmitMenu setIsOpenSubmitMenu={setIsOpenSubmitMenu} buyCost={costSum} />
+			{isOpenSubmitBuyForm && (
+				<ShowSubmitBuyForm setIsOpenSubmitBuyForm={setIsOpenSubmitBuyForm} buyCost={costSum} />
 			)}
 
 			<div>

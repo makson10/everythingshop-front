@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { validateLogInData } from '../functions/validateFunctions';
 import { useRouter } from 'next/router';
-import { useUserData, useUserDataUpdate } from '../context/UserDataContext';
-import { ShowErrorModalWindow } from '../components/ShowModalWindow/ShowModalWindow';
-import UserAlreadyAuthorizedPage from '../components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
-import GoogleButton from '../components/GoogleButton/GoogleButton';
+import { validateLogInData } from '@/functions/validateFunctions';
+import { useUserData, useUserDataUpdate } from '@/context/UserDataContext';
+import { ISignUpUserData, ILogInUserData } from '@/types/validationTypes';
+import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
+import GoogleButton from '@/components/GoogleButton/GoogleButton';
 import { Formik } from 'formik';
-import { ISignUpUserData, ILogInUserData } from '../types/validationTypes';
 import Link from 'next/link';
 import axios from 'axios';
 

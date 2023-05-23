@@ -1,4 +1,4 @@
-import OptionSection from './OptionSection';
+import NavBar from './NavBar';
 import UserButton from './UserButton/UserButton';
 
 export default function Header() {
@@ -7,9 +7,8 @@ export default function Header() {
 			<div className="flex items-center w-2/12 max-sm:hidden">
 				<img src="./everythingshop_logo_dark.png" />
 			</div>
-			<OptionSection />
-			<div
-				className="flex max-sm:justify-center">
+			<NavBar />
+			<div className="flex max-sm:justify-center">
 				<UserButton />
 			</div>
 		</header>

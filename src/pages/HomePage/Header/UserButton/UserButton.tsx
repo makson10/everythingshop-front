@@ -1,7 +1,7 @@
+import { useUserData } from '@/context/UserDataContext';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ModalMenu } from './ModalMenu';
-import { useUserData } from '@/pages/context/UserDataContext';
 
 export default function UserButton() {
 	const userData = useUserData();
@@ -10,28 +10,27 @@ export default function UserButton() {
 	const [userName, setUserName] = useState<string>('');
 	const router = useRouter();
 
-	useEffect(() => {
-		if (userData.data?.login || userData.data?.id) {
-			setIsUserLogin(true);
-		}
+	const handleToggleIsOpenMenu = () => {
+		setIsOpenMenu((prevValue) => !prevValue);
+	};
 
-		if (userData.data?.name) {
-			setUserName(userData.data?.name);
-		}
+	useEffect(() => {
+		if (userData.data?.login || userData.data?.id) setIsUserLogin(true);
+		if (userData.data?.name) setUserName(userData.data?.name);
 	}, [userData]);
 
 	useEffect(() => {
-		if (!isUserLogin) {
-			setIsOpenMenu(false);
-		}
+		if (!isUserLogin) setIsOpenMenu(false);
 	}, [isUserLogin]);
 
 	return (
 		<>
 			{isUserLogin ? (
 				<>
-					<div className="flex justify-around items-center gap-[10px] w-[160px] px-[12px] text-black">
-						<button onClick={() => setIsOpenMenu((prevValue) => !prevValue)}>
+					<div
+						className="flex justify-around items-center gap-[10px] w-[160px] px-[12px] text-black"
+						onClick={handleToggleIsOpenMenu}>
+						<button>
 							<img
 								className="w-12 rounded-xl"
 								src={
@@ -42,7 +41,7 @@ export default function UserButton() {
 								loading="lazy"
 							/>
 						</button>
-						<p className="font-[600]">{userName}</p>
+						<p className="font-[600] cursor-pointer">{userName}</p>
 					</div>
 					{isOpenMenu && (
 						<ModalMenu

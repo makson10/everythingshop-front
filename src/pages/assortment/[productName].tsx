@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
-import { IProduct } from '@/pages/types/productTypes';
-import Header from '@/pages/components/Header/Header';
+import { IProduct } from '@/types/productTypes';
+import Header from '@/components/Header/Header';
 import ProductInfoBlock from './ProductInfoBlock/ProductInfoBlock';
 import axios from 'axios';
 

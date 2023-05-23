@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IUnionUserData } from '@/pages/types/userTypes';
+import { IUnionUserData } from '@/types/userTypes';
 
 interface Props {
 	customer: IUnionUserData;

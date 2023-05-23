@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { filterOptions } from '../../../assets/selectOptions';
+import { filterOptions } from '@/assets/selectOptions';
 
 interface Props {
 	handleFunction: (filterParameter: string) => void;

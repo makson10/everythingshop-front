@@ -1,4 +1,4 @@
-import { IFeedback } from '../types/feedbackTypes';
+import { IFeedback } from '@/types/feedbackTypes';
 
 export const SuccessSignUpMarkup = (userName: string) => `
 <html style="min-width: 100vw; min-height: 100vh;">

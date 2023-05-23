@@ -1,9 +1,9 @@
-import { Email } from '@/pages/libs/smtp';
+import { Email } from '@/libs/smtp';
 import {
 	SuccessSignUpMarkup,
 	SuccessBuyMarkup,
 	FeedbackMarkup,
-} from '../assets/emailMarkups';
+} from '@/assets/emailMarkups';
 import { IBuyEmail, ISignUpEmail } from '../types/emailTypes';
 import { IFeedback } from '../types/feedbackTypes';
 

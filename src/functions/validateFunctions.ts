@@ -1,13 +1,13 @@
-import { IProduct } from '../types/productTypes';
-import { rusBadWordsRegex, engBadWordsRegex } from './badWordsRegex';
+import { IProduct } from '@/types/productTypes';
+import { rusBadWordsRegex, engBadWordsRegex } from '@/assets/badWordsRegex';
 import {
 	ISignUpUserData,
 	ILogInUserData,
 	IValidateProductData,
 	IValidateFeedbackData,
 	IValidateCommentsData,
-} from '@/pages/types/validationTypes';
-import { ISubmitForm } from '../types/formDataTypes';
+} from '@/types/validationTypes';
+import { ISubmitForm } from '@/types/formDataTypes';
 import { FormikErrors } from 'formik/dist/types';
 
 const validateSignUpData = (values: ISignUpUserData) => {

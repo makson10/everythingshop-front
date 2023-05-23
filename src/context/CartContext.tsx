@@ -5,8 +5,8 @@ import {
 	useState,
 	ReactNode,
 } from 'react';
-import { IProduct, ProductType } from '../types/productTypes';
-import { CartUpdateContextType } from '@/pages/types/contextTypes';
+import { IProduct, ProductType } from '@/types/productTypes';
+import { CartUpdateContextType } from '@/types/contextTypes';
 
 interface ProviderProps {
 	children: ReactNode;

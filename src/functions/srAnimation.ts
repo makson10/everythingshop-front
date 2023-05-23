@@ -1,5 +1,3 @@
-import React from 'react';
-
 export async function animate(
 	componentRef: React.MutableRefObject<HTMLDivElement | null>,
 	duration: number,
