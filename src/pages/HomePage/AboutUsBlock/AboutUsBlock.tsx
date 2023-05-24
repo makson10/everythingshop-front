@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { animate } from '@/functions/srAnimation';
+import useScrollReveal from '@/hooks/useScrollReveal';
 import PhotoBlock from './PhotoBlock';
 import TextBlock from './TextBlock';
 
 export default function AboutUsBlock() {
+    const setUpSRAnim = useScrollReveal();
 	const componentRef = useRef(null);
 
 	useEffect(() => {
-		animate(componentRef, 800, '10px');
+		setUpSRAnim(componentRef, 800, '10px');
 	}, []);
 
 	return (

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { IUnionUserData } from '@/types/userTypes';
+import useDeviceDetect from '@/hooks/useDeviceDetect';
 
 interface Props {
 	customer: IUnionUserData;
@@ -11,13 +12,7 @@ export default function UserRow({
 	isGoogleCustomers = false,
 }: Props) {
 	const [customerAge, setCustomerAge] = useState<number>(0);
-	const [isMobileDevice, setIsMobileDevice] = useState<boolean>(false);
-
-	useEffect(() => {
-		const details = navigator.userAgent;
-		const regexp = /android|iphone|kindle|ipad/i;
-		setIsMobileDevice(regexp.test(details));
-	}, []);
+	const [isMobileDevice] = useDeviceDetect();
 
 	useEffect(() => {
 		if (isGoogleCustomers || !customer.dateOfBirth) return;

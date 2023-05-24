@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { animate } from '@/functions/srAnimation';
+import useScrollReveal from '@/hooks/useScrollReveal';
 import LeftTagline from './LeftTagline';
 import RightTagline from './RightTagline';
 
 export default function TaglineBlock() {
-	const componentRef = useRef(null);
+    const setUpSRAnim = useScrollReveal();
+    const componentRef = useRef(null);
 
 	useEffect(() => {
-		animate(componentRef, 1000);
+		setUpSRAnim(componentRef, 1000);
 	}, []);
 
 	return (

@@ -1,34 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { validateLogInData } from '@/functions/validateFunctions';
-import { useUserData, useUserDataUpdate } from '@/context/UserDataContext';
+import useValidation from '@/hooks/useValidation';
+import { useUserData, useUserDataUpdate } from '@/hooks/useUserDataContext';
 import { ISignUpUserData, ILogInUserData } from '@/types/validationTypes';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '@/components/GoogleButton/GoogleButton';
+import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
 import { Formik } from 'formik';
+import Cookie from 'js-cookie';
 import Link from 'next/link';
 import axios from 'axios';
 
 export default function LogIn() {
 	const userData = useUserData();
 	const { saveData } = useUserDataUpdate();
+	const { validateLogInData } = useValidation();
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
+	const { isPasswordVisible, togglePasswordVisible } =
+		useIsPasswordVisible(false);
 
 	const [logInUserCredential, setLogInUserCredential] =
 		useState<ISignUpUserData>();
-	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
-
 	const router = useRouter();
-
-	const handleTogglePasswordVisible = (e: any) => {
-		e.preventDefault();
-		setIsPasswordVisible((prevValue) => !prevValue);
-	};
 
 	const sendDataToServer = async (data: ILogInUserData) => {
 		await axios
@@ -60,7 +58,10 @@ export default function LogIn() {
 			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/register`,
 			userData
 		);
-		document.cookie = `jwtToken=${JWTTokenResult.data.jwtToken}; path=/; samesite=lax;`;
+		Cookie.set('jwtToken', JWTTokenResult.data.jwtToken, {
+			path: '/',
+			sameSite: 'Lax',
+		});
 
 		setIsServerError(false);
 	};
@@ -182,7 +183,6 @@ export default function LogIn() {
 										</label>
 										<div className="text-lg">
 											<a
-												href=""
 												tabIndex={-1}
 												className="font-semibold focus:outline-none text-indigo-600 hover:text-indigo-500">
 												Forgot password?
@@ -204,7 +204,7 @@ export default function LogIn() {
 											<button
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
 												tabIndex={-1}
-												onClick={handleTogglePasswordVisible}>
+												onClick={togglePasswordVisible}>
 												<img
 													src={isPasswordVisible ? './hide.png' : './show.png'}
 													alt="#"

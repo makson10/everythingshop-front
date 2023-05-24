@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Cookie from 'js-cookie';
 import { GetServerSideProps } from 'next';
 import { ProductType } from '@/types/productTypes';
 import { UserDataType } from '@/types/userTypes';
-import { getCookie } from '@/functions/cookiesFunction';
-import { useRouter } from 'next/router';
 import UsersDataBlock from './UsersDataBlock/UsersDataBlock';
 import ProductsBlock from './ProductsBlock/ProductsBlock';
 import CommentsBlock from './CommentsBlock/CommentsBlock';
@@ -27,9 +27,9 @@ export default function adminPanel({
 	const router = useRouter();
 
 	useEffect(() => {
-		const isAdminAuthorized = getCookie('isAdminAuthorized') === 'true';
+		const isAdminAuthorized = Cookie.get('isAdminAuthorized') === 'true';
 		if (!isAdminAuthorized) {
-			document.cookie = `isAdminAuthorized=false; max-age=0`;
+			Cookie.remove('isAdminAuthorized');
 			router.push('/moderate');
 		}
 	}, []);

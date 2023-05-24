@@ -1,14 +1,8 @@
-import { useState, useEffect } from 'react';
+import useDeviceDetect from '@/hooks/useDeviceDetect';
 import Link from 'next/link';
 
 export default function TitleBlock() {
-	const [isMobileDevice, setIsMobileDevice] = useState<boolean>(false);
-
-	useEffect(() => {
-		const details = navigator.userAgent;
-		const regexp = /android|iphone|kindle|ipad/i;
-		setIsMobileDevice(regexp.test(details));
-	}, []);
+	const [isMobileDevice] = useDeviceDetect();
 
 	return (
 		<div className="flex flex-col justify-between items-center max-sm:order-1">

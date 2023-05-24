@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef, LegacyRef } from 'react';
-import { useUserData } from '@/context/UserDataContext';
-import { useCartUpdateContext } from '@/context/CartContext';
+import { useUserData } from '@/hooks/useUserDataContext';
+import { useCartUpdateContext } from '@/hooks/useCartContext';
 import { IProduct } from '@/types/productTypes';
 import { IComment, CommentType } from '@/types/commentTypes';
-import { Formik } from 'formik';
 import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import useValidation from '@/hooks/useValidation';
 import { IValidateCommentsData } from '@/types/validationTypes';
-import { validateCommentsData } from '@/functions/validateFunctions';
+import { Formik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
@@ -17,6 +17,8 @@ interface Props {
 export default function ProductInfoBlock({ productData }: Props) {
 	const authorizeUserData = useUserData();
 	const { addProductToCard } = useCartUpdateContext();
+	const { validateCommentsData } = useValidation();
+
 	const [productComments, setProductComments] = useState<CommentType>(
 		productData.comments
 	);
@@ -31,11 +33,11 @@ export default function ProductInfoBlock({ productData }: Props) {
 		setIsOpenSuccessWindow(true);
 
 		const product = {
-			title: productData?.title,
-			description: productData?.description,
-			photo_id: productData?.photo_id,
-			creator: productData?.creator,
-			price: productData?.price,
+			title: productData.title,
+			description: productData.description,
+			photo_id: productData.photo_id,
+			creator: productData.creator,
+			price: productData.price,
 			uniqueProductId: uuidv4(),
 			comments: productData.comments,
 		};

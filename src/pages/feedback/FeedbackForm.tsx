@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { IFeedback } from '@/types/feedbackTypes';
-import { useUserData } from '@/context/UserDataContext';
+import { useUserData } from '@/hooks/useUserDataContext';
 import { v4 as uuidv4 } from 'uuid';
-import { validateFeedbackData } from '@/functions/validateFunctions';
+import useValidation from '@/hooks/useValidation';
 import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import { IValidateFeedbackData } from '@/types/validationTypes';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import axios from 'axios';
-import { useSendEmail } from '@/hooks/useSendEmail';
+import useSendEmail from '@/hooks/useSendEmail';
 
 export default function FeedbackForm() {
 	const authorizedUserData = useUserData();
 	const [didUserAuthorized, setDidUserAuthorized] = useState(false);
 	const [isOpenSuccessMenu, setIsOpenSuccessMenu] = useState<boolean>(false);
 	const { sendFeedbackEmail } = useSendEmail();
+	const { validateFeedbackData } = useValidation();
 
 	const sendDataToServer = async (data: IFeedback) => {
 		try {

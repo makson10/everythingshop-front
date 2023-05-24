@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useUserDataUpdate } from '@/context/UserDataContext';
+import { useUserDataUpdate } from '@/hooks/useUserDataContext';
 
 export default function UserAlreadyAuthorizedPage() {
 	const { deleteData, deleteTokens } = useUserDataUpdate();

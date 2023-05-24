@@ -1,4 +1,4 @@
-import { useUserData } from '@/context/UserDataContext';
+import { useUserData } from '@/hooks/useUserDataContext';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ModalMenu } from './ModalMenu';
@@ -43,13 +43,11 @@ export default function UserButton() {
 						</button>
 						<p className="font-[600] cursor-pointer">{userName}</p>
 					</div>
-					{isOpenMenu && (
-						<ModalMenu
-							isOpen={isOpenMenu}
-							setIsOpenMenu={setIsOpenMenu}
-							setIsUserLogin={setIsUserLogin}
-						/>
-					)}
+					<ModalMenu
+						isOpen={isOpenMenu}
+						setIsOpenMenu={setIsOpenMenu}
+						setIsUserLogin={setIsUserLogin}
+					/>
 				</>
 			) : (
 				<div className="flex flex-row gap-3">

@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { validateBuySubmitData } from '@/functions/validateFunctions';
-import { useUserData } from '@/context/UserDataContext';
+import useValidation from '@/hooks/useValidation';
+import { useUserData } from '@/hooks/useUserDataContext';
 import { useRouter } from 'next/router';
 import { ISubmitForm, SubmitFormData } from '@/types/formDataTypes';
-import { useCartUpdateContext } from '@/context/CartContext';
+import { useCartUpdateContext } from '@/hooks/useCartContext';
 import { Formik, useField } from 'formik';
-import { useSendEmail } from '@/hooks/useSendEmail';
+import useSendEmail from '@/hooks/useSendEmail';
 import useGooglePlaceAutoComplete from '@/hooks/useGooglePlaceAutoComplete';
 
 interface Props {
@@ -20,6 +20,7 @@ export default function SubmitBuyForm({
 	const authorizedUserData = useUserData();
 	const { deleteAllProducts } = useCartUpdateContext();
 	const { sendBuyEmail } = useSendEmail();
+	const { validateBuySubmitData } = useValidation();
 
 	const [useOldFullName, setUseOldFullName] = useState<boolean>(false);
 	const [useOldEmail, setUseOldEmail] = useState<boolean>(false);
@@ -81,7 +82,7 @@ export default function SubmitBuyForm({
 
 	return (
 		<div className="z-100 fixed w-full h-screen bg-black/[0.6] flex justify-center items-center overflow-hidden">
-			<div className="relative block w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-[30px]">
+			<div className="relative w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-[30px]">
 				<button
 					className="absolute left-[30px] top-[1rem] text-[2.5rem] h-fit transition-all ease-linear duration-100 hover:scale-[1.2] hover:text-[darkblue]"
 					onClick={handleCloseButton}>

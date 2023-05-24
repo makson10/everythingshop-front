@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { useUserDataUpdate } from '@/context/UserDataContext';
-import { useCartUpdateContext } from '@/context/CartContext';
+import { useUserDataUpdate } from '@/hooks/useUserDataContext';
+import { useCartUpdateContext } from '@/hooks/useCartContext';
 
 interface Props {
 	isOpen: boolean;
@@ -14,6 +14,8 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	function handleLogOut() {
+		if (!isOpen) return;
+
 		deleteData();
 		deleteTokens();
 		deleteAllProducts();
@@ -21,6 +23,8 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 	}
 
 	useEffect(() => {
+		if (!isOpen) return;
+
 		const handleClickOutOfMenu = (event: any) => {
 			if (menuRef.current && !menuRef.current.contains(event.target)) {
 				setIsOpenMenu((prevValue) => false);
@@ -34,13 +38,17 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 		return () => {
 			document.removeEventListener('click', handleClickOutOfMenu);
 		};
-	}, [menuRef]);
+	}, [isOpen]);
 
 	return (
 		<>
 			<div
 				ref={menuRef}
-				className="flex flex-col absolute top-[90px] opacity-100 z-50">
+				className={`absolute transition-all ${
+					isOpen
+						? 'z-50 flex flex-col opacity-1 translate-y-[60%]'
+						: 'z-[-1] opacity-0 transform-y-[-60%]'
+				}`}>
 				<div className="flex justify-center">
 					<div className="w-0 h-0 bg-transparent relative border-transparent border-[10px] border-b-black border-b-[10px]"></div>
 				</div>

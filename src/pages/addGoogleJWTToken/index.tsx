@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { getCookie } from '@/functions/cookiesFunction';
-import { useSendEmail } from '@/hooks/useSendEmail';
+import useSendEmail from '@/hooks/useSendEmail';
+import Cookie from 'js-cookie';
 
 export default function AddGoogleJWTToken() {
 	const router = useRouter();
@@ -15,9 +15,12 @@ export default function AddGoogleJWTToken() {
 
 		if (!googleJWTToken) return;
 
-		if (getCookie('jwtToken')) document.cookie = `jwtToken=; max-age=0`;
+		if (Cookie.get('jwtToken')) Cookie.remove('jwtToken');
 		if (typeof googleJWTToken === 'string') {
-			document.cookie = `googleJWTToken=${googleJWTToken}; path=/; samesite=lax;`;
+			Cookie.set('googleJWTToken', googleJWTToken, {
+				path: '/',
+				sameSite: 'Lax',
+			});
 		}
 
 		if (

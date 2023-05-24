@@ -35,16 +35,16 @@ export const getServerSideProps: GetServerSideProps<FetchedDataType> = async (
 		`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productName}`
 	).then((res) => res.data);
 
-	if (productData.data?.comments.length === 0) {
-		productData.data.comments = [];
-	} else {
-		productData.data.comments = await JSON.parse(productData.data.comments);
-	}
-
 	if (!productData.success) {
 		return {
 			notFound: true,
 		};
+	}
+
+	if (productData.data?.comments.length === 0) {
+		productData.data.comments = [];
+	} else {
+		productData.data.comments = await JSON.parse(productData.data.comments);
 	}
 
 	return {

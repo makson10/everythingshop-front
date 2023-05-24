@@ -1,36 +1,34 @@
 import { useEffect, useState } from 'react';
-import { validateSignUpData } from '@/functions/validateFunctions';
-import { useUserData, useUserDataUpdate } from '@/context/UserDataContext';
+import useValidation from '@/hooks/useValidation';
+import { useUserData, useUserDataUpdate } from '@/hooks/useUserDataContext';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import { ISignUpUserData } from '@/types/validationTypes';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '@/components/GoogleButton/GoogleButton';
+import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
+import useSendEmail from '@/hooks/useSendEmail';
 import { Formik } from 'formik';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import axios from 'axios';
-import { useSendEmail } from '@/hooks/useSendEmail';
+import Cookies from 'js-cookie';
 
 export default function SignUp() {
 	const userData = useUserData();
 	const { saveData } = useUserDataUpdate();
 	const { sendSignUpEmail } = useSendEmail();
+	const { validateSignUpData } = useValidation();
 
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 	const [signUpUserCredential, setSignUpUserCredential] =
 		useState<ISignUpUserData>();
-	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+	const { isPasswordVisible, togglePasswordVisible } =
+		useIsPasswordVisible(false);
 
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
-
 	const router = useRouter();
-
-	const handleTogglePasswordVisible = (e: any) => {
-		e.preventDefault();
-		setIsPasswordVisible((prevValue) => !prevValue);
-	};
 
 	const sendDataToServer = async (data: ISignUpUserData) => {
 		await axios
@@ -64,7 +62,10 @@ export default function SignUp() {
 				},
 			}
 		);
-		document.cookie = `jwtToken=${JWTTokenResult.data.jwtToken}; path=/; samesite=lax;`;
+		Cookies.set('jwtToken', JWTTokenResult.data.jwtToken, {
+			path: '/',
+			sameSite: 'Lax',
+		});
 
 		setIsServerError(false);
 		setSignUpUserCredential(data);
@@ -267,7 +268,7 @@ export default function SignUp() {
 											<button
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
 												tabIndex={-1}
-												onClick={handleTogglePasswordVisible}>
+												onClick={togglePasswordVisible}>
 												<img
 													src={isPasswordVisible ? './hide.png' : './show.png'}
 													alt="#"

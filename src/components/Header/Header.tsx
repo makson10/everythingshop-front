@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useCartContext } from '@/context/CartContext';
+import { useCartContext } from '@/hooks/useCartContext';
 
 interface Props {
 	pageName: string | string[] | undefined;
@@ -28,7 +28,7 @@ export default function Header({ pageName, showCartIcon = true }: Props) {
 					{showCartIcon && (
 						<>
 							<button
-								className="relative w-fit h-fit max-sm:w-[32px] h-[32px]"
+								className="relative w-fit h-fit max-sm:w-[32px] max-sm:h-[32px]"
 								onClick={() => router.push('/cart')}>
 								<img src="https://img.icons8.com/sf-black/48/null/buy.png" />
 								{cart.length !== 0 && (

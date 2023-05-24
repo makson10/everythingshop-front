@@ -1,30 +1,22 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { IUnionUserData } from '@/types/userTypes';
 import {
 	UserDataContextType,
 	UserDataUpdateContextType,
 } from '@/types/contextTypes';
-import { getCookie } from '@/functions/cookiesFunction';
+import Cookie from 'js-cookie';
 import axios from 'axios';
 
 interface ProviderProps {
 	children: React.ReactNode;
 }
 
-const UserDataContext = createContext<UserDataContextType>({ data: null });
-const UserDataUpdateContext = createContext<UserDataUpdateContextType>({
+export const UserDataContext = createContext<UserDataContextType>({ data: null });
+export const UserDataUpdateContext = createContext<UserDataUpdateContextType>({
 	saveData: (credential: IUnionUserData) => {},
 	deleteData: () => {},
 	deleteTokens: () => {},
 });
-
-export function useUserData() {
-	return useContext(UserDataContext);
-}
-
-export function useUserDataUpdate() {
-	return useContext(UserDataUpdateContext);
-}
 
 const initialValue = {
 	name: '',
@@ -48,14 +40,14 @@ export function UserDataProvider({ children }: ProviderProps) {
 	}
 
 	function deleteTokens() {
-		document.cookie = `jwtToken=; max-age=0;`;
-		document.cookie = `googleJWTToken=; max-age=0;`;
+		Cookie.remove('jwtToken');
+		Cookie.remove('googleJWTToken');
 	}
 
 	useEffect(() => {
 		const getUserData = async () => {
-			const jwtToken = getCookie('jwtToken');
-			const googleJWTToken = getCookie('googleJWTToken');
+			const jwtToken = Cookie.get('jwtToken');
+			const googleJWTToken = Cookie.get('googleJWTToken');
 
 			if (jwtToken) {
 				await axios

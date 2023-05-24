@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useCartContext, useCartUpdateContext } from '@/context/CartContext';
-import { useUserData } from '@/context/UserDataContext';
+import { useCartContext, useCartUpdateContext } from '@/hooks/useCartContext';
+import { useUserData } from '@/hooks/useUserDataContext';
 import { FailWindow } from '../FailWindow/FailWindow';
 import { SubmitBuyRow } from './SubmitBuyRow';
 

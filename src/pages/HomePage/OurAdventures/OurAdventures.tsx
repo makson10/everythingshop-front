@@ -1,14 +1,15 @@
 import { useEffect, useRef } from 'react';
-import { animate } from '@/functions/srAnimation';
+import useScrollReveal from '@/hooks/useScrollReveal';
 import { cardData } from '@/assets/cardData';
 import InfoCard from './InfoCard';
 import Heading from './Heading';
 
 export default function ChooseInfoSection() {
+	const setUpSRAnim = useScrollReveal();
 	const componentRef = useRef(null);
 
 	useEffect(() => {
-		animate(componentRef, 800, '10px');
+		setUpSRAnim(componentRef, 800, '10px');
 	}, []);
 
 	return (

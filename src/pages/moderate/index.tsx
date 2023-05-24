@@ -1,24 +1,23 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { validateLogInData } from '@/functions/validateFunctions';
-import { getCookie } from '@/functions/cookiesFunction';
+import useValidation from '@/hooks/useValidation';
 import { IAdminData } from '@/types/adminTypes';
 import { ILogInUserData } from '@/types/validationTypes';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
+import Cookie from 'js-cookie';
 import { Formik } from 'formik';
 import axios from 'axios';
 
 export default function ModeratePage() {
-	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+	const { validateLogInData } = useValidation();
+
+	const { isPasswordVisible, togglePasswordVisible } =
+		useIsPasswordVisible(false);
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const router = useRouter();
-
-	const handleTogglePasswordVisible = (e: any) => {
-		e.preventDefault();
-		setIsPasswordVisible((prevValue) => !prevValue);
-	};
 
 	const checkAdminData = async (adminData: IAdminData) => {
 		await axios
@@ -46,9 +45,12 @@ export default function ModeratePage() {
 	};
 
 	const handleSuccess = () => {
-		document.cookie = `isAdminAuthorized=true; max-age=${
-			5 * 60
-		}; path=/moderate; samesite=lax`;
+		Cookie.set('isAdminAuthorized', 'true', {
+			path: '/moderate',
+			samesite: 'Lax',
+			expires: new Date(new Date().getTime() + 5 * 60 * 1000),
+		});
+
 		router.push(`${router.pathname}/adminPanel`);
 	};
 
@@ -62,7 +64,7 @@ export default function ModeratePage() {
 	};
 
 	useEffect(() => {
-		const isAdminAuthorized = getCookie('isAdminAuthorized') === 'true';
+		const isAdminAuthorized = Cookie.get('isAdminAuthorized') === 'true';
 		if (isAdminAuthorized) router.push('/moderate/adminPanel');
 	}, []);
 
@@ -159,7 +161,7 @@ export default function ModeratePage() {
 											<button
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
 												tabIndex={-1}
-												onClick={handleTogglePasswordVisible}>
+												onClick={togglePasswordVisible}>
 												<img
 													src={isPasswordVisible ? './hide.png' : './show.png'}
 													alt="#"

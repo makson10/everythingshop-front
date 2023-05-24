@@ -7,14 +7,14 @@ import {
 import { IBuyEmail, ISignUpEmail } from '../types/emailTypes';
 import { IFeedback } from '../types/feedbackTypes';
 
-export const useSendEmail = () => {
+const useSendEmail = () => {
 	const sendSignUpEmail = (userEmail: string, { userName }: ISignUpEmail) => {
 		Email.send({
-			Host: 'smtp.elasticemail.com',
-			Username: 'everything.shop.online.info@gmail.com',
-			Password: '79C9346A3FEECA2B44725231E86FB02C282F',
+			Host: process.env.NEXT_PUBLIC_SMTP_HOST,
+			Username: process.env.NEXT_PUBLIC_USERNAME,
+			Password: process.env.NEXT_PUBLIC_PASSWORD,
 			To: userEmail,
-			From: 'everything.shop.online.info@gmail.com',
+			From: process.env.NEXT_PUBLIC_USERNAME,
 			Subject: 'Success Sign Up',
 			Body: SuccessSignUpMarkup(userName),
 		});
@@ -25,11 +25,11 @@ export const useSendEmail = () => {
 		{ buyCost, fullUserName }: IBuyEmail
 	) => {
 		Email.send({
-			Host: 'smtp.elasticemail.com',
-			Username: 'everything.shop.online.info@gmail.com',
-			Password: '79C9346A3FEECA2B44725231E86FB02C282F',
+			Host: process.env.NEXT_PUBLIC_SMTP_HOST,
+			Username: process.env.NEXT_PUBLIC_USERNAME,
+			Password: process.env.NEXT_PUBLIC_PASSWORD,
 			To: userEmail,
-			From: 'everything.shop.online.info@gmail.com',
+			From: process.env.NEXT_PUBLIC_USERNAME,
 			Subject: 'Success purchase',
 			Body: SuccessBuyMarkup(buyCost, fullUserName),
 		});
@@ -37,11 +37,11 @@ export const useSendEmail = () => {
 
 	const sendFeedbackEmail = (FeedbackData: IFeedback) => {
 		Email.send({
-			Host: 'smtp.elasticemail.com',
-			Username: 'everything.shop.online.info@gmail.com',
-			Password: '79C9346A3FEECA2B44725231E86FB02C282F',
-			To: 'everything.shop.online.info@gmail.com',
-			From: 'everything.shop.online.info@gmail.com',
+			Host: process.env.NEXT_PUBLIC_SMTP_HOST,
+			Username: process.env.NEXT_PUBLIC_USERNAME,
+			Password: process.env.NEXT_PUBLIC_PASSWORD,
+			To: process.env.NEXT_PUBLIC_USERNAME,
+			From: process.env.NEXT_PUBLIC_USERNAME,
 			Subject: 'New Feedback',
 			Body: FeedbackMarkup(FeedbackData),
 		});
@@ -49,3 +49,5 @@ export const useSendEmail = () => {
 
 	return { sendSignUpEmail, sendBuyEmail, sendFeedbackEmail };
 };
+
+export default useSendEmail;

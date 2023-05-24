@@ -1,23 +1,38 @@
-import { LegacyRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
 	successText: string;
 }
 
 export default function SuccessMenu({ successText }: Props) {
-	const menuRef = useRef<HTMLDivElement>();
-	const [show, setShow] = useState(false);
+	const [show, setShow] = useState<boolean | null>(null);
 
 	useEffect(() => {
 		setShow(true);
-		setTimeout(() => setShow(false), 2000);
+		setTimeout(() => setShow(null), 2000);
 	}, []);
 
 	return (
 		<div
-			className="bg-white z-100 break-word w-[250px] fixed top-1/4 right-[0px] border-[2px] rounded-l-2xl border-black p-[0.6rem] pr-4 flex flex-col justify-between items-center"
-			ref={menuRef as LegacyRef<HTMLDivElement>}>
-			<p className="text-center font-sans text-[1.2rem]">{successText}</p>
+			className={`z-50 absolute top-[15%] right-0 bg-green-500 text-white w-fit font-semibold py-2 px-4 rounded-md shadow-md transition-all ${
+				show ? 'translate-x-[0%]' : 'translate-x-[100%]'
+			}`}>
+			<div className="flex items-center">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					className="h-6 w-6 mr-2"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor">
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth="2"
+						d="M5 13l4 4L19 7"></path>
+				</svg>
+				<span className="text-lg">Success!</span>
+			</div>
+			<p className="mt-2">{successText}</p>
 		</div>
 	);
 }

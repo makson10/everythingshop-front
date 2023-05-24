@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { validateAddNewProduct } from '@/functions/validateFunctions';
-import { useUserData } from '@/context/UserDataContext';
+import useValidation from '@/hooks/useValidation';
+import { useUserData } from '@/hooks/useUserDataContext';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import {
@@ -20,6 +20,7 @@ interface ProductDataType {
 }
 
 export function AddForm() {
+	const { validateAddNewProduct } = useValidation();
 	const authorizationUserData = useUserData();
 
 	const [fileInputLabel, setFileInputLabel] = useState<string>(
@@ -128,7 +129,7 @@ export function AddForm() {
 					<h1 className="text-4xl">Add new product</h1>
 					<div className="flex flex-col">
 						<div className="flex flex-col gap-4">
-							<label className="inline-block cursor-pointer px-[12px] py-[6px] flex justify-center gap-[20px]">
+							<label className="cursor-pointer px-[12px] py-[6px] flex justify-center gap-[20px]">
 								<img src="https://img.icons8.com/ios/50/null/upload-to-cloud--v1.png" />
 								<p className="flex items-center">{fileInputLabel}</p>
 								<input
