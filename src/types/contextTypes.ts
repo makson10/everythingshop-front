@@ -5,6 +5,8 @@ export type CartUpdateContextType = {
 	addProductToCard: (productData: IProduct) => void;
 	deleteProduct: (deleteProductId: string) => void;
 	deleteAllProducts: () => void;
+	decreaseProductAmount: (productId: string) => void;
+	increaseProductAmount: (productId: string) => void;
 };
 
 export type UserDataContextType = {

@@ -1,12 +1,22 @@
-:root {
-	--main-font: 'Montserrat', sans-serif;
-	--main-font-weight: 700;
-	--main-font-second-weight: 400;
-	--second-font: 'Lato', sans-serif;
-	--second-font-weight: 400;
+@import 'tailwindcss/base';
 
-	--first-color: #3c6255;
-	--second-color: #61876e;
-	--third-color: #a6bb8d;
-	--four-color: #eae7b1;
+@layer base {
+	:root {
+		--main-font: 'Montserrat', sans-serif;
+		--main-font-weight: 700;
+		--main-font-second-weight: 400;
+		--second-font: 'Lato', sans-serif;
+		--second-font-weight: 400;
+
+		--first-color: #3c6255;
+		--second-color: #61876e;
+		--third-color: #a6bb8d;
+		--four-color: #eae7b1;
+
+		--first-dark-color: #162780;
+		--second-dark-color: #213abf;
+		--third-dark-color: #2b4eff;
+		--four-dark-color: #0C1F3D;
+		--five-dark-color: #2746e6;
+	}
 }

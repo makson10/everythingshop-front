@@ -16,7 +16,7 @@ export default function Document() {
 					rel="stylesheet"
 				/>
 			</Head>
-			<body className="bg-[#F6FFDE]">
+			<body className="bg-[#F6FFDE] dark:bg-[--four-dark-color] dark:text-white">
 				<div id="portal"></div>
 				<Main />
 				<NextScript />

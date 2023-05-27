@@ -2,8 +2,10 @@ import { useUserData } from '@/hooks/useUserDataContext';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ModalMenu } from './ModalMenu';
+import useIsDarkTheme from '@/hooks/useIsDarkTheme';
 
 export default function UserButton() {
+	const isDarkTheme = useIsDarkTheme();
 	const userData = useUserData();
 	const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
 	const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -28,7 +30,7 @@ export default function UserButton() {
 			{isUserLogin ? (
 				<>
 					<div
-						className="flex justify-around items-center gap-[10px] w-[160px] px-[12px] text-black"
+						className="flex justify-around items-center gap-[10px] w-[160px] px-[12px] text-black dark:text-white"
 						onClick={handleToggleIsOpenMenu}>
 						<button>
 							<img
@@ -36,7 +38,9 @@ export default function UserButton() {
 								src={
 									userData.data?.picture
 										? userData.data?.picture
-										: 'https://img.icons8.com/windows/120/null/user-male-circle.png'
+										: `https://img.icons8.com/windows/120/${
+												isDarkTheme ? 'ffffff' : '000000'
+										  }/user-male-circle.png`
 								}
 								loading="lazy"
 							/>

@@ -20,7 +20,7 @@ export default function GoogleButton({ action, redirectUrl }: Props) {
 				loading="lazy"
 				alt="google logo"
 			/>
-			<span>{action} with Google</span>
+			<span className='dark:text-white'>{action} with Google</span>
 		</button>
 	);
 }

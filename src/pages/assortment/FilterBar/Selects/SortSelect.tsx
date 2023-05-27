@@ -22,7 +22,7 @@ export default function SortSelect({ handleFunction }: Props) {
 		<Listbox value={selected} onChange={setSelected}>
 			{({ open }) => (
 				<div>
-					<Listbox.Label className="block text-xl font-medium leading-6 text-gray-900">
+					<Listbox.Label className="block text-xl font-medium leading-6 text-gray-900 dark:text-white">
 						Sort By
 					</Listbox.Label>
 					<div className="relative mt-2">

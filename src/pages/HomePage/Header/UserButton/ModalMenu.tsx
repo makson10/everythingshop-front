@@ -50,9 +50,9 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 						: 'z-[-1] opacity-0 transform-y-[-60%]'
 				}`}>
 				<div className="flex justify-center">
-					<div className="w-0 h-0 bg-transparent relative border-transparent border-[10px] border-b-black border-b-[10px]"></div>
+					<div className="w-0 h-0 bg-transparent relative border-transparent border-[10px] border-b-black dark:border-b-white border-b-[10px] dark:top-[1px]"></div>
 				</div>
-				<div className="flex flex-col gap-[5px] rounded-[1rem] border-[2px] border-black p-2 text-black bg-white">
+				<div className="flex flex-col gap-[5px] rounded-[1rem] border-[2px] border-black dark:border-white p-2 text-black bg-white">
 					<button
 						className="bg-transparent p-[0.2rem] text-[1.2rem]"
 						onClick={handleLogOut}>

@@ -22,7 +22,7 @@ export default function FilterSelect({ handleFunction }: Props) {
 		<Listbox value={selected} onChange={setSelected}>
 			{({ open }) => (
 				<div>
-					<Listbox.Label className="block text-xl font-medium leading-6 text-gray-900">
+					<Listbox.Label className="block text-xl font-medium leading-6 text-gray-900 dark:text-white">
 						Filter By
 					</Listbox.Label>
 					<div className="relative mt-2">

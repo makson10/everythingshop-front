@@ -30,13 +30,13 @@ export function ProductCard({ productData }: Props) {
 			</div>
 			<div className="mt-4 flex justify-between">
 				<div>
-					<h3 className="text-sm text-gray-700">
+					<h3 className="text-sm text-gray-700 dark:text-white">
 						<Link href={`/assortment/${productData.uniqueProductId}`}>
 							<span aria-hidden="true" className="absolute inset-0" />
 							{productData.title}
 						</Link>
 					</h3>
-					<p className="mt-1 text-sm text-gray-500">
+					<p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
 						Seller: {productData.creator}
 					</p>
 				</div>

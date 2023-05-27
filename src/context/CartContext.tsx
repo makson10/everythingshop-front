@@ -1,68 +1,99 @@
-import {
-	createContext,
-	useContext,
-	useEffect,
-	useState,
-	ReactNode,
-} from 'react';
-import { IProduct, ProductType } from '@/types/productTypes';
+import { createContext, useEffect, useState, ReactNode } from 'react';
+import { IProduct, CartProductType } from '@/types/productTypes';
 import { CartUpdateContextType } from '@/types/contextTypes';
 
 interface ProviderProps {
 	children: ReactNode;
 }
 
-export const CartContext = createContext<ProductType>([]);
+export const CartContext = createContext<CartProductType>([]);
 export const CartUpdateContext = createContext<CartUpdateContextType>({
 	addProductToCard: (product: IProduct) => {},
 	deleteProduct: (deleteProductId: string) => {},
 	deleteAllProducts: () => {},
+	decreaseProductAmount: (productId: string) => {},
+	increaseProductAmount: (productId: string) => {},
 });
 
-export function CartProvider({ children }: ProviderProps): JSX.Element {
-	const [products, setProducts] = useState<ProductType>([]);
+export function CartProvider({ children }: ProviderProps) {
+	const [products, setProducts] = useState<CartProductType>([]);
 
-	function addProductToCard(product: IProduct) {
-		setProducts((prevValue) => [...prevValue, product]);
+	const addProductToCard = (productToAdd: IProduct) => {
+		const existProducts = [...products];
 
-		const alreadyExistProducts = localStorage.getItem('cartProducts');
-		if (!alreadyExistProducts) {
-			localStorage.setItem('cartProducts', JSON.stringify([product]));
-			return;
-		}
+		let foundSameProduct: boolean = false;
+		existProducts.forEach((product) => {
+			if (product.productsData.photo_id === productToAdd.photo_id) {
+				product.amount++;
+				foundSameProduct = true;
+			}
+		});
 
-		const productList = JSON.parse(alreadyExistProducts);
-		productList.push(product);
-		localStorage.setItem('cartProducts', JSON.stringify(productList));
-	}
+		setProducts((prevValue) => {
+			const newProducts = foundSameProduct
+				? existProducts
+				: [...prevValue, { amount: 1, productsData: productToAdd }];
 
-	function deleteProduct(deleteProductId: string) {
+			localStorage.setItem('cartProducts', JSON.stringify(newProducts));
+			return newProducts;
+		});
+	};
+
+	const deleteProduct = (deleteProductId: string) => {
 		const newProducts = [...products];
 
-		newProducts.map((product: IProduct, index: number) => {
-			if (product.uniqueProductId === deleteProductId) {
+		newProducts.map((product, index) => {
+			if (product.productsData.uniqueProductId === deleteProductId) {
 				newProducts.splice(index, 1);
 			}
 		});
 
 		setProducts(newProducts);
 		localStorage.setItem('cartProducts', JSON.stringify(newProducts));
-	}
+	};
 
-	function deleteAllProducts() {
+	const deleteAllProducts = () => {
 		setProducts([]);
-		localStorage.removeItem('cartProducts');
-	}
+		localStorage.setItem('cartProducts', '[]');
+	};
+
+	const decreaseProductAmount = (productId: string) => {
+		const newProducts = [...products];
+
+		newProducts.map((product) => {
+			if (product.productsData.uniqueProductId === productId) product.amount--;
+		});
+
+		setProducts(newProducts);
+		localStorage.setItem('cartProducts', JSON.stringify(newProducts));
+	};
+
+	const increaseProductAmount = (productId: string) => {
+		const newProducts = [...products];
+
+		newProducts.map((product) => {
+			if (product.productsData.uniqueProductId === productId) product.amount++;
+		});
+
+		setProducts(newProducts);
+		localStorage.setItem('cartProducts', JSON.stringify(newProducts));
+	};
 
 	useEffect(() => {
 		const cartProducts = localStorage.getItem('cartProducts');
-		cartProducts && setProducts(JSON.parse(cartProducts));
+		if (cartProducts) setProducts(JSON.parse(cartProducts));
 	}, []);
 
 	return (
 		<CartContext.Provider value={products}>
 			<CartUpdateContext.Provider
-				value={{ addProductToCard, deleteProduct, deleteAllProducts }}>
+				value={{
+					addProductToCard,
+					deleteProduct,
+					deleteAllProducts,
+					decreaseProductAmount,
+					increaseProductAmount,
+				}}>
 				{children}
 			</CartUpdateContext.Provider>
 		</CartContext.Provider>

@@ -8,21 +8,21 @@ export default function NavBar() {
 					<li>
 						<Link
 							href={'/addProduct'}
-							className="font-[600] text-black relative inline-flex before:absolute before:top-full before:bg-[darkblue] before:w-full before:h-[4px] before:scale-x-0 before:ease-linear before:duration-100 before:transition-[transform] hover:before:scale-x-100">
+							className="font-[600] text-black dark:text-white relative inline-flex before:absolute before:top-full before:bg-[darkblue] dark:before:bg-[orange] before:w-full before:h-[4px] before:scale-x-0 before:ease-linear before:duration-100 before:transition-[transform] hover:before:scale-x-100">
 							Add item
 						</Link>
 					</li>
 					<li>
 						<Link
 							href={'/assortment'}
-							className="font-[600] text-black relative inline-flex before:absolute before:top-full before:bg-[darkblue] before:w-full before:h-[4px] before:scale-x-0 before:ease-linear before:duration-100 before:transition-[transform] hover:before:scale-x-100">
+							className="font-[600] text-black dark:text-white relative inline-flex before:absolute before:top-full before:bg-[darkblue] dark:before:bg-[orange] before:w-full before:h-[4px] before:scale-x-0 before:ease-linear before:duration-100 before:transition-[transform] hover:before:scale-x-100">
 							Assortment
 						</Link>
 					</li>
 					<li>
 						<Link
 							href={'/cart'}
-							className="font-[600] text-black relative inline-flex before:absolute before:top-full before:bg-[darkblue] before:w-full before:h-[4px] before:scale-x-0 before:ease-linear before:duration-100 before:transition-[transform] hover:before:scale-x-100">
+							className="font-[600] text-black dark:text-white relative inline-flex before:absolute before:top-full before:bg-[darkblue] dark:before:bg-[orange] before:w-full before:h-[4px] before:scale-x-0 before:ease-linear before:duration-100 before:transition-[transform] hover:before:scale-x-100">
 							Cart
 						</Link>
 					</li>

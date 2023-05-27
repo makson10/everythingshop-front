@@ -92,8 +92,8 @@ export default function ProductInfoBlock({ productData }: Props) {
 							<div className="flex items-center">
 								<a
 									href="/assortment"
-									className="mr-2 text-sm font-medium text-gray-900">
-									{'assortment'}
+									className="mr-2 text-sm font-medium text-gray-900 dark:text-white">
+									assortment
 								</a>
 								<svg
 									width={16}
@@ -109,7 +109,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 						<li className="text-sm">
 							<a
 								aria-current="page"
-								className="font-medium cursor-pointer text-gray-500 hover:text-gray-600">
+								className="font-medium cursor-pointer text-gray-500 dark:text-white hover:text-gray-600">
 								{productData.title}
 							</a>
 						</li>
@@ -135,7 +135,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 				{/* Product info */}
 				<div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
 					<div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-						<h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+						<h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
 							{productData.title}
 						</h1>
 					</div>
@@ -143,14 +143,14 @@ export default function ProductInfoBlock({ productData }: Props) {
 					{/* Options */}
 					<div className="mt-4 lg:row-span-3 lg:mt-0">
 						<h2 className="sr-only">Product information</h2>
-						<p className="text-3xl tracking-tight text-gray-900">
+						<p className="text-3xl tracking-tight text-gray-900 dark:text-white">
 							${productData.price}
 						</p>
 
 						{/* Reviews */}
 						<div className="mt-6">
 							<div className="flex items-center">
-								<a className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+								<a className="text-sm font-medium text-indigo-600 dark:text-[orange] hover:text-indigo-500">
 									{productData.comments.length} reviews
 								</a>
 							</div>
@@ -158,7 +158,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 						<button
 							ref={addToCartButtonRef as LegacyRef<HTMLButtonElement>}
 							onClick={handleClickBuyButton}
-							className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50">
+							className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white dark:bg-orange-600 dark:hover:bg-orange-700 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50">
 							Add to bag
 						</button>
 					</div>
@@ -170,7 +170,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 
 							<h3 className="text-xl font-bold">Description</h3>
 							<div className="space-y-6">
-								<p className="text-base text-gray-900 break-words">
+								<p className="text-base text-gray-900 break-words dark:text-white">
 									{productData.description}
 								</p>
 							</div>
@@ -252,7 +252,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 									<form className="flex flex-col gap-2" onSubmit={handleSubmit}>
 										<div className="flex flex-row px-2 py-1">
 											<input
-												className="py-2 px-4 border border-gray-300 rounded-l-md flex-1"
+												className="py-2 px-4 border border-gray-300 rounded-l-md flex-1 dark:text-black"
 												type="text"
 												name="newCommentText"
 												placeholder={
@@ -266,7 +266,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 												value={values.newCommentText}
 											/>
 											<button
-												className="disabled:opacity-30 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-md"
+												className="disabled:opacity-30 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-md dark:bg-[orange]"
 												type="submit"
 												disabled={isSubmitting}
 												ref={

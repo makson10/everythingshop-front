@@ -11,8 +11,10 @@ import { Formik } from 'formik';
 import Cookie from 'js-cookie';
 import Link from 'next/link';
 import axios from 'axios';
+import useIsDarkTheme from '@/hooks/useIsDarkTheme';
 
 export default function LogIn() {
+	const isDarkTheme = useIsDarkTheme();
 	const userData = useUserData();
 	const { saveData } = useUserDataUpdate();
 	const { validateLogInData } = useValidation();
@@ -112,10 +114,14 @@ export default function LogIn() {
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
 					<img
 						className="mx-auto h-10 w-auto"
-						src="everythingshop_logo_dark.png"
+						src={
+							isDarkTheme
+								? 'everythingshop_logo.png'
+								: 'everythingshop_logo_dark.png'
+						}
 						alt="My Company"
 					/>
-					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">
 						Log in to your account
 					</h2>
 				</div>
@@ -156,7 +162,7 @@ export default function LogIn() {
 									<div className="flex items-center justify-between">
 										<label
 											htmlFor="login"
-											className="block text-lg font-medium leading-6 text-gray-900">
+											className="block text-lg font-medium leading-6 text-gray-900 dark:text-white">
 											Login
 										</label>
 									</div>
@@ -165,7 +171,7 @@ export default function LogIn() {
 											id="login"
 											name="login"
 											type="text"
-											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-orange-600 sm:text-sm sm:leading-6"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											value={values.login}
@@ -178,13 +184,13 @@ export default function LogIn() {
 									<div className="flex items-center justify-between">
 										<label
 											htmlFor="password"
-											className="block text-lg font-medium leading-6 text-gray-900">
+											className="block text-lg font-medium leading-6 text-gray-900 dark:text-white">
 											Password
 										</label>
 										<div className="text-lg">
 											<a
 												tabIndex={-1}
-												className="font-semibold focus:outline-none text-indigo-600 hover:text-indigo-500">
+												className="font-semibold focus:outline-none text-indigo-600 hover:text-indigo-500 dark:text-orange-600 dark:hover:text-orange-500">
 												Forgot password?
 											</a>
 										</div>
@@ -196,7 +202,7 @@ export default function LogIn() {
 												name="password"
 												type={isPasswordVisible ? 'text' : 'password'}
 												autoComplete="current-password"
-												className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+												className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-orange-600 sm:text-sm sm:leading-6"
 												onChange={handleChange}
 												onBlur={handleBlur}
 												value={values.password}
@@ -219,7 +225,7 @@ export default function LogIn() {
 									<button
 										type="submit"
 										disabled={isSubmitting}
-										className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+										className="flex w-full justify-center rounded-md bg-indigo-600 dark:bg-orange-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 dark:hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:focus-visible:outline-orange-500">
 										Log In
 									</button>
 								</div>
@@ -227,11 +233,11 @@ export default function LogIn() {
 						)}
 					</Formik>
 
-					<p className="mt-2 text-center text-base text-gray-500">
+					<p className="mt-2 text-center text-base text-gray-500 dark:text-white">
 						Already haven't account?{' '}
 						<Link
 							href="/signUp"
-							className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+							className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-orange-600 dark:hover:text-orange-500">
 							Sign Up
 						</Link>
 					</p>

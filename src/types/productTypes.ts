@@ -11,3 +11,10 @@ export interface IProduct {
 }
 
 export type ProductType = IProduct[];
+
+export interface ICartProduct {
+	amount: number;
+	productsData: IProduct;
+}
+
+export type CartProductType = ICartProduct[];

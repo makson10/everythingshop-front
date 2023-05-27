@@ -81,14 +81,14 @@ export default function SubmitBuyForm({
 	}, [useOldEmail]);
 
 	return (
-		<div className="z-100 fixed w-full h-screen bg-black/[0.6] flex justify-center items-center overflow-hidden">
+		<div className="z-50 fixed w-full h-screen bg-black/[0.6] flex justify-center items-center overflow-hidden dark:text-black">
 			<div className="relative w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-[30px]">
 				<button
-					className="absolute left-[30px] top-[1rem] text-[2.5rem] h-fit transition-all ease-linear duration-100 hover:scale-[1.2] hover:text-[darkblue]"
+					className="absolute left-[30px] top-[1rem] text-[2.5rem] h-fit transition-all ease-linear duration-100 hover:scale-[1.2] hover:text-[darkblue] dark:text-black dark:hover:text-[orange]"
 					onClick={handleCloseButton}>
 					&times;
 				</button>
-				<h1 className="text-[1.8rem]">Buy Form</h1>
+				<h1 className="text-[1.8rem] dark:text-black">Buy Form</h1>
 				<div className="flex flex-col gap-4">
 					<Formik
 						initialValues={{

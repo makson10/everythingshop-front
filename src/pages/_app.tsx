@@ -4,7 +4,7 @@ import '@/styles/globals.scss';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { UserDataProvider } from '@/context/UserDataContext';
-import { CartProvider } from '../context/CartContext';
+import { CartProvider } from '@/context/CartContext';
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
