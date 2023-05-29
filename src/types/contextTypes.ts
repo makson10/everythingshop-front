@@ -18,3 +18,9 @@ export type UserDataUpdateContextType = {
 	deleteData: () => void;
 	deleteTokens: () => void;
 };
+
+export type ThemeContextType = boolean;
+
+export type ThemeUpdateContextType = {
+	toggleIsDarkTheme: () => void;
+};

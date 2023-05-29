@@ -1,19 +1,10 @@
-import { useEffect, useState } from "react";
+import { ThemeContext, ThemeUpdateContext } from '@/context/ThemeContext';
+import { useContext } from 'react';
 
-const useIsDarkTheme = () => {
-	const [isDarkTheme, setIsDarkTheme] = useState<boolean>();
+export function useIsDarkTheme() {
+	return useContext(ThemeContext);
+}
 
-	useEffect(() => {
-		setIsDarkTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-		window
-			.matchMedia('(prefers-color-scheme: dark)')
-			.addEventListener('change', (event) => {
-				setIsDarkTheme(event.matches);
-			});
-	}, []);
-
-    return isDarkTheme;
-};
-
-export default useIsDarkTheme;
+export function useIsDarkThemeUpdate() {
+	return useContext(ThemeUpdateContext);
+}

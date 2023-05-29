@@ -9,7 +9,7 @@ import {
 } from '@/components/ShowModalWindow/ShowModalWindow';
 import { Formik } from 'formik';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
-import useIsDarkTheme from '@/hooks/useIsDarkTheme';
+import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 
 interface ProductDataType {
 	photoFile?: File;

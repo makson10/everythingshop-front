@@ -11,7 +11,7 @@ import { Formik } from 'formik';
 import Cookie from 'js-cookie';
 import Link from 'next/link';
 import axios from 'axios';
-import useIsDarkTheme from '@/hooks/useIsDarkTheme';
+import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 
 export default function LogIn() {
 	const isDarkTheme = useIsDarkTheme();

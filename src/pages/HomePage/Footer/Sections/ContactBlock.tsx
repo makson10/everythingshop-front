@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function ContactBlock() {
 	return (
 		<div className="flex flex-col gap-[50px] w-1/4 max-sm:order-3 max-sm:w-[85vw] max-sm:gap-8">
@@ -17,7 +19,7 @@ export default function ContactBlock() {
 				<div className="flex flex-row justify-center items-center gap-2.5">
 					<img src="address-icon.png" />
 					<p>
-						<a href="/feedback">Write your feedback</a>
+						<Link href="/feedback">Write your feedback</Link>
 					</p>
 				</div>
 			</div>

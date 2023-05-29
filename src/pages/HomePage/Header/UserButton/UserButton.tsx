@@ -2,7 +2,7 @@ import { useUserData } from '@/hooks/useUserDataContext';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ModalMenu } from './ModalMenu';
-import useIsDarkTheme from '@/hooks/useIsDarkTheme';
+import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 
 export default function UserButton() {
 	const isDarkTheme = useIsDarkTheme();

@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import useIsDarkTheme from '@/hooks/useIsDarkTheme';
+import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 
 export default function SignUp() {
 	const isDarkTheme = useIsDarkTheme();

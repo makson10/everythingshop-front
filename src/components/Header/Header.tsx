@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCartContext } from '@/hooks/useCartContext';
-import useIsDarkTheme from '@/hooks/useIsDarkTheme';
+import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 
 interface Props {
 	pageName: string | string[] | undefined;

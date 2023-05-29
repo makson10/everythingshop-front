@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { UserDataProvider } from '@/context/UserDataContext';
 import { CartProvider } from '@/context/CartContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
@@ -13,11 +14,13 @@ export default function App({ Component, pageProps }: AppProps) {
 				<title>Everything Shop</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			</Head>
-			<UserDataProvider>
-				<CartProvider>
-					<Component {...pageProps} />
-				</CartProvider>
-			</UserDataProvider>
+			<ThemeProvider>
+				<UserDataProvider>
+					<CartProvider>
+						<Component {...pageProps} />
+					</CartProvider>
+				</UserDataProvider>
+			</ThemeProvider>
 		</>
 	);
 }
