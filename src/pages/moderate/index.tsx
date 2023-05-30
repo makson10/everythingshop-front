@@ -5,12 +5,13 @@ import { IAdminData } from '@/types/adminTypes';
 import { ILogInUserData } from '@/types/validationTypes';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
-import Cookie from 'js-cookie';
+import useCookies from '@/hooks/useCookies';
 import { Formik } from 'formik';
 import axios from 'axios';
 
 export default function ModeratePage() {
 	const { validateLogInData } = useValidation();
+	const { getCookies, setCookies } = useCookies();
 
 	const { isPasswordVisible, togglePasswordVisible } =
 		useIsPasswordVisible(false);
@@ -45,7 +46,7 @@ export default function ModeratePage() {
 	};
 
 	const handleSuccess = () => {
-		Cookie.set('isAdminAuthorized', 'true', {
+		setCookies('isAdminAuthorized', 'true', {
 			path: '/moderate',
 			samesite: 'Lax',
 			expires: new Date(new Date().getTime() + 5 * 60 * 1000),
@@ -64,7 +65,7 @@ export default function ModeratePage() {
 	};
 
 	useEffect(() => {
-		const isAdminAuthorized = Cookie.get('isAdminAuthorized') === 'true';
+		const isAdminAuthorized = getCookies('isAdminAuthorized') === 'true';
 		if (isAdminAuthorized) router.push('/moderate/adminPanel');
 	}, []);
 

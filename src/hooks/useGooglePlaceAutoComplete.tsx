@@ -16,7 +16,7 @@ const useGooglePlaceAutoComplete = () => {
 	const getFullAddress = async (
 		autoComplete: google.maps.places.Autocomplete
 	) => {
-		const place = autoComplete.getPlace();
+		const place = await autoComplete.getPlace();
 
 		let address1 = '';
 		let locality = '';
@@ -26,7 +26,10 @@ const useGooglePlaceAutoComplete = () => {
 		let countryLong = '';
 		let postalCode = '';
 
-		for (const component of place.address_components!) {
+		const adderess = await place.address_components;
+		console.log(adderess);
+
+		for (const component of adderess!) {
 			const componentType = component.types[0];
 
 			if (componentType === 'street_number') {

@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Image from 'next/image';
 import useValidation from '@/hooks/useValidation';
 import { useUserData, useUserDataUpdate } from '@/hooks/useUserDataContext';
-import { ISignUpUserData, ILogInUserData } from '@/types/validationTypes';
+import useCookies from '@/hooks/useCookies';
+import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
+import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '@/components/GoogleButton/GoogleButton';
-import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
+import { ISignUpUserData, ILogInUserData } from '@/types/validationTypes';
 import { Formik } from 'formik';
-import Cookie from 'js-cookie';
-import Link from 'next/link';
 import axios from 'axios';
-import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 
 export default function LogIn() {
 	const isDarkTheme = useIsDarkTheme();
 	const userData = useUserData();
 	const { saveData } = useUserDataUpdate();
 	const { validateLogInData } = useValidation();
+	const { setCookies } = useCookies();
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 	const { isPasswordVisible, togglePasswordVisible } =
 		useIsPasswordVisible(false);
@@ -60,8 +62,7 @@ export default function LogIn() {
 			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/register`,
 			userData
 		);
-		Cookie.set('jwtToken', JWTTokenResult.data.jwtToken, {
-			path: '/',
+		setCookies('jwtToken', JWTTokenResult.data.jwtToken, {
 			sameSite: 'Lax',
 		});
 
@@ -112,14 +113,16 @@ export default function LogIn() {
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
-					<img
+					<Image
 						className="mx-auto h-10 w-auto"
 						src={
 							isDarkTheme
-								? 'everythingshop_logo.png'
-								: 'everythingshop_logo_dark.png'
+								? '/everythingshop_logo.png'
+								: '/everythingshop_logo_dark.png'
 						}
 						alt="My Company"
+						width={400}
+						height={400}
 					/>
 					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">
 						Log in to your account
@@ -211,9 +214,11 @@ export default function LogIn() {
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
 												tabIndex={-1}
 												onClick={togglePasswordVisible}>
-												<img
-													src={isPasswordVisible ? './hide.png' : './show.png'}
+												<Image
+													src={isPasswordVisible ? '/hide.png' : '/show.png'}
 													alt="#"
+													width={26}
+													height={26}
 												/>
 											</button>
 										</div>
@@ -234,6 +239,7 @@ export default function LogIn() {
 					</Formik>
 
 					<p className="mt-2 text-center text-base text-gray-500 dark:text-white">
+						{/* eslint-disable-next-line react/no-unescaped-entities */}
 						Already haven't account?{' '}
 						<Link
 							href="/signUp"

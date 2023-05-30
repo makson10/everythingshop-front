@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
-import useValidation from '@/hooks/useValidation';
-import { useUserData, useUserDataUpdate } from '@/hooks/useUserDataContext';
-import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
-import { ISignUpUserData } from '@/types/validationTypes';
-import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
-import GoogleButton from '@/components/GoogleButton/GoogleButton';
-import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
-import useSendEmail from '@/hooks/useSendEmail';
-import { Formik } from 'formik';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import Image from 'next/image';
+import { Formik } from 'formik';
+import useValidation from '@/hooks/useValidation';
+import { useUserData, useUserDataUpdate } from '@/hooks/useUserDataContext';
+import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
+import useSendEmail from '@/hooks/useSendEmail';
+import useCookies from '@/hooks/useCookies';
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
+import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
+import GoogleButton from '@/components/GoogleButton/GoogleButton';
+import { ISignUpUserData } from '@/types/validationTypes';
+import axios from 'axios';
 
 export default function SignUp() {
 	const isDarkTheme = useIsDarkTheme();
 	const userData = useUserData();
+	const { setCookies } = useCookies();
 	const { saveData } = useUserDataUpdate();
 	const { sendSignUpEmail } = useSendEmail();
 	const { validateSignUpData } = useValidation();
@@ -64,8 +66,8 @@ export default function SignUp() {
 				},
 			}
 		);
-		Cookies.set('jwtToken', JWTTokenResult.data.jwtToken, {
-			path: '/',
+
+		setCookies('jwtToken', JWTTokenResult.data.jwtToken, {
 			sameSite: 'Lax',
 		});
 
@@ -117,13 +119,15 @@ export default function SignUp() {
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-10 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
-					<img
+					<Image
 						className="mx-auto h-10 w-auto"
 						src={
 							isDarkTheme
-								? 'everythingshop_logo.png'
-								: 'everythingshop_logo_dark.png'
+								? '/everythingshop_logo.png'
+								: '/everythingshop_logo_dark.png'
 						}
+						width={400}
+						height={400}
 						alt="My Company"
 					/>
 					<h2 className="mt-8 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">
@@ -275,9 +279,11 @@ export default function SignUp() {
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
 												tabIndex={-1}
 												onClick={togglePasswordVisible}>
-												<img
-													src={isPasswordVisible ? './hide.png' : './show.png'}
+												<Image
+													src={isPasswordVisible ? '/hide.png' : '/show.png'}
 													alt="#"
+													width={26}
+													height={26}
 												/>
 											</button>
 										</div>

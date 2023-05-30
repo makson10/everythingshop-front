@@ -4,14 +4,16 @@ import {
 	UserDataContextType,
 	UserDataUpdateContextType,
 } from '@/types/contextTypes';
-import Cookie from 'js-cookie';
+import useCookies from '@/hooks/useCookies';
 import axios from 'axios';
 
 interface ProviderProps {
 	children: React.ReactNode;
 }
 
-export const UserDataContext = createContext<UserDataContextType>({ data: null });
+export const UserDataContext = createContext<UserDataContextType>({
+	data: null,
+});
 export const UserDataUpdateContext = createContext<UserDataUpdateContextType>({
 	saveData: (credential: IUnionUserData) => {},
 	deleteData: () => {},
@@ -29,6 +31,7 @@ const initialValue = {
 };
 
 export function UserDataProvider({ children }: ProviderProps) {
+	const { getCookies, removeCookies } = useCookies();
 	const [data, setData] = useState<IUnionUserData>(initialValue);
 
 	function saveData(credential: IUnionUserData) {
@@ -40,14 +43,14 @@ export function UserDataProvider({ children }: ProviderProps) {
 	}
 
 	function deleteTokens() {
-		Cookie.remove('jwtToken');
-		Cookie.remove('googleJWTToken');
+		removeCookies('jwtToken');
+		removeCookies('googleJWTToken');
 	}
 
 	useEffect(() => {
 		const getUserData = async () => {
-			const jwtToken = Cookie.get('jwtToken');
-			const googleJWTToken = Cookie.get('googleJWTToken');
+			const jwtToken = getCookies('jwtToken');
+			const googleJWTToken = getCookies('googleJWTToken');
 
 			if (jwtToken) {
 				await axios

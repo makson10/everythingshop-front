@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Cookie from 'js-cookie';
+import useCookies from '@/hooks/useCookies';
 import { GetServerSideProps } from 'next';
 import { ProductType } from '@/types/productTypes';
 import { UserDataType } from '@/types/userTypes';
@@ -18,18 +18,19 @@ interface FetchedData {
 	feedbacks: FeedbackType;
 }
 
-export default function adminPanel({
+export default function AdminPanel({
 	customers,
 	googleCustomers,
 	products,
 	feedbacks,
 }: FetchedData) {
 	const router = useRouter();
+	const { getCookies, removeCookies } = useCookies();
 
 	useEffect(() => {
-		const isAdminAuthorized = Cookie.get('isAdminAuthorized') === 'true';
+		const isAdminAuthorized = getCookies('isAdminAuthorized') === 'true';
 		if (!isAdminAuthorized) {
-			Cookie.remove('isAdminAuthorized');
+			removeCookies('isAdminAuthorized');
 			router.push('/moderate');
 		}
 	}, []);
