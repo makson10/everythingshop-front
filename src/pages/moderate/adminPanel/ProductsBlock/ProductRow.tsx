@@ -1,7 +1,8 @@
-import { IProduct } from '@/types/productTypes';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image';
+import { IProduct } from '@/types/productTypes';
+import axios from 'axios';
 
 interface Props {
 	product: IProduct;
@@ -22,15 +23,12 @@ export default function ProductRow({ product }: Props) {
 	return (
 		<div className="flex flex-row border-b-[2px] border-[gray] p-2">
 			<div className="flex flex-row items-center gap-[10px]">
-				<img
+				<Image
 					className="w-[50px] h-[50px]"
 					src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/image/${product.photo_id}`}
-					onError={(event) => {
-						event.currentTarget.src =
-							'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo2vEKNv6zaKu2i_NKvQXN8lYd0g2NMeNXzrkrZlw&s';
-						event.currentTarget.onerror = null;
-					}}
-					loading="lazy"
+					alt="#"
+					width={100}
+					height={100}
 				/>
 				<p>
 					<Link
@@ -44,9 +42,11 @@ export default function ProductRow({ product }: Props) {
 			<div className="flex flex-row items-center gap-[5px] ml-auto">
 				<p className="max-sm:text-[0.9rem]">${product.price}</p>
 				<button className="transparent border-none" onClick={handleClick}>
-					<img
-						className="max-w-[30px]"
-						src="https://img.icons8.com/windows/30/null/trash.png"
+					<Image
+						src="https://img.icons8.com/windows/100/null/trash.png"
+						alt="#"
+						width={30}
+						height={30}
 					/>
 				</button>
 			</div>

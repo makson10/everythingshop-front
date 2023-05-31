@@ -1,4 +1,5 @@
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
+import Image from 'next/image';
 
 interface Props {
 	handleFunction: (searchParameter: string) => void;
@@ -9,13 +10,14 @@ export default function SearchInput({ handleFunction }: Props) {
 
 	return (
 		<div className="flex flex-row items-center gap-[10px]">
-			<img
-				width="32"
-				height="32"
+			<Image
+				className="w-[32px] h-[32px]"
 				src={`https://img.icons8.com/ios-glyphs/32/${
 					isDarkTheme ? 'ffffff' : '000000'
 				}/search--v1.png`}
 				alt="#"
+				width={100}
+				height={100}
 			/>
 			<input
 				type="text"

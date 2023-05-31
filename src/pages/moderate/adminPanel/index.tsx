@@ -1,13 +1,13 @@
+import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useCookies from '@/hooks/useCookies';
-import { GetServerSideProps } from 'next';
 import { ProductType } from '@/types/productTypes';
 import { UserDataType } from '@/types/userTypes';
+import { FeedbackType } from '@/types/feedbackTypes';
 import UsersDataBlock from './UsersDataBlock/UsersDataBlock';
 import ProductsBlock from './ProductsBlock/ProductsBlock';
 import CommentsBlock from './CommentsBlock/CommentsBlock';
-import { FeedbackType } from '@/types/feedbackTypes';
 import FeedbackBlock from './FeedbackBlock/FeedbackBlock';
 import axios from 'axios';
 

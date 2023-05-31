@@ -18,13 +18,6 @@ export function ThemeProvider({ children }: ProviderProps) {
 	};
 
 	useEffect(() => {
-		const storedIsDarkTheme = localStorage.getItem('isDarkTheme');
-		storedIsDarkTheme
-			? setIsDarkTheme(storedIsDarkTheme === 'true')
-			: setIsDarkTheme(document.documentElement.classList.contains('dark'));
-	}, []);
-
-	useEffect(() => {
 		const callback = (mutationList: any) => {
 			mutationList.forEach((mutation: any) => {
 				if (
@@ -49,6 +42,13 @@ export function ThemeProvider({ children }: ProviderProps) {
 			const observer = new MutationObserver(callback);
 			observer.observe(document.documentElement, { attributes: true });
 		}, 1000);
+	}, []);
+
+	useEffect(() => {
+		const storedIsDarkTheme = localStorage.getItem('isDarkTheme');
+		storedIsDarkTheme
+			? setIsDarkTheme(storedIsDarkTheme === 'true')
+			: setIsDarkTheme(document.documentElement.classList.contains('dark'));
 	}, []);
 
 	useEffect(() => {

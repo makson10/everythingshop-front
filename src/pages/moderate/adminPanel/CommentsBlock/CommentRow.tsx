@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { IComment, CommentType } from '@/types/commentTypes';
 import axios from 'axios';
 
@@ -40,14 +41,25 @@ function Comment({ comment, toPost }: CommentProps) {
 		<div className="flex flex-row justify-between">
 			<div className="flex flex-col gap-2">
 				<div className="flex flex-row gap-2">
-					<img className="w-6 h-6" src={comment.picture} />
+					<Image
+						className="w-6 h-6"
+						src={comment.picture}
+						alt="#"
+						width={100}
+						height={100}
+					/>
 					{comment.name}, {new Date(comment.date).toLocaleString()}; to post{' '}
 					{toPost}
 				</div>
 				<p>{comment.text}</p>
 			</div>
 			<button onClick={handleClick}>
-				<img src="https://img.icons8.com/windows/30/null/trash.png" />
+				<Image
+					src="https://img.icons8.com/windows/100/null/trash.png"
+					alt="#"
+					width={30}
+					height={30}
+				/>
 			</button>
 		</div>
 	);

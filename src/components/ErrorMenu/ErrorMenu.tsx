@@ -15,7 +15,7 @@ export default function ErrorMenu({ errorList }: Props) {
 
 	return (
 		<div
-			className={`z-50 absolute top-[15%] right-0 translate-x-[100%] bg-red-500 text-white w-fit font-semibold py-2 px-4 rounded-md shadow-md transition-all ${
+			className={`z-50 fixed top-[15%] right-0 translate-x-[100%] bg-red-500 text-white w-fit font-semibold py-2 px-4 rounded-md shadow-md transition-all ${
 				show && 'translate-x-[0%]'
 			}`}
 			ref={menuRef as LegacyRef<HTMLDivElement>}>
@@ -34,8 +34,12 @@ export default function ErrorMenu({ errorList }: Props) {
 				</svg>
 				<span className="text-lg">Error!</span>
 			</div>
-			{errorList.map((error) => {
-				return <p className="mt-2 text-center">{error}</p>;
+			{errorList.map((error, index) => {
+				return (
+					<p className="mt-2 text-center" key={index}>
+						{error}
+					</p>
+				);
 			})}
 		</div>
 	);

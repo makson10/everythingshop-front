@@ -1,10 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
+import useCookies from '@/hooks/useCookies';
 import { IUnionUserData } from '@/types/userTypes';
 import {
 	UserDataContextType,
 	UserDataUpdateContextType,
 } from '@/types/contextTypes';
-import useCookies from '@/hooks/useCookies';
 import axios from 'axios';
 
 interface ProviderProps {

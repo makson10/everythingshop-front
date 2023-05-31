@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { IUnionUserData } from '@/types/userTypes';
+import Image from 'next/image';
 import useDeviceDetect from '@/hooks/useDeviceDetect';
+import { IUnionUserData } from '@/types/userTypes';
 
 interface Props {
 	customer: IUnionUserData;
@@ -11,8 +12,8 @@ export default function UserRow({
 	customer,
 	isGoogleCustomers = false,
 }: Props) {
+	const isMobileDevice = useDeviceDetect();
 	const [customerAge, setCustomerAge] = useState<number>(0);
-	const [isMobileDevice] = useDeviceDetect();
 
 	useEffect(() => {
 		if (isGoogleCustomers || !customer.dateOfBirth) return;
@@ -30,20 +31,35 @@ export default function UserRow({
 			{isGoogleCustomers ? (
 				<>
 					<div className="flex flex-row gap-4 items-center">
-						<img className="w-6 max-sm:h-6" src={customer.picture} />
+						<Image
+							className="w-6 max-sm:h-6"
+							src={customer.picture!}
+							alt="#"
+							width={100}
+							height={100}
+						/>
 						<p>
 							<b>{customer.name}</b>,{isMobileDevice && <br />} {customer.email}
 						</p>
-						<img src="https://img.icons8.com/color/24/null/google-logo.png" />
+						<Image
+							className="w-6 max-sm:h-6"
+							src="https://img.icons8.com/color/24/null/google-logo.png"
+							alt="#"
+							width={100}
+							height={100}
+						/>
 					</div>
 					<p>ID: {customer.id}</p>
 				</>
 			) : (
 				<>
 					<div className="flex flex-row gap-4 items-center">
-						<img
+						<Image
 							className="w-6 max-sm:h-6"
 							src="https://img.icons8.com/windows/120/null/user-male-circle.png"
+							alt="#"
+							width={100}
+							height={100}
 						/>
 						<p>
 							<b>{customer.name}</b>, {customerAge},{isMobileDevice && <br />}{' '}

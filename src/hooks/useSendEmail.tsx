@@ -4,8 +4,8 @@ import {
 	SuccessBuyMarkup,
 	FeedbackMarkup,
 } from '@/assets/emailMarkups';
-import { IBuyEmail, ISignUpEmail } from '../types/emailTypes';
-import { IFeedback } from '../types/feedbackTypes';
+import { IBuyEmail, ISignUpEmail } from '@/types/emailTypes';
+import { IFeedback } from '@/types/feedbackTypes';
 
 const useSendEmail = () => {
 	const sendSignUpEmail = (userEmail: string, { userName }: ISignUpEmail) => {

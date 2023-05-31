@@ -1,12 +1,12 @@
 import { createPortal } from 'react-dom';
+import SuccessMenu from '@/components/SuccessMenu/SuccessMenu';
+import ErrorMenu from '@/components/ErrorMenu/ErrorMenu';
+import SubmitBuyForm from '@/components/SubmitBuyForm/SubmitBuyForm';
 import {
 	ErrorListType,
 	ShowModalWindowProps,
 	SuccessType,
 } from '@/types/modalWindowTypes';
-import SuccessMenu from '../SuccessMenu/SuccessMenu';
-import ErrorMenu from '../ErrorMenu/ErrorMenu';
-import SubmitBuyForm from '@/components/SubmitBuyForm/SubmitBuyForm';
 
 export const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
 	return createPortal(

@@ -2,7 +2,7 @@ import useDeviceDetect from '@/hooks/useDeviceDetect';
 import Link from 'next/link';
 
 export default function TitleBlock() {
-	const [isMobileDevice] = useDeviceDetect();
+	const isMobileDevice = useDeviceDetect();
 
 	return (
 		<div className="flex flex-col justify-between items-center max-sm:order-1">

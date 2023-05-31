@@ -1,6 +1,6 @@
 import ContactBlock from './Sections/ContactBlock';
-import HoursBlock from './Sections/HoursBlock';
 import TitleBlock from './Sections/TitleBlock';
+import HoursBlock from './Sections/HoursBlock';
 
 export default function Footer() {
 	return (

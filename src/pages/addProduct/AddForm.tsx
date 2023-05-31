@@ -1,15 +1,16 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import useValidation from '@/hooks/useValidation';
 import { useUserData } from '@/hooks/useUserDataContext';
-import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
+import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
+import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import {
 	ShowSuccessModalWindow,
 	ShowErrorModalWindow,
 } from '@/components/ShowModalWindow/ShowModalWindow';
 import { Formik } from 'formik';
-import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
-import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 interface ProductDataType {
 	photoFile?: File;
@@ -105,7 +106,7 @@ export function AddForm() {
 	};
 
 	useEffect(() => {
-		photoFile && setFileInputLabel(photoFile.name);
+		if (photoFile) setFileInputLabel(photoFile.name);
 	}, [photoFile]);
 
 	useEffect(() => {
@@ -132,10 +133,14 @@ export function AddForm() {
 					<div className="flex flex-col">
 						<div className="flex flex-col gap-4">
 							<label className="cursor-pointer px-[12px] py-[6px] flex justify-center gap-[20px]">
-								<img
+								<Image
+									className="w-[50px] h-[50px]"
 									src={`https://img.icons8.com/ios/50/${
 										isDarkTheme ? 'ffffff' : '000000'
 									}/upload-to-cloud--v1.png`}
+									alt="#"
+									width={100}
+									height={100}
 								/>
 								<p className="flex items-center">{fileInputLabel}</p>
 								<input

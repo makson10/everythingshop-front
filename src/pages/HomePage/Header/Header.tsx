@@ -1,5 +1,5 @@
-import NavBar from './NavBar/NavBar';
 import ThemeToggler from './ThemeToggler/ThemeToggler';
+import NavBar from './NavBar/NavBar';
 import UserButton from './UserButton/UserButton';
 
 export default function Header() {

@@ -1,8 +1,9 @@
-import { useUserData } from '@/hooks/useUserDataContext';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { ModalMenu } from './ModalMenu';
+import Image from 'next/image';
+import { useUserData } from '@/hooks/useUserDataContext';
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
+import { ModalMenu } from './ModalMenu';
 
 export default function UserButton() {
 	const isDarkTheme = useIsDarkTheme();
@@ -25,44 +26,45 @@ export default function UserButton() {
 		if (!isUserLogin) setIsOpenMenu(false);
 	}, [isUserLogin]);
 
+	if (!isUserLogin) {
+		return (
+			<div className="flex flex-row gap-3">
+				<button
+					className="bg-[#fff992] text-black text-[1.2rem] border-black border-[3px] rounded-[10px] p-2 transition-all diration-100 ease-linear hover:scale-[1.1] font-[--main-font-weight]"
+					onClick={() => router.push('/signUp')}>
+					SignUp/LogIn
+				</button>
+			</div>
+		);
+	}
+
 	return (
 		<>
-			{isUserLogin ? (
-				<>
-					<div
-						className="flex justify-around items-center gap-[10px] w-[160px] px-[12px] text-black dark:text-white"
-						onClick={handleToggleIsOpenMenu}>
-						<button>
-							<img
-								className="w-12 rounded-xl"
-								src={
-									userData.data?.picture
-										? userData.data?.picture
-										: `https://img.icons8.com/windows/120/${
-												isDarkTheme ? 'ffffff' : '000000'
-										  }/user-male-circle.png`
-								}
-								loading="lazy"
-							/>
-						</button>
-						<p className="font-[600] cursor-pointer">{userName}</p>
-					</div>
-					<ModalMenu
-						isOpen={isOpenMenu}
-						setIsOpenMenu={setIsOpenMenu}
-						setIsUserLogin={setIsUserLogin}
+			<div
+				className="flex justify-around items-center gap-[10px] w-[160px] px-[12px] text-black dark:text-white"
+				onClick={handleToggleIsOpenMenu}>
+				<button>
+					<Image
+						className="w-12 rounded-xl"
+						src={
+							userData.data?.picture
+								? userData.data?.picture
+								: `https://img.icons8.com/windows/120/${
+										isDarkTheme ? 'ffffff' : '000000'
+								  }/user-male-circle.png`
+						}
+						alt="#"
+						width={100}
+						height={100}
 					/>
-				</>
-			) : (
-				<div className="flex flex-row gap-3">
-					<button
-						className="bg-[#fff992] text-black text-[1.2rem] border-black border-[3px] rounded-[10px] p-2 transition-all diration-100 ease-linear hover:scale-[1.1]"
-						style={{ fontWeight: 'var(--main-font-weight)' }}
-						onClick={() => router.push('/signUp')}>
-						SignUp/LogIn
-					</button>
-				</div>
-			)}
+				</button>
+				<p className="font-[600] cursor-pointer">{userName}</p>
+			</div>
+			<ModalMenu
+				isOpen={isOpenMenu}
+				setIsOpenMenu={setIsOpenMenu}
+				setIsUserLogin={setIsUserLogin}
+			/>
 		</>
 	);
 }

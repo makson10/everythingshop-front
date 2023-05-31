@@ -9,7 +9,7 @@ const useDeviceDetect = () => {
 		setIsMobileDevice(regexp.test(details));
 	}, []);
 
-	return [isMobileDevice];
+	return isMobileDevice;
 };
 
 export default useDeviceDetect;

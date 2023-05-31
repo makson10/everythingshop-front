@@ -7,6 +7,64 @@ const nextConfig = {
         includePaths: [path.join(__dirname, 'src')],
     },
     distDir: 'build',
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'img.icons8.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'http',
+                hostname: '127.0.0.1',
+                port: '8000',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'www.visit.brussels',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'www.thesun.co.uk',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'st3.idealista.it',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'media.istockphoto.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'www.retailgazette.co.uk',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'i.pinimg.com',
+                port: '',
+                pathname: '/**',
+            },
+        ],
+    },
 }
 
 module.exports = nextConfig;

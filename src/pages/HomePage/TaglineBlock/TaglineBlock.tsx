@@ -4,8 +4,8 @@ import LeftTagline from './LeftTagline';
 import RightTagline from './RightTagline';
 
 export default function TaglineBlock() {
-    const setUpSRAnim = useScrollReveal();
-    const componentRef = useRef(null);
+	const setUpSRAnim = useScrollReveal();
+	const componentRef = useRef(null);
 
 	useEffect(() => {
 		setUpSRAnim(componentRef, 1000);

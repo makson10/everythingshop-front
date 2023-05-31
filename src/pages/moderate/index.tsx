@@ -1,12 +1,13 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { Formik } from 'formik';
 import useValidation from '@/hooks/useValidation';
-import { IAdminData } from '@/types/adminTypes';
-import { ILogInUserData } from '@/types/validationTypes';
-import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
 import useCookies from '@/hooks/useCookies';
-import { Formik } from 'formik';
+import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import { ILogInUserData } from '@/types/validationTypes';
+import { IAdminData } from '@/types/adminTypes';
 import axios from 'axios';
 
 export default function ModeratePage() {
@@ -25,7 +26,6 @@ export default function ModeratePage() {
 			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
 			.catch((err) => console.error(err));
 
-		console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL);
 		const res = await axios.post(
 			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/admins/checkAdminData`,
 			adminData,
@@ -82,10 +82,12 @@ export default function ModeratePage() {
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#3c6255] text-white">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
-					<img
+					<Image
 						className="mx-auto h-10 w-auto"
-						src="everythingshop_logo.png"
+						src="/everythingshop_logo.png"
 						alt="My Company"
+						width={400}
+						height={400}
 					/>
 					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
 						Log in to admin account
@@ -163,9 +165,11 @@ export default function ModeratePage() {
 												className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
 												tabIndex={-1}
 												onClick={togglePasswordVisible}>
-												<img
-													src={isPasswordVisible ? './hide.png' : './show.png'}
+												<Image
+													src={isPasswordVisible ? '/hide.png' : '/show.png'}
 													alt="#"
+													width={26}
+													height={26}
 												/>
 											</button>
 										</div>
@@ -177,7 +181,7 @@ export default function ModeratePage() {
 									<button
 										type="submit"
 										disabled={isSubmitting}
-										className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+										className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-orange-600 dark:focus-visible:outline-orange-600">
 										Log In
 									</button>
 								</div>

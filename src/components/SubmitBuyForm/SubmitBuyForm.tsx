@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import useValidation from '@/hooks/useValidation';
 import { useUserData } from '@/hooks/useUserDataContext';
-import { useRouter } from 'next/router';
-import { ISubmitForm, SubmitFormData } from '@/types/formDataTypes';
 import { useCartUpdateContext } from '@/hooks/useCartContext';
-import { Formik, useField } from 'formik';
 import useSendEmail from '@/hooks/useSendEmail';
 import useGooglePlaceAutoComplete from '@/hooks/useGooglePlaceAutoComplete';
+import { ISubmitForm, SubmitFormData } from '@/types/formDataTypes';
+import { Formik, useField } from 'formik';
 
 interface Props {
 	setIsOpenSubmitBuyForm: Dispatch<SetStateAction<boolean>>;
@@ -30,7 +30,9 @@ export default function SubmitBuyForm({
 	const inputEmailRef = useRef<HTMLInputElement>(null);
 	const router = useRouter();
 
-	const handleCloseButton = () => setIsOpenSubmitBuyForm(false);
+	const handleCloseButton = () => {
+		setIsOpenSubmitBuyForm(false);
+	};
 
 	const handleUseOldFullNameInput = () => {
 		setUseOldFullName((prevValue) => !prevValue);
@@ -239,7 +241,7 @@ const DeliveryAddressInput = (props: { name: string; type: string }) => {
 	let autoComplete: google.maps.places.Autocomplete;
 
 	const handleAddressSelect = async () => {
-		let addressObj = await googleAutoCompleteSvc.getFullAddress(autoComplete);
+		const addressObj = await googleAutoCompleteSvc.getFullAddress(autoComplete);
 		helpers.setValue(
 			`${addressObj.address1}, ${addressObj.adminArea1Long}, ${addressObj.countryShort}`
 		);

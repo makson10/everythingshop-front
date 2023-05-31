@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 interface Props {
 	action: string;
@@ -14,13 +15,15 @@ export default function GoogleButton({ action, redirectUrl }: Props) {
 			onClick={() => {
 				router.push(redirectUrl);
 			}}>
-			<img
+			<Image
 				className="w-6 h-6"
 				src="https://www.svgrepo.com/show/475656/google-color.svg"
+				alt="#"
 				loading="lazy"
-				alt="google logo"
+				width={100}
+				height={100}
 			/>
-			<span className='dark:text-white'>{action} with Google</span>
+			<span className="dark:text-white">{action} with Google</span>
 		</button>
 	);
 }

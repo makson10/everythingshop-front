@@ -1,4 +1,5 @@
 import { useIsDarkTheme, useIsDarkThemeUpdate } from '@/hooks/useIsDarkTheme';
+import Image from 'next/image';
 
 export default function ThemeToggler() {
 	const isDarkTheme = useIsDarkTheme();
@@ -6,12 +7,15 @@ export default function ThemeToggler() {
 
 	return (
 		<div className="flex items-center gap-4 w-2/12 max-sm:hidden">
-			<img
+			<Image
 				src={
 					isDarkTheme
-						? './everythingshop_logo.png'
-						: './everythingshop_logo_dark.png'
+						? '/everythingshop_logo.png'
+						: '/everythingshop_logo_dark.png'
 				}
+				alt="#"
+				width={185}
+				height={50}
 			/>
 			<div>
 				<div
@@ -23,7 +27,7 @@ export default function ThemeToggler() {
 								? 'translate-x-full bg-orange-600'
 								: 'translate-x-0 bg-indigo-600'
 						} focus-visible:outline-0`}>
-						<img
+						<Image
 							className="w-[20px] h-[20px]"
 							src={
 								isDarkTheme
@@ -31,6 +35,8 @@ export default function ThemeToggler() {
 									: `https://img.icons8.com/ios/42/ffffff/sun--v1.png`
 							}
 							alt="#"
+							width={100}
+							height={100}
 						/>
 					</div>
 					<div className="block overflow-hidden h-full rounded-full bg-gray-400 cursor-pointer transition-all duration-300"></div>

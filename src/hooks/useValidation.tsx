@@ -1,4 +1,3 @@
-import { IProduct } from '@/types/productTypes';
 import { rusBadWordsRegex, engBadWordsRegex } from '@/assets/badWordsRegex';
 import {
 	ISignUpUserData,
@@ -7,6 +6,7 @@ import {
 	IValidateFeedbackData,
 	IValidateCommentsData,
 } from '@/types/validationTypes';
+import { IProduct } from '@/types/productTypes';
 import { ISubmitForm } from '@/types/formDataTypes';
 import { FormikErrors } from 'formik/dist/types';
 

@@ -5,6 +5,7 @@ export default function Heading() {
 			<p
 				className="text-[1.5rem] max-sm:text-[2.6rem]"
 				style={{ fontFamily: 'var(--second-font)' }}>
+				{/* eslint-disable-next-line react/no-unescaped-entities */}
 				The best marketplace which you can find anywhere, and here's why
 			</p>
 		</div>

@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 const useScrollReveal = () => {
 	const setUpSRAnim = async (
 		componentRef: React.MutableRefObject<HTMLDivElement | null>,

@@ -10,7 +10,7 @@ export default function GoogleAuthFailed() {
 				{router.query.errorMessage || 'Error'}
 			</p>
 			<button
-				className=" p-2 text-2xl bg-white rounded-lg"
+				className=" p-2 text-2xl bg-white text-black rounded-lg"
 				onClick={() => router.replace('/signUp')}>
 				Go Back
 			</button>

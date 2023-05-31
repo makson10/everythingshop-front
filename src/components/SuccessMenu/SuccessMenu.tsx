@@ -14,7 +14,7 @@ export default function SuccessMenu({ successText }: Props) {
 
 	return (
 		<div
-			className={`z-50 absolute top-[15%] right-0 bg-green-500 text-white w-fit font-semibold py-2 px-4 rounded-md shadow-md transition-all ${
+			className={`z-50 fixed top-[15%] right-0 bg-green-500 text-white w-fit font-semibold py-2 px-4 rounded-md shadow-md transition-all ${
 				show ? 'translate-x-[0%]' : 'translate-x-[100%]'
 			}`}>
 			<div className="flex items-center">

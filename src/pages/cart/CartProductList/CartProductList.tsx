@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useCartContext, useCartUpdateContext } from '@/hooks/useCartContext';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { FailWindow } from '../FailWindow/FailWindow';
@@ -42,9 +43,12 @@ export function CartProductList() {
 							key={index}
 							className="flex justify-between gap-x-6 py-5 max-sm:justify-center">
 							<div className="flex gap-x-4">
-								<img
+								<Image
 									className="h-12 w-12 flex-none rounded-full bg-gray-50"
 									src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/image/${product.productsData.photo_id}`}
+									alt="#"
+									width={100}
+									height={100}
 									onError={(event) => {
 										event.currentTarget.src =
 											'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo2vEKNv6zaKu2i_NKvQXN8lYd0g2NMeNXzrkrZlw&s';

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { IFeedback } from '@/types/feedbackTypes';
 import axios from 'axios';
 
@@ -28,7 +29,12 @@ const FeedbackRow = ({ feedback }: Props) => {
 					<p className="break-all">{feedback.feedbackText}</p>
 				</div>
 				<button onClick={handleClick}>
-					<img src="https://img.icons8.com/windows/30/null/trash.png" />
+					<Image
+						src="https://img.icons8.com/windows/30/null/trash.png"
+						alt="#"
+						width={30}
+						height={30}
+					/>
 				</button>
 			</div>
 		</div>
