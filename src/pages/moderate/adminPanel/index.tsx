@@ -29,6 +29,7 @@ export default function AdminPanel({
 
 	useEffect(() => {
 		const isAdminAuthorized = getCookies('isAdminAuthorized') === 'true';
+
 		if (!isAdminAuthorized) {
 			removeCookies('isAdminAuthorized');
 			router.push('/moderate');
@@ -51,28 +52,36 @@ export default function AdminPanel({
 }
 
 export const getServerSideProps: GetServerSideProps<FetchedData> = async () => {
-	const customers: UserDataType = await axios
-		.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
-		.then((data) => data.data);
+	try {
+		const customers: UserDataType = await axios
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
+			.then((data) => data.data);
 
-	const googleCustomers: UserDataType = await axios
-		.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`)
-		.then((data) => data.data);
+		const googleCustomers: UserDataType = await axios
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`)
+			.then((data) => data.data);
 
-	const products: ProductType = await axios
-		.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`)
-		.then((data) => data.data);
+		const products: ProductType = await axios
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`)
+			.then((data) => data.data);
 
-	const feedbacks: FeedbackType = await axios
-		.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedback`)
-		.then((data) => data.data);
+		const feedbacks: FeedbackType = await axios
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedback`)
+			.then((data) => data.data);
 
-	return {
-		props: {
-			customers,
-			googleCustomers,
-			products,
-			feedbacks,
-		},
-	};
+		return {
+			props: {
+				customers,
+				googleCustomers,
+				products,
+				feedbacks,
+			},
+		};
+	} catch (error) {
+		console.error(error);
+
+		return {
+			notFound: true,
+		};
+	}
 };

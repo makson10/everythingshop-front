@@ -13,6 +13,7 @@ import { ProductsList } from './ProductsList/ProductsList';
 import { PaginationBar } from './PaginationBar/PaginationBar';
 import { ProductsNotFoundPage } from './ProductsNotFoundPage';
 import FilterBar from './FilterBar/FilterBar';
+import axios from 'axios';
 
 interface FetchedDataType {
 	productsData: ProductType;
@@ -89,13 +90,21 @@ export default function Assortment({ productsData }: FetchedDataType) {
 export const getServerSideProps: GetServerSideProps<
 	FetchedDataType
 > = async () => {
-	const productsData = await fetch(
-		`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`
-	).then((data) => data.json());
+	try {
+		const productsData = await axios(
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`
+		).then((res) => res.data);
 
-	return {
-		props: {
-			productsData,
-		},
-	};
+		return {
+			props: {
+				productsData,
+			},
+		};
+	} catch (error) {
+		console.error(error);
+
+		return {
+			notFound: true,
+		};
+	}
 };

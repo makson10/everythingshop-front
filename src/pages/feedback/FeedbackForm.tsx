@@ -4,6 +4,7 @@ import useSendEmail from '@/hooks/useSendEmail';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
+import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import { IValidateFeedbackData } from '@/types/validationTypes';
 import { IFeedback } from '@/types/feedbackTypes';
 import { Formik } from 'formik';
@@ -31,6 +32,10 @@ export default function FeedbackForm() {
 	useEffect(() => {
 		setDidUserAuthorized(!!authorizedUserData.data?.name);
 	}, [authorizedUserData]);
+
+	if (authorizedUserData.isLoading) {
+		return <ShowLoadingScreen />;
+	}
 
 	if (!didUserAuthorized) return <UserNotLoginWindow />;
 

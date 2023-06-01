@@ -25,16 +25,15 @@ export function ThemeProvider({ children }: ProviderProps) {
 					mutation.attributeName !== 'class'
 				) {
 					return;
+				};
+				const elementClassList = mutation.target.classList.values();
+
+				let isDarkThemeClassExists = false;
+				for (const value of elementClassList) {
+					if (value === 'dark') isDarkThemeClassExists = true;
 				}
 
-				const elementClassList = mutation.target.classList.values();
-				for (const value of elementClassList) {
-					setIsDarkTheme(() => {
-						const newValue = value === 'dark';
-						localStorage.setItem('isDarkTheme', `${newValue}`);
-						return newValue;
-					});
-				}
+				localStorage.setItem('isDarkTheme', `${isDarkThemeClassExists}`);
 			});
 		};
 
@@ -46,9 +45,7 @@ export function ThemeProvider({ children }: ProviderProps) {
 
 	useEffect(() => {
 		const storedIsDarkTheme = localStorage.getItem('isDarkTheme');
-		storedIsDarkTheme
-			? setIsDarkTheme(storedIsDarkTheme === 'true')
-			: setIsDarkTheme(document.documentElement.classList.contains('dark'));
+		if (storedIsDarkTheme) setIsDarkTheme(storedIsDarkTheme === 'true');
 	}, []);
 
 	useEffect(() => {

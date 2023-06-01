@@ -4,7 +4,10 @@ export default function Document() {
 	return (
 		<Html lang="en">
 			<Head>
-				<link rel="shortcut icon" href="/logo.png" />
+				<link
+					rel="shortcut icon"
+					href="https://img.icons8.com/ios/50/000000/shopping-cart--v1.png"
+				/>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" />
 				<link

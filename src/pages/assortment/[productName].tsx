@@ -29,27 +29,35 @@ export default function ProductPage({ productData }: Props) {
 export const getServerSideProps: GetServerSideProps<FetchedDataType> = async (
 	context
 ) => {
-	const { productName = 'unknownProduct' } = context.params!;
+	try {
+		const { productName = 'unknownProduct' } = context.params!;
 
-	const productData = await axios(
-		`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productName}`
-	).then((res) => res.data);
+		const productData = await axios(
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productName}`
+		).then((res) => res.data);
 
-	if (!productData.success) {
+		if (!productData.success) {
+			return {
+				notFound: true,
+			};
+		}
+
+		if (productData.data?.comments.length === 0) {
+			productData.data.comments = [];
+		} else {
+			productData.data.comments = await JSON.parse(productData.data.comments);
+		}
+
+		return {
+			props: {
+				productData: productData.data,
+			},
+		};
+	} catch (error) {
+		console.error(error);
+
 		return {
 			notFound: true,
 		};
 	}
-
-	if (productData.data?.comments.length === 0) {
-		productData.data.comments = [];
-	} else {
-		productData.data.comments = await JSON.parse(productData.data.comments);
-	}
-
-	return {
-		props: {
-			productData: productData.data,
-		},
-	};
 };

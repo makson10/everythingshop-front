@@ -2,16 +2,8 @@ export default function TextBlock() {
 	return (
 		<>
 			<div className="pb-4 text-white">
-				<p
-					className="text-[2rem]"
-					style={{ fontFamily: 'var(--main-font-weight)' }}>
-					About Us
-				</p>
-				<p
-					className="text-[1.2rem]"
-					style={{ fontFamily: 'var(--second-font)' }}>
-					Our experience wonder
-				</p>
+				<p className="text-[2rem]">About Us</p>
+				<p className="text-[1.2rem]">Our experience wonder</p>
 			</div>
 			<div className="flex flex-row gap-[10px] bg-white w-[500px] max-sm:w-fit">
 				<div className="w-[20px] h-full bg-[wheat]"></div>

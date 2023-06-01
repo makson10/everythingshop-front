@@ -4,6 +4,7 @@ import { useCartContext, useCartUpdateContext } from '@/hooks/useCartContext';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { FailWindow } from '../FailWindow/FailWindow';
 import { SubmitBuyRow } from './SubmitBuyRow';
+import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 
 export function CartProductList() {
 	const { deleteProduct, decreaseProductAmount, increaseProductAmount } =
@@ -23,6 +24,10 @@ export function CartProductList() {
 
 		setCostSum(sum);
 	}, [products]);
+
+	if (authorizedUser.isLoading) {
+		return <ShowLoadingScreen />;
+	}
 
 	if (!authorizedUser.data?.name) {
 		return (

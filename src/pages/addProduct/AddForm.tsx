@@ -4,6 +4,7 @@ import useValidation from '@/hooks/useValidation';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
+import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import {
 	ShowSuccessModalWindow,
 	ShowErrorModalWindow,
@@ -113,6 +114,10 @@ export function AddForm() {
 		if (isServerError === null) return;
 		isServerError ? handleFailure() : handleSuccess();
 	}, [isServerError]);
+
+	if (authorizationUserData.isLoading) {
+		return <ShowLoadingScreen />;
+	}
 
 	if (!authorizationUserData.data?.name) return <UserNotLoginWindow />;
 

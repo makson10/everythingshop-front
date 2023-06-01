@@ -6,8 +6,9 @@ export default function ThemeToggler() {
 	const { toggleIsDarkTheme } = useIsDarkThemeUpdate();
 
 	return (
-		<div className="flex items-center gap-4 w-2/12 max-sm:hidden">
+		<div className="flex items-center gap-4 w-2/12 max-sm:w-full max-sm:justify-center">
 			<Image
+				className="max-sm:hidden"
 				src={
 					isDarkTheme
 						? '/everythingshop_logo.png'

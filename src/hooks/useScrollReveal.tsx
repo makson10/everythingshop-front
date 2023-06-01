@@ -4,13 +4,13 @@ const useScrollReveal = () => {
 		duration: number,
 		distance: string = '0px'
 	) => {
-		if (componentRef.current) {
-			const sr = (await import('scrollreveal')).default;
-			sr().reveal(componentRef.current, {
-				duration: duration,
-				distance: distance,
-			});
-		}
+		if (!componentRef.current) return;
+
+		const sr = (await import('scrollreveal')).default;
+		sr().reveal(componentRef.current, {
+			duration: duration,
+			distance: distance,
+		});
 	};
 
 	return setUpSRAnim;

@@ -44,7 +44,7 @@ export function ProductCard({ productData }: Props) {
 						Seller: {productData.creator}
 					</p>
 				</div>
-				<p className="text-sm font-medium text-gray-900">
+				<p className="text-sm font-medium text-gray-900 dark:text-white">
 					${productData.price}
 				</p>
 			</div>

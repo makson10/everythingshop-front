@@ -11,6 +11,7 @@ export type CartUpdateContextType = {
 
 export type UserDataContextType = {
 	data: IUnionUserData | null;
+	isLoading: boolean;
 };
 
 export type UserDataUpdateContextType = {

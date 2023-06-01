@@ -8,7 +8,9 @@ export default function TaglineBlock() {
 	const componentRef = useRef(null);
 
 	useEffect(() => {
-		setUpSRAnim(componentRef, 1000);
+		setTimeout(() => {
+			setUpSRAnim(componentRef, 600);
+		}, 800);
 	}, []);
 
 	return (

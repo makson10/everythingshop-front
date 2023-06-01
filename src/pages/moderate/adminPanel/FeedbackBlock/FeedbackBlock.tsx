@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import AdminPanelBlock from '@/components/AdminPanelBlock/AdminPanelBlock';
 import { FeedbackType } from '@/types/feedbackTypes';
 import FeedbackRow from './FeedbackRow';
@@ -7,6 +8,16 @@ interface Props {
 }
 
 export default function FeedbackBlock({ feedbacks }: Props) {
+	const FeedbackList = memo(function FeedbackList({ feedbacks }: Props) {
+		return (
+			<>
+				{feedbacks.map((feedback, index) => {
+					return <FeedbackRow feedback={feedback} key={index} />;
+				})}
+			</>
+		);
+	});
+
 	return (
 		<AdminPanelBlock blockTitle="Feedbacks">
 			{feedbacks.length === 0 ? (
@@ -14,9 +25,7 @@ export default function FeedbackBlock({ feedbacks }: Props) {
 					<p className="text-xl">No feedbacks yet</p>
 				</div>
 			) : (
-				feedbacks.map((feedback, index) => {
-					return <FeedbackRow feedback={feedback} key={index} />;
-				})
+				<FeedbackList feedbacks={feedbacks} />
 			)}
 		</AdminPanelBlock>
 	);

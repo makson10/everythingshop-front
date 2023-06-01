@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useCartUpdateContext } from '@/hooks/useCartContext';
+import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import { IComment, CommentType } from '@/types/commentTypes';
 import { IProduct } from '@/types/productTypes';
 import Breadcrumb from './Sections/Breadcrumb';
@@ -17,6 +19,7 @@ interface Props {
 
 export default function ProductInfoBlock({ productData }: Props) {
 	const { addProductToCard } = useCartUpdateContext();
+	const authorizeUserData = useUserData();
 
 	const [productComments, setProductComments] = useState<CommentType>(
 		productData.comments
@@ -60,6 +63,10 @@ export default function ProductInfoBlock({ productData }: Props) {
 		if (!isOpenSuccessWindow) return;
 		setTimeout(() => setIsOpenSuccessWindow(false), 3000);
 	}, [isOpenSuccessWindow]);
+
+	if (authorizeUserData.isLoading) {
+		return <ShowLoadingScreen />;
+	}
 
 	return (
 		<>

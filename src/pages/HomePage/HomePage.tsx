@@ -7,7 +7,7 @@ import ReviewBlock from './ReviewBlock/ReviewBlock';
 import Footer from './Footer/Footer';
 
 export default function HomePage() {
-	return (
+	return (        
 		<HomePageBg>
 			<Header />
 			<TaglineBlock />

@@ -4,9 +4,9 @@ import useValidation from '@/hooks/useValidation';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { useCartUpdateContext } from '@/hooks/useCartContext';
 import useSendEmail from '@/hooks/useSendEmail';
-import useGooglePlaceAutoComplete from '@/hooks/useGooglePlaceAutoComplete';
 import { ISubmitForm, SubmitFormData } from '@/types/formDataTypes';
-import { Formik, useField } from 'formik';
+import DeliveryAddressInput from './DeliveryAddressInput';
+import { Formik } from 'formik';
 
 interface Props {
 	setIsOpenSubmitBuyForm: Dispatch<SetStateAction<boolean>>;
@@ -83,8 +83,8 @@ export default function SubmitBuyForm({
 	}, [useOldEmail]);
 
 	return (
-		<div className="z-50 fixed w-full h-screen bg-black/[0.6] flex justify-center items-center overflow-hidden dark:text-black">
-			<div className="relative w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-[30px]">
+		<div className="z-50 fixed w-full h-screen bg-black/[0.6] flex justify-center items-center overflow-hidden dark:text-black max-sm:px-4">
+			<div className="relative w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-[30px] max-sm:w-full">
 				<button
 					className="absolute left-[30px] top-[1rem] text-[2.5rem] h-fit transition-all ease-linear duration-100 hover:scale-[1.2] hover:text-[darkblue] dark:text-black dark:hover:text-[orange]"
 					onClick={handleCloseButton}>
@@ -233,42 +233,3 @@ export default function SubmitBuyForm({
 		</div>
 	);
 }
-
-const DeliveryAddressInput = (props: { name: string; type: string }) => {
-	const googleAutoCompleteSvc = useGooglePlaceAutoComplete();
-	const [fields, meta, helpers] = useField(props.name);
-	const inputAddressRef = useRef<HTMLInputElement | null>(null);
-	let autoComplete: google.maps.places.Autocomplete;
-
-	const handleAddressSelect = async () => {
-		const addressObj = await googleAutoCompleteSvc.getFullAddress(autoComplete);
-		helpers.setValue(
-			`${addressObj.address1}, ${addressObj.adminArea1Long}, ${addressObj.countryShort}`
-		);
-	};
-
-	useEffect(() => {
-		const loadGoogleMaps = async () => {
-			autoComplete = await googleAutoCompleteSvc.initAutoComplete(
-				inputAddressRef.current!,
-				handleAddressSelect
-			);
-		};
-
-		loadGoogleMaps();
-	}, []);
-
-	return (
-		<>
-			<input
-				id="adderessInput"
-				ref={inputAddressRef}
-				placeholder="Enter your delivery address"
-				className="min-w-[20rem] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-[#c9c9c9]"
-				{...fields}
-				{...props}
-			/>
-			{meta.error && meta.touched && meta.error}
-		</>
-	);
-};

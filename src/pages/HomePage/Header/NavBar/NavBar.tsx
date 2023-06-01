@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function NavBar() {
 	return (
-		<div className="flex flex-row gap-[10px] h-[50px] max-sm:order-1">
+		<div className="flex flex-row gap-[10px] h-[50px] max-sm:order-1 max-sm:justify-center">
 			<div className="flex items-center py-4">
 				<ul className="flex flex-row gap-[30px]">
 					<li>

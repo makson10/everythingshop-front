@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
     content: [
         "./src/**/*.{js,ts,jsx,tsx,mdx}",
@@ -7,7 +10,14 @@ module.exports = {
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
     ],
-    theme: {},
+    theme: {
+        extend: {
+            fontFamily: {
+                'first': ['Montserrat', ...defaultTheme.fontFamily.sans],
+                'second': ['Lato', ...defaultTheme.fontFamily.sans],
+            },
+        },
+    },
     plugins: [
         require('@tailwindcss/aspect-ratio'),
         require('@tailwindcss/forms'),

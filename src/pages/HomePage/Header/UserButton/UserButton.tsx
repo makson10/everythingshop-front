@@ -4,6 +4,9 @@ import Image from 'next/image';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import { ModalMenu } from './ModalMenu';
+import LoadingScreen, {
+	ShowLoadingScreen,
+} from '@/components/LoadingScreen/LoadingScreen';
 
 export default function UserButton() {
 	const isDarkTheme = useIsDarkTheme();
@@ -25,6 +28,10 @@ export default function UserButton() {
 	useEffect(() => {
 		if (!isUserLogin) setIsOpenMenu(false);
 	}, [isUserLogin]);
+
+	if (userData.isLoading) {
+		return <ShowLoadingScreen />;
+	}
 
 	if (!isUserLogin) {
 		return (
