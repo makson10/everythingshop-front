@@ -1,48 +1,46 @@
 import { useEffect, useState } from 'react';
+import Error from 'next/error';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Formik } from 'formik';
 import useValidation from '@/hooks/useValidation';
 import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
 import useCookies from '@/hooks/useCookies';
+import useIsAdminLogIn from '@/hooks/useIsAdminLogIn';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import { ILogInUserData } from '@/types/validationTypes';
 import { IAdminData } from '@/types/adminTypes';
+import { Formik } from 'formik';
 import axios from 'axios';
 
 export default function ModeratePage() {
 	const { validateLogInData } = useValidation();
-	const { getCookies, setCookies } = useCookies();
+	const { setCookies } = useCookies();
+	const { isAdminLogIn, isLoading } = useIsAdminLogIn();
 
 	const { isPasswordVisible, togglePasswordVisible } =
 		useIsPasswordVisible(false);
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
+	const [isServerOff, setIsServerOff] = useState<boolean>(false);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const router = useRouter();
 
 	const checkAdminData = async (adminData: IAdminData) => {
-		await axios
-			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
-			.catch((err) => console.error(err));
+		try {
+			await axios.post(
+				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/admins/login`,
+				adminData
+			);
 
-		const res = await axios.post(
-			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/admins/checkAdminData`,
-			adminData,
-			{
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		);
-
-		if (!res.data.adminWithReceivedDataExist) {
+			setIsServerError(false);
+		} catch (error: any) {
+			const errorMessage =
+				error.responce.data.error ||
+				"Admin with these credentials doesn't exist now";
 			setIsServerError(true);
-			setServerErrorMessage("Admin with these credentials doesn't exist now");
+			setServerErrorMessage(errorMessage);
 			return;
 		}
-
-		setIsServerError(false);
 	};
 
 	const handleSuccess = () => {
@@ -65,14 +63,17 @@ export default function ModeratePage() {
 	};
 
 	useEffect(() => {
-		const isAdminAuthorized = getCookies('isAdminAuthorized') === 'true';
-		if (isAdminAuthorized) router.push('/moderate/adminPanel');
-	}, []);
+		if (isLoading) return;
+
+		if (isAdminLogIn) router.push('/moderate/adminPanel');
+	}, [isAdminLogIn, isLoading]);
 
 	useEffect(() => {
 		if (isServerError === null) return;
 		isServerError ? handleFailure() : handleSuccess();
 	}, [isServerError]);
+
+	if (isServerOff) return <Error statusCode={500} />;
 
 	return (
 		<>

@@ -20,9 +20,10 @@ export default function FeedbackForm() {
 
 	const sendDataToServer = async (data: IFeedback) => {
 		try {
-			await axios.get('http://127.0.0.1:8000/feedback');
-			await axios.post('http://127.0.0.1:8000/feedback/addNewFeedback', data);
-
+			await axios.post(
+				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedbacks/addNewFeedback`,
+				data
+			);
 			setIsOpenSuccessMenu(true);
 		} catch (error) {
 			console.error(error);

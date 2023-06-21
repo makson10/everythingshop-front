@@ -30,27 +30,21 @@ export const getServerSideProps: GetServerSideProps<FetchedDataType> = async (
 	context
 ) => {
 	try {
-		const { productName = 'unknownProduct' } = context.params!;
+		const { productName } = context.params!;
 
 		const productData = await axios(
 			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productName}`
 		).then((res) => res.data);
 
-		if (!productData.success) {
+		if (!productData) {
 			return {
 				notFound: true,
 			};
 		}
 
-		if (productData.data?.comments.length === 0) {
-			productData.data.comments = [];
-		} else {
-			productData.data.comments = await JSON.parse(productData.data.comments);
-		}
-
 		return {
 			props: {
-				productData: productData.data,
+				productData: productData,
 			},
 		};
 	} catch (error) {

@@ -5,7 +5,6 @@ interface Props {
 }
 
 export default function ErrorMenu({ errorList }: Props) {
-	const menuRef = useRef<HTMLDivElement>();
 	const [show, setShow] = useState(false);
 
 	useEffect(() => {
@@ -15,10 +14,9 @@ export default function ErrorMenu({ errorList }: Props) {
 
 	return (
 		<div
-			className={`z-50 fixed top-[15%] right-0 translate-x-[100%] bg-red-500 text-white w-fit font-semibold py-2 px-4 rounded-md shadow-md transition-all ${
-				show && 'translate-x-[0%]'
-			}`}
-			ref={menuRef as LegacyRef<HTMLDivElement>}>
+			className={`z-50 fixed top-[15%] right-0 bg-red-500 text-white w-fit font-semibold py-2 px-4 rounded-md shadow-md transition-all ${
+				show ? 'translate-x-[0%]' : 'translate-x-[100%]'
+			}`}>
 			<div className="flex items-center">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -27,9 +25,9 @@ export default function ErrorMenu({ errorList }: Props) {
 					viewBox="0 0 24 24"
 					stroke="currentColor">
 					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth="2"
 						d="M5 13l4 4L19 7"></path>
 				</svg>
 				<span className="text-lg">Error!</span>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 export const ShowLoadingScreen = () => {
@@ -5,6 +6,14 @@ export const ShowLoadingScreen = () => {
 };
 
 export default function LoadingScreen() {
+	useEffect(() => {
+		document.body.classList.add('overflow-hidden');
+
+		return () => {
+			document.body.classList.remove('overflow-hidden');
+		};
+	}, []);
+
 	return (
 		<div className="w-screen h-screen overflow-hidden text-black flex justify-center items-center">
 			<div className="relative left-1" role="status">

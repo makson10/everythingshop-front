@@ -7,6 +7,7 @@ const nextConfig = {
         includePaths: [path.join(__dirname, 'src')],
     },
     distDir: 'build',
+    pageExtensions: ['page.js', 'page.jsx', 'page.ts', 'page.tsx'],
     images: {
         remotePatterns: [
             {
@@ -18,6 +19,12 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'img.icons8.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'icons8.com',
                 port: '',
                 pathname: '/**',
             },
@@ -60,6 +67,18 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'i.pinimg.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'api.box.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'encrypted-tbn0.gstatic.com',
                 port: '',
                 pathname: '/**',
             },

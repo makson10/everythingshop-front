@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useCookies from '@/hooks/useCookies';
+import useIsAdminLogIn from '@/hooks/useIsAdminLogIn';
 import { ProductType } from '@/types/productTypes';
 import { UserDataType } from '@/types/userTypes';
 import { FeedbackType } from '@/types/feedbackTypes';
@@ -24,17 +25,18 @@ export default function AdminPanel({
 	products,
 	feedbacks,
 }: FetchedData) {
+	const { removeCookies } = useCookies();
 	const router = useRouter();
-	const { getCookies, removeCookies } = useCookies();
+	const { isAdminLogIn, isLoading } = useIsAdminLogIn();
 
 	useEffect(() => {
-		const isAdminAuthorized = getCookies('isAdminAuthorized') === 'true';
+		if (isLoading) return;
 
-		if (!isAdminAuthorized) {
+		if (!isAdminLogIn) {
 			removeCookies('isAdminAuthorized');
 			router.push('/moderate');
 		}
-	}, []);
+	}, [isAdminLogIn, isLoading]);
 
 	return (
 		<>
@@ -55,19 +57,19 @@ export const getServerSideProps: GetServerSideProps<FetchedData> = async () => {
 	try {
 		const customers: UserDataType = await axios
 			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
-			.then((data) => data.data);
+			.then((res) => res.data);
 
 		const googleCustomers: UserDataType = await axios
 			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`)
-			.then((data) => data.data);
+			.then((res) => res.data);
 
 		const products: ProductType = await axios
 			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`)
-			.then((data) => data.data);
+			.then((res) => res.data);
 
 		const feedbacks: FeedbackType = await axios
-			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedback`)
-			.then((data) => data.data);
+			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedbacks`)
+			.then((res) => res.data);
 
 		return {
 			props: {

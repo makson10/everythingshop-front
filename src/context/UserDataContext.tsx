@@ -58,42 +58,33 @@ export function UserDataProvider({ children }: ProviderProps) {
 
 			try {
 				if (jwtToken) {
-					await axios.get(
-						`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`
-					);
-					const JWTTokenResult = await axios.post(
-						`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/jwtLogin`,
-						{
-							jwtToken: jwtToken,
-						}
-					);
+					const loginedUserData = await axios
+						.post(
+							`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/verify`,
+							{
+								jwtToken: jwtToken,
+							}
+						)
+						.then((res) => res.data);
 
-					const userData = JWTTokenResult.data.data;
-					if (userData.login && userData.password) {
-						setData(JWTTokenResult.data.data);
+					if (loginedUserData.login && loginedUserData.password) {
+						setData(loginedUserData);
 					}
 				} else if (googleJWTToken) {
-					await axios
-						.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`)
-						.catch((err) => {
-							throw err;
-						});
-					const googleJWTTokenResult = await axios.post(
-						`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/jwtLogin`,
-						{
-							googleJWTToken: googleJWTToken,
-						}
-					);
+					const loginedGoogleUserData = await axios
+						.post(
+							`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/verify`,
+							{ jwtToken: googleJWTToken }
+						)
+						.then((res) => res.data);
 
-					const userData = googleJWTTokenResult.data.data;
-					if (userData.name && userData.id) {
-						setData(googleJWTTokenResult.data.data);
-					}
-					setIsLoading(false);
+					if (loginedGoogleUserData.id) setData(loginedGoogleUserData);
 				}
 			} catch (error) {
 				console.error(error);
 			}
+
+			setIsLoading(false);
 		};
 
 		getUserData();

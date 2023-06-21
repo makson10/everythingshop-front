@@ -36,7 +36,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 			photo_id: productData.photo_id,
 			creator: productData.creator,
 			price: productData.price,
-			uniqueProductId: uuidv4(),
+			uniqueProductId: productData.uniqueProductId,
 			comments: productData.comments,
 		};
 
@@ -44,7 +44,6 @@ export default function ProductInfoBlock({ productData }: Props) {
 	};
 
 	const sendCommentToServer = async (newCommentData: IComment) => {
-		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`);
 		await axios.post(
 			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/addComment/${productData.uniqueProductId}`,
 			newCommentData
@@ -54,7 +53,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 			.get(
 				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productData.uniqueProductId}`
 			)
-			.then((res) => JSON.parse(res.data.data.comments));
+			.then((res) => res.data.comments);
 
 		setProductComments(newComments);
 	};
@@ -77,7 +76,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 			<div className="pt-6">
 				<Breadcrumb productTitle={productData.title} />
 
-				<Photo productPhotoId={productData.photo_id} />
+				<Photo productPhotoId={productData.uniqueProductId} />
 
 				{/* Product info */}
 				<div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">

@@ -1,82 +1,71 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Error from 'next/error';
 import Link from 'next/link';
 import Image from 'next/image';
 import useValidation from '@/hooks/useValidation';
 import { useUserData, useUserDataUpdate } from '@/hooks/useUserDataContext';
-import useCookies from '@/hooks/useCookies';
 import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
+import useSendEmail from '@/hooks/useSendEmail';
+import useCookies from '@/hooks/useCookies';
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '@/components/GoogleButton/GoogleButton';
-import { ISignUpUserData, ILogInUserData } from '@/types/validationTypes';
+import { ISignUpUserData } from '@/types/validationTypes';
 import { Formik } from 'formik';
 import axios from 'axios';
 
-export default function LogIn() {
+export default function SignUp() {
 	const isDarkTheme = useIsDarkTheme();
 	const userData = useUserData();
-	const { saveData } = useUserDataUpdate();
-	const { validateLogInData } = useValidation();
 	const { setCookies } = useCookies();
+	const { saveData } = useUserDataUpdate();
+	const { sendSignUpEmail } = useSendEmail();
+	const { validateSignUpData } = useValidation();
+
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
+	const [signUpUserCredential, setSignUpUserCredential] =
+		useState<ISignUpUserData>();
 	const { isPasswordVisible, togglePasswordVisible } =
 		useIsPasswordVisible(false);
 
-	const [logInUserCredential, setLogInUserCredential] =
-		useState<ISignUpUserData>();
-
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
+	const [isServerOff, setIsServerOff] = useState<boolean>(false);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const router = useRouter();
 
-	const sendDataToServer = async (data: ILogInUserData) => {
-		await axios
-			.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers`)
-			.catch((err) => {
-				throw err;
+	const sendDataToServer = async (data: ISignUpUserData) => {
+		try {
+			const registerResult = await axios
+				.post(
+					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/register`,
+					data
+				)
+				.then((res) => res.data);
+
+			setCookies('jwtToken', registerResult.jwtToken, {
+				sameSite: 'Lax',
 			});
 
-		const loginResult = await axios.post(
-			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/dataLogin`,
-			data,
-			{
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		);
-
-		if (loginResult.data.error) {
+			setSignUpUserCredential(data);
+			setIsServerError(false);
+		} catch (error: any) {
+			const errorMessage = error.response.data.error;
 			setIsServerError(true);
-			setServerErrorMessage(loginResult.data.error);
-			return;
+			setServerErrorMessage(errorMessage);
 		}
-
-		const userData = loginResult.data.userData;
-		setLogInUserCredential(userData);
-
-		const JWTTokenResult = await axios.post(
-			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/register`,
-			userData
-		);
-		setCookies('jwtToken', JWTTokenResult.data.jwtToken, {
-			sameSite: 'Lax',
-		});
-
-		setIsServerError(false);
 	};
 
 	const handleSuccess = () => {
 		router.push('/');
 		saveData({
-			name: logInUserCredential!.name,
-			dateOfBirth: logInUserCredential!.dateOfBirth,
-			email: logInUserCredential!.email,
-			login: logInUserCredential!.login,
-			password: logInUserCredential!.password,
+			name: signUpUserCredential!.name,
+			dateOfBirth: signUpUserCredential!.dateOfBirth,
+			email: signUpUserCredential!.email,
+			login: signUpUserCredential!.login,
+			password: signUpUserCredential!.password,
 		});
 	};
 
@@ -86,7 +75,7 @@ export default function LogIn() {
 		setTimeout(() => {
 			setIsOpenErrorWindow(false);
 			setIsServerError(null);
-		}, 2000);
+		}, 3000);
 	};
 
 	useEffect(() => {
@@ -103,6 +92,8 @@ export default function LogIn() {
 		}
 	}, [userData]);
 
+	if (isServerOff) return <Error statusCode={500} />;
+
 	if (didUserAuthorized) return <UserAlreadyAuthorizedPage />;
 
 	return (
@@ -111,7 +102,7 @@ export default function LogIn() {
 				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
 			)}
 
-			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-10 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
 					<Image
 						className="mx-auto h-10 w-auto"
@@ -120,34 +111,36 @@ export default function LogIn() {
 								? '/everythingshop_logo.png'
 								: '/everythingshop_logo_dark.png'
 						}
-						alt="My Company"
 						width={400}
 						height={400}
+						alt="My Company"
 					/>
-					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">
-						Log in to your account
+					<h2 className="mt-8 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">
+						Create new account
 					</h2>
 				</div>
-
 				<div className="flex justify-center mt-8">
 					<GoogleButton
-						action="Log In"
-						redirectUrl="/api/auth/login?action_type=login"
+						action="Sign Up"
+						redirectUrl="/api/auth/login?action_type=register"
 					/>
 				</div>
-
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
 					<Formik
 						initialValues={{
+							name: '',
+							dateOfBirth: '',
+							email: '',
 							login: '',
 							password: '',
 						}}
-						validate={(values: ILogInUserData) => {
-							return validateLogInData(values);
+						validate={(values: ISignUpUserData) => {
+							return validateSignUpData(values);
 						}}
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
 								sendDataToServer(values);
+								sendSignUpEmail(values.email, { userName: values.name });
 								setSubmitting(false);
 							}, 400);
 						}}>
@@ -161,6 +154,70 @@ export default function LogIn() {
 							isSubmitting,
 						}) => (
 							<form className="space-y-6" onSubmit={handleSubmit}>
+								<div>
+									<label
+										htmlFor="name"
+										className="block text-lg font-medium leading-6 text-gray-900 dark:text-white">
+										Name
+									</label>
+									<div className="mt-2">
+										<input
+											id="name"
+											name="name"
+											type="text"
+											autoComplete="email"
+											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-orange-600 sm:text-sm sm:leading-6"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.name}
+										/>
+										{errors.name && touched.name && errors.name}
+									</div>
+								</div>
+
+								<div>
+									<label
+										htmlFor="dateOfBirth"
+										className="block text-lg font-medium leading-6 text-gray-900 dark:text-white">
+										Date of birth
+									</label>
+									<div className="mt-2">
+										<input
+											id="dateOfBirth"
+											name="dateOfBirth"
+											type="date"
+											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-orange-600 sm:text-sm sm:leading-6"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.dateOfBirth}
+										/>
+										{errors.dateOfBirth &&
+											touched.dateOfBirth &&
+											errors.dateOfBirth}
+									</div>
+								</div>
+
+								<div>
+									<label
+										htmlFor="email"
+										className="block text-lg font-medium leading-6 text-gray-900 dark:text-white">
+										Email
+									</label>
+									<div className="mt-2">
+										<input
+											id="email"
+											name="email"
+											type="email"
+											autoComplete="email"
+											className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-orange-600 sm:text-sm sm:leading-6"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.email}
+										/>
+										{errors.email && touched.email && errors.email}
+									</div>
+								</div>
+
 								<div>
 									<div className="flex items-center justify-between">
 										<label
@@ -190,13 +247,6 @@ export default function LogIn() {
 											className="block text-lg font-medium leading-6 text-gray-900 dark:text-white">
 											Password
 										</label>
-										<div className="text-lg">
-											<a
-												tabIndex={-1}
-												className="font-semibold focus:outline-none text-indigo-600 hover:text-indigo-500 dark:text-orange-600 dark:hover:text-orange-500">
-												Forgot password?
-											</a>
-										</div>
 									</div>
 									<div className="mt-2">
 										<div className="flex flex-row gap-4">
@@ -230,8 +280,8 @@ export default function LogIn() {
 									<button
 										type="submit"
 										disabled={isSubmitting}
-										className="flex w-full justify-center rounded-md bg-indigo-600 dark:bg-orange-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 dark:hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:focus-visible:outline-orange-500">
-										Log In
+										className="flex w-full justify-center rounded-md bg-indigo-600 dark:bg-orange-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 dark:hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:focus-visible:outline-orange-600">
+										Create account
 									</button>
 								</div>
 							</form>
@@ -239,12 +289,11 @@ export default function LogIn() {
 					</Formik>
 
 					<p className="mt-2 text-center text-base text-gray-500 dark:text-white">
-						{/* eslint-disable-next-line react/no-unescaped-entities */}
-						Already haven't account?{' '}
+						Already have account?{' '}
 						<Link
-							href="/signUp"
+							href="/logIn"
 							className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-orange-600 dark:hover:text-orange-500">
-							Sign Up
+							Log In
 						</Link>
 					</p>
 				</div>

@@ -16,7 +16,8 @@ export default function CommentsBlock({ products }: Props) {
 						<CommentRow
 							key={index}
 							comments={product.comments}
-							toPost={product.title}
+							productId={product.uniqueProductId}
+							productName={product.title}
 						/>
 					);
 				})}

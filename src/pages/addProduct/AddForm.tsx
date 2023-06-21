@@ -73,22 +73,16 @@ export function AddForm() {
 		formData.append('comments', JSON.stringify([]));
 
 		try {
-			await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`);
 			const addProductResult = await axios.post(
 				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/addNewProduct`,
 				formData
 			);
 
-			if (!addProductResult.data.success) {
-				setIsServerError(true);
-				setServerErrorMessage(addProductResult.data.errorMessage || 'fuck');
-				return;
-			}
-
 			setIsServerError(false);
-		} catch (error) {
-			console.error(error);
+		} catch (error: any) {
+			const errorMessage = error.response.data.error;
 			setIsServerError(true);
+			setServerErrorMessage(errorMessage);
 		}
 	};
 

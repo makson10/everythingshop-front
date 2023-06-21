@@ -42,6 +42,7 @@ export default function Comments({
 										<div className="flex items-center mb-2">
 											<div className="w-10 h-10 mr-4">
 												<Image
+													className="rounded"
 													src={comment.picture}
 													alt="#"
 													width={48}
@@ -57,7 +58,9 @@ export default function Comments({
 												</p>
 											</div>
 										</div>
-										<p className="text-gray-700 leading-6">{comment.text}</p>
+										<p className="text-gray-700 leading-6 break-words">
+											{comment.text}
+										</p>
 									</div>
 								</div>
 							);

@@ -1,37 +1,49 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { IComment, CommentType } from '@/types/commentTypes';
 import axios from 'axios';
+import Link from 'next/link';
 
 interface Props {
 	comments: CommentType;
-	toPost: string;
+	productId: string;
+	productName: string;
 }
 
 interface CommentProps {
 	comment: IComment;
-	toPost: string;
+	productId: string;
+	productName: string;
 }
 
-export default function CommentRow({ comments, toPost }: Props) {
-	if (!comments.length) return null;
-
+export default function CommentRow({
+	comments,
+	productId,
+	productName,
+}: Props) {
 	return (
 		<div className="flex flex-col gap-[5px] p-[0.5rem] border-b-2 border-b-[gray]">
 			{comments.map((comment, index) => {
-				return <Comment comment={comment} toPost={toPost} key={index} />;
+				return (
+					<Comment
+						comment={comment}
+						productId={productId}
+						productName={productName}
+						key={index}
+					/>
+				);
 			})}
 		</div>
 	);
 }
 
-function Comment({ comment, toPost }: CommentProps) {
+function Comment({ comment, productId, productName }: CommentProps) {
 	const router = useRouter();
 
 	const handleClick = async () => {
-		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products`);
-		await axios.post(
-			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/deleteComment/${comment.uniqueCommentId}`
+		await axios.delete(
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/deleteComment/${productId}/${comment.uniqueCommentId}`
 		);
 
 		router.reload();
@@ -42,14 +54,18 @@ function Comment({ comment, toPost }: CommentProps) {
 			<div className="flex flex-col gap-2">
 				<div className="flex flex-row gap-2">
 					<Image
-						className="w-6 h-6"
+						className="w-6 h-6 rounded"
 						src={comment.picture}
 						alt="#"
 						width={100}
 						height={100}
 					/>
 					{comment.name}, {new Date(comment.date).toLocaleString()}; to post{' '}
-					{toPost}
+					<Link
+						className="hover:underline"
+						href={`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/assortment/${productId}`}>
+						{productName}
+					</Link>
 				</div>
 				<p>{comment.text}</p>
 			</div>

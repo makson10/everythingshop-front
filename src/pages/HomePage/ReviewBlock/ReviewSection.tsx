@@ -17,13 +17,13 @@ export default function ReviewSection() {
 				/>
 				<div className="pt-1/5 flex flex-col justify-between max-sm:flex-col max-sm:items-end">
 					<p className="w-[75%] text-right text-[1.2rem]">
-						{/* eslint-disable-next-line react/no-unescaped-entities */}
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         "
 						<i>
 							In this company all is good, when there is good, and all is bad,
 							when... never
 						</i>
-						{/* eslint-disable-next-line react/no-unescaped-entities */}
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         "
 					</p>
 					<div className="w-full">

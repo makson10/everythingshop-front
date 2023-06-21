@@ -23,28 +23,18 @@ export default async function callback(
 			.oauth2({ version: 'v2', auth: oAuth2Client })
 			.userinfo.get();
 
-		await axios.get(
-			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`
-		);
-		await axios
+		const loginResult = await axios
 			.post(
 				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/login`,
-				{
-					id: data.id,
-				}
+				{ id: data.id }
 			)
-			.then((response) => {
-				if (response.data.errorMessage) {
-					res.redirect(
-						`/googleAuthFailed?errorMessage=${response.data.errorMessage}`
-					);
-				}
+			.then((res) => res.data);
 
-				const jwtToken = response.data.data.jwtToken;
-				res.redirect(`/addGoogleJWTToken?setGoogleJWTToken=${jwtToken}`);
-			});
-	} catch (error) {
-		console.error(error);
-		res.status(500).send('Error');
+		res.redirect(
+			`/addGoogleJWTToken?setGoogleJWTToken=${loginResult.jwtToken}`
+		);
+	} catch (error: any) {
+		const errorMessage = error.response.data.error;
+		res.status(500).redirect(`/googleAuthFailed?errorMessage=${errorMessage}`);
 	}
 }

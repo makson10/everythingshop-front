@@ -25,9 +25,13 @@ export default function ContactBlock() {
 						width={48}
 						height={48}
 					/>
-					<p className="break-all text-center">everything@everythingshop.com</p>
+					<Link
+						className="break-all text-center hover:underline"
+						href="mailto:everything@everythingshop.com">
+						everything@everythingshop.com
+					</Link>
 				</div>
-				<div className="flex flex-row justify-center items-center gap-2.5">
+				<div className="flex flex-row justify-center items-center gap-2.5 hover:underline">
 					<Image
 						src="https://img.icons8.com/ios/48/ffffff/order-delivered.png"
 						alt="#"

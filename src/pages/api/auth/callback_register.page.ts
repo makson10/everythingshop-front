@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
+import Error from 'next/error';
 import axios from 'axios';
 
 const oAuth2Client = new OAuth2Client({
@@ -25,30 +26,16 @@ async function generateRedirectURL(code: string | string[] | undefined) {
 		picture: data.picture,
 	};
 
-	await axios.get(
-		`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers`
-	);
-
-	await axios
+	const registerResult = await axios
 		.post(
 			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/register`,
 			userData
 		)
-		.then((response) => {
-			const responseData = response.data.data;
+		.then((res) => res.data);
 
-			if (!responseData.success) {
-				redirectURL = `http://localhost:3000/googleAuthFailed?errorMessage=${responseData.errorMessage}`;
-				return;
-			}
+	redirectURL = `${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/addGoogleJWTToken?setGoogleJWTToken=${registerResult.jwtToken}&userEmail=${userData.email}&userName=${userData.name}&ie=UTF-8&oe=UTF-8`;
 
-			const jwtToken = responseData.jwtToken;
-
-			redirectURL = `http://localhost:3000/addGoogleJWTToken?setGoogleJWTToken=${jwtToken}&userEmail=${userData.email}&userName=${userData.name}&ie=UTF-8&oe=UTF-8`;
-		});
-
-	redirectURL = encodeURI(redirectURL);
-	return redirectURL;
+	return encodeURI(redirectURL);
 }
 
 export default async function callback(
@@ -60,8 +47,8 @@ export default async function callback(
 
 		const url = await generateRedirectURL(code);
 		res.status(200).redirect(url);
-	} catch (error) {
-		console.error(error);
-		res.status(500).send('Error');
+	} catch (error: any) {
+		const errorMessage = error.response.data.error;
+		res.status(500).redirect(`/googleAuthFailed?errorMessage=${errorMessage}`);
 	}
 }

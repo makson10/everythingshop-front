@@ -32,7 +32,7 @@ export default function UserRow({
 				<>
 					<div className="flex flex-row gap-4 items-center">
 						<Image
-							className="w-6 max-sm:h-6"
+							className="w-6 rounded max-sm:h-6"
 							src={customer.picture!}
 							alt="#"
 							width={100}

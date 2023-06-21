@@ -4,9 +4,7 @@ import Image from 'next/image';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import { ModalMenu } from './ModalMenu';
-import LoadingScreen, {
-	ShowLoadingScreen,
-} from '@/components/LoadingScreen/LoadingScreen';
+import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 
 export default function UserButton() {
 	const isDarkTheme = useIsDarkTheme();

@@ -1,22 +1,9 @@
-import { useEffect, useRef } from 'react';
-import useScrollReveal from '@/hooks/useScrollReveal';
 import LeftTagline from './LeftTagline';
 import RightTagline from './RightTagline';
 
 export default function TaglineBlock() {
-	const setUpSRAnim = useScrollReveal();
-	const componentRef = useRef(null);
-
-	useEffect(() => {
-		setTimeout(() => {
-			setUpSRAnim(componentRef, 600);
-		}, 800);
-	}, []);
-
 	return (
-		<div
-			className="h-[64vh] flex flex-row justify-between items-center gap-4 max-sm:flex-col max-sm:h-fit"
-			ref={componentRef}>
+		<div className="h-[64vh] flex flex-row justify-between items-center gap-4 max-sm:flex-col max-sm:h-fit">
 			<LeftTagline />
 			<RightTagline />
 		</div>

@@ -11,9 +11,8 @@ const FeedbackRow = ({ feedback }: Props) => {
 	const router = useRouter();
 
 	const handleClick = async () => {
-		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedback`);
-		await axios.post(
-			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedback/deleteFeedback/${feedback.uniqueFeedbackId}`
+		await axios.delete(
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/feedbacks/deleteFeedback/${feedback.uniqueFeedbackId}`
 		);
 
 		router.reload();

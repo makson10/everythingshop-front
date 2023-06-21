@@ -22,8 +22,10 @@ export function CartProvider({ children }: ProviderProps) {
 		const existProducts = [...products];
 
 		let foundSameProduct: boolean = false;
-		existProducts.forEach((product) => {
-			if (product.productsData.photo_id === productToAdd.photo_id) {
+		existProducts.map((product) => {
+			if (
+				product.productsData.uniqueProductId === productToAdd.uniqueProductId
+			) {
 				product.amount++;
 				foundSameProduct = true;
 			}
