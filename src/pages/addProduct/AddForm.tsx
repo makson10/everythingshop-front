@@ -117,9 +117,7 @@ export function AddForm() {
 
 	return (
 		<>
-			{isOpenErrorWindow && (
-				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
-			)}
+			{isOpenErrorWindow && <ShowErrorModalWindow error={serverErrorMessage} />}
 			{isOpenSuccessWindow && (
 				<ShowSuccessModalWindow
 					successText={'You have created your product successful'}

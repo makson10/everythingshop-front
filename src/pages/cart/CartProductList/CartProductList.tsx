@@ -1,26 +1,38 @@
 import { useEffect, useState } from 'react';
-import { useCartContext } from '@/hooks/useCartContext';
+import { useCartContext, useCartUpdateContext } from '@/hooks/useCartContext';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import { SubmitBuyRow } from './SubmitBuyRow';
 import { FailWindow } from '../FailWindow/FailWindow';
 import ProductRow from './ProductRow/ProductRow';
+import axios from 'axios';
 
 export function CartProductList() {
+	const { deleteProduct } = useCartUpdateContext();
 	const authorizedUser = useUserData();
 	const products = useCartContext();
 	const [costSum, setCostSum] = useState<number>(0);
 
 	useEffect(() => {
-		let sum: number = 0;
+			let sum: number = 0;
 
-		products.map((product) => {
-			if (product.productsData.price) {
-				sum += product.productsData.price * product.amount;
-			}
-		});
+			products.map(async (product) => {
+				const doesProductExist = await axios
+					.get(
+						`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/doesProductExist/${product.productsData.uniqueProductId}`
+					)
+					.then((res) => res.data);
 
-		setCostSum(sum);
+				if (!doesProductExist) {
+					deleteProduct(product.productsData.uniqueProductId);
+					return;
+				}
+
+				if (product.productsData.price) {
+					sum += product.productsData.price * product.amount;
+					setCostSum(sum);
+				}
+			});
 	}, [products]);
 
 	if (authorizedUser.isLoading) {

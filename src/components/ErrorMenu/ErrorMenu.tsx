@@ -1,10 +1,10 @@
 import { LegacyRef, useEffect, useRef, useState } from 'react';
 
 interface Props {
-	errorList: string[];
+	error: string | string[];
 }
 
-export default function ErrorMenu({ errorList }: Props) {
+export default function ErrorMenu({ error }: Props) {
 	const [show, setShow] = useState(false);
 
 	useEffect(() => {
@@ -32,13 +32,15 @@ export default function ErrorMenu({ errorList }: Props) {
 				</svg>
 				<span className="text-lg">Error!</span>
 			</div>
-			{errorList.map((error, index) => {
-				return (
-					<p className="mt-2 text-center" key={index}>
-						{error}
-					</p>
-				);
-			})}
+			{typeof error === 'string' && error}
+			{Array.isArray(error) &&
+				error.map((error, index) => {
+					return (
+						<p className="mt-2 text-center" key={index}>
+							{error}
+						</p>
+					);
+				})}
 		</div>
 	);
 }

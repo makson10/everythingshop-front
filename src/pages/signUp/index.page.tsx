@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Error from 'next/error';
 import Link from 'next/link';
 import Image from 'next/image';
 import useValidation from '@/hooks/useValidation';
@@ -31,7 +30,6 @@ export default function SignUp() {
 		useIsPasswordVisible(false);
 
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
-	const [isServerOff, setIsServerOff] = useState<boolean>(false);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const router = useRouter();
@@ -92,15 +90,11 @@ export default function SignUp() {
 		}
 	}, [userData]);
 
-	if (isServerOff) return <Error statusCode={500} />;
-
 	if (didUserAuthorized) return <UserAlreadyAuthorizedPage />;
 
 	return (
 		<>
-			{isOpenErrorWindow && (
-				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
-			)}
+			{isOpenErrorWindow && <ShowErrorModalWindow error={serverErrorMessage} />}
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-10 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">

@@ -6,7 +6,7 @@ export default function Document() {
 			<Head>
 				<link
 					rel="shortcut icon"
-					href="https://img.icons8.com/ios/50/000000/shopping-cart--v1.png"
+					href="https://img.icons8.com/ios/50/ffffff/shopping-cart--v1.png"
 				/>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" />

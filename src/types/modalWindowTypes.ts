@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 
 export interface ErrorListType {
-	errorList: string[];
+	error: string | string[];
 }
 
 export interface SuccessType {

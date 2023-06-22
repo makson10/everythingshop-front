@@ -8,9 +8,9 @@ import {
 	SuccessType,
 } from '@/types/modalWindowTypes';
 
-export const ShowErrorModalWindow = ({ errorList }: ErrorListType) => {
+export const ShowErrorModalWindow = ({ error }: ErrorListType) => {
 	return createPortal(
-		<ErrorMenu errorList={errorList} />,
+		<ErrorMenu error={error} />,
 		document.querySelector('#portal')!
 	);
 };
