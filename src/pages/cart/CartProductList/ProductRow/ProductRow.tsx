@@ -16,48 +16,26 @@ export default function ProductRow({ product }: Props) {
 	const { deleteProduct, decreaseProductAmount, increaseProductAmount } =
 		useCartUpdateContext();
 
-	const checkDoesProductExist = async () => {
-		const doesProductExist: boolean = await axios
-			.get(
-				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/doesProductExist/${product.productsData.uniqueProductId}`
-			)
-			.then((res) => res.data);
-
-		return doesProductExist;
-	};
-
-	const getDropboxToken = async () => {
-		const token: string = await axios
-			.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/getDropboxToken`)
-			.then((res) => res.data);
-
-		return token;
-	};
-
-	const getImageObject = async (dropboxToken: string) => {
-		const res = await axios.get(
-			`https://content.dropboxapi.com/2/files/download`,
-			{
-				headers: {
-					Authorization: `Bearer ${dropboxToken}`,
-					'Dropbox-API-Arg': JSON.stringify({
-						path: `/${product.productsData.uniqueProductId}.png`,
-					}),
-				},
-				responseType: 'blob',
-			}
-		);
-
-		return URL.createObjectURL(res.data);
-	};
-
 	useEffect(() => {
 		(async () => {
-			if (!(await checkDoesProductExist())) return;
+			const dropboxToken = await axios
+				.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/getDropboxToken`)
+				.then((res) => res.data);
 
-			const dropboxToken = await getDropboxToken();
-			const imageObjectUrl = await getImageObject(dropboxToken);
+			const res = await axios.get(
+				`https://content.dropboxapi.com/2/files/download`,
+				{
+					headers: {
+						Authorization: `Bearer ${dropboxToken}`,
+						'Dropbox-API-Arg': JSON.stringify({
+							path: `/${product.productsData.uniqueProductId}.png`,
+						}),
+					},
+					responseType: 'blob',
+				}
+			);
 
+			const imageObjectUrl = URL.createObjectURL(res.data);
 			setProductPhoto(imageObjectUrl);
 			setIsPhotoChanges(true);
 		})();
@@ -108,7 +86,7 @@ export default function ProductRow({ product }: Props) {
 			</div>
 			<div className="flex flex-col items-end max-sm:justify-center">
 				<p className="text-sm leading-6 text-gray-900 dark:text-white max-sm:text-center">
-					${product.productsData.price} * {product.amount}
+					${product.productsData.price}
 				</p>
 				<div className="flex">
 					<button

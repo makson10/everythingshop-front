@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
-import Error from 'next/error';
 import axios from 'axios';
 
 const oAuth2Client = new OAuth2Client({

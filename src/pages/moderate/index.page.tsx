@@ -20,6 +20,7 @@ export default function ModeratePage() {
 	const { isPasswordVisible, togglePasswordVisible } =
 		useIsPasswordVisible(false);
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
+	const [isServerOff, setIsServerOff] = useState<boolean>(false);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const router = useRouter();
@@ -72,9 +73,13 @@ export default function ModeratePage() {
 		isServerError ? handleFailure() : handleSuccess();
 	}, [isServerError]);
 
+	if (isServerOff) return <Error statusCode={500} />;
+
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow error={serverErrorMessage} />}
+			{isOpenErrorWindow && (
+				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
+			)}
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#3c6255] text-white">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">

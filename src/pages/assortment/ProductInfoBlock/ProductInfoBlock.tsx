@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useCartUpdateContext } from '@/hooks/useCartContext';
-import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import { IComment, CommentType } from '@/types/commentTypes';
@@ -10,16 +9,16 @@ import Photo from './Sections/Photo';
 import Option from './Sections/Option';
 import Details from './Sections/Details';
 import Comments from './Sections/Comments';
-import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { useUserData } from '@/hooks/useUserDataContext';
 
 interface Props {
 	productData: IProduct;
 }
 
 export default function ProductInfoBlock({ productData }: Props) {
-	const { addProductToCard } = useCartUpdateContext();
 	const authorizeUserData = useUserData();
+	const { addProductToCard } = useCartUpdateContext();
 
 	const [productComments, setProductComments] = useState<CommentType>(
 		productData.comments
@@ -63,9 +62,9 @@ export default function ProductInfoBlock({ productData }: Props) {
 		setTimeout(() => setIsOpenSuccessWindow(false), 3000);
 	}, [isOpenSuccessWindow]);
 
-	if (authorizeUserData.isLoading) {
-		return <ShowLoadingScreen />;
-	}
+	// if (authorizeUserData.isLoading) {
+	// 	return <ShowLoadingScreen />;
+	// }
 
 	return (
 		<>

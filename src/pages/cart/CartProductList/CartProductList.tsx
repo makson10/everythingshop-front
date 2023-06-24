@@ -14,25 +14,25 @@ export function CartProductList() {
 	const [costSum, setCostSum] = useState<number>(0);
 
 	useEffect(() => {
-			let sum: number = 0;
+		let sum: number = 0;
 
-			products.map(async (product) => {
-				const doesProductExist = await axios
-					.get(
-						`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/doesProductExist/${product.productsData.uniqueProductId}`
-					)
-					.then((res) => res.data);
+		products.map(async (product) => {
+			const doesProductExist = await axios
+				.get(
+					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/doesProductExist/${product.productsData.uniqueProductId}`
+				)
+				.then((res) => res.data);
 
-				if (!doesProductExist) {
-					deleteProduct(product.productsData.uniqueProductId);
-					return;
-				}
+			if (!doesProductExist) {
+				deleteProduct(product.productsData.uniqueProductId);
+				return;
+			}
 
-				if (product.productsData.price) {
-					sum += product.productsData.price * product.amount;
-					setCostSum(sum);
-				}
-			});
+			if (product.productsData.price) {
+				sum += product.productsData.price * product.amount;
+				setCostSum(sum);
+			}
+		});
 	}, [products]);
 
 	if (authorizedUser.isLoading) {
