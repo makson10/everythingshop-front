@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import { IProduct } from '@/types/productTypes';
+import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import axios from 'axios';
 
 interface Props {
@@ -10,8 +11,9 @@ interface Props {
 }
 
 export function ProductCard({ productData }: Props) {
+	const isDarkTheme = useIsDarkTheme();
 	const [productPhoto, setProductPhoto] = useState(
-		'https://img.icons8.com/ios/250/000000/product--v1.png'
+		`https://img.icons8.com/ios/250/808080/product--v1.png`
 	);
 	const router = useRouter();
 
@@ -31,7 +33,7 @@ export function ProductCard({ productData }: Props) {
 					headers: {
 						Authorization: `Bearer ${dropboxToken}`,
 						'Dropbox-API-Arg': JSON.stringify({
-							path: `/${productData.uniqueProductId}.png`,
+							path: '/' + productData.photo_id[0],
 						}),
 					},
 					responseType: 'blob',
@@ -45,9 +47,9 @@ export function ProductCard({ productData }: Props) {
 
 	return (
 		<div className="group relative">
-			<div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+			<div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-transparent lg:aspect-none group-hover:opacity-75 lg:h-80">
 				<Image
-					className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+					className="h-full w-full object-contain object-center lg:h-full lg:w-full"
 					src={productPhoto}
 					alt="#"
 					crossOrigin="use-credentials"

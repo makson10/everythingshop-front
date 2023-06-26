@@ -9,12 +9,14 @@ import {
 	ShowSuccessModalWindow,
 	ShowErrorModalWindow,
 } from '@/components/ShowModalWindow/ShowModalWindow';
-import { Formik } from 'formik';
+import { FieldArray, Formik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { Navigation, Pagination, A11y } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 interface ProductDataType {
-	photoFile?: File;
+	photoFiles?: File[];
 	title: string;
 	description: string;
 	creator: string;
@@ -27,10 +29,7 @@ export function AddForm() {
 	const { validateAddNewProduct } = useValidation();
 	const authorizationUserData = useUserData();
 
-	const [fileInputLabel, setFileInputLabel] = useState<string>(
-		'Enter product photo'
-	);
-	const [photoFile, setPhotoFile] = useState<File | null>(null);
+	const [photoFiles, setPhotoFiles] = useState<File[]>([]);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
@@ -44,27 +43,24 @@ export function AddForm() {
 		if (!e.target.files) return;
 
 		let file = e.target.files[0];
-		file.name.length > 31
-			? setFileInputLabel(file.name.slice(0, 26))
-			: setFileInputLabel(file.name);
-
-		setPhotoFile(file);
+		setPhotoFiles((prevValue) => [...prevValue, file]);
 	};
 
 	const clearFileInput = () => {
-		if (fileInputRef.current) fileInputRef.current.value = '';
-		setFileInputLabel('Enter product photo');
+		setPhotoFiles([]);
 	};
 
 	const sendDataToServer = async (user: ProductDataType) => {
-		if (!user.photoFile) {
+		if (!user.photoFiles) {
 			setIsServerError(true);
 			setServerErrorMessage('File field is empty!');
 			return;
 		}
 
 		const formData = new FormData();
-		formData.append('file', user.photoFile!);
+		user.photoFiles.map((file) => {
+			formData.append('file', file);
+		});
 		formData.append('title', user.title);
 		formData.append('description', user.description);
 		formData.append('creator', user.creator);
@@ -101,8 +97,8 @@ export function AddForm() {
 	};
 
 	useEffect(() => {
-		if (photoFile) setFileInputLabel(photoFile.name);
-	}, [photoFile]);
+		console.log(photoFiles);
+	}, [photoFiles]);
 
 	useEffect(() => {
 		if (isServerError === null) return;
@@ -124,30 +120,51 @@ export function AddForm() {
 				/>
 			)}
 
-			<div className="flex-[2_1_auto] flex justify-center items-center">
-				<div className="flex flex-col gap-8">
-					<h1 className="text-4xl">Add new product</h1>
+			<div className="flex-[2_1_auto] flex justify-center items-center p-6">
+				<div className="flex flex-col gap-8 w-[350px]">
+					<h1 className="text-4xl text-center">Add new product</h1>
 					<div className="flex flex-col">
 						<div className="flex flex-col gap-4">
-							<label className="cursor-pointer px-[12px] py-[6px] flex justify-center gap-[20px]">
-								<Image
-									className="w-[50px] h-[50px]"
-									src={`https://img.icons8.com/ios/50/${
-										isDarkTheme ? 'ffffff' : '000000'
-									}/upload-to-cloud--v1.png`}
-									alt="#"
-									width={100}
-									height={100}
-								/>
-								<p className="flex items-center">{fileInputLabel}</p>
-								<input
-									className="hidden"
-									type="file"
-									name="photoFile"
-									accept="image/*"
-									onChange={handleFileInput}
-								/>
-							</label>
+							<div className="h-1/4">
+								<Swiper
+									modules={[Navigation, Pagination, A11y]}
+									slidesPerView={1}
+									navigation
+									pagination={{ clickable: true }}>
+									{photoFiles.map((file, index) => {
+										const imageObjectUrl = URL.createObjectURL(file);
+										return (
+											<SwiperSlide key={index}>
+												<img src={imageObjectUrl} alt="#" />
+											</SwiperSlide>
+										);
+									})}
+									{photoFiles.length < 5 && (
+										<SwiperSlide>
+											<label className="cursor-pointer px-[12px] py-[6px] flex justify-center gap-[20px]">
+												<Image
+													className="w-[50px] h-[50px]"
+													src={`https://img.icons8.com/ios/50/${
+														isDarkTheme ? 'ffffff' : '000000'
+													}/upload-to-cloud--v1.png`}
+													alt="#"
+													width={100}
+													height={100}
+												/>
+												<p className="flex items-center">Choose your photo</p>
+												<input
+													className="hidden"
+													type="file"
+													multiple
+													name="photoFiles"
+													accept="image/*"
+													onChange={handleFileInput}
+												/>
+											</label>
+										</SwiperSlide>
+									)}
+								</Swiper>
+							</div>
 							<Formik
 								initialValues={{
 									title: '',
@@ -161,7 +178,7 @@ export function AddForm() {
 								}}
 								onSubmit={(values, { setSubmitting, resetForm }) => {
 									setTimeout(() => {
-										if (photoFile) values.photoFile = photoFile;
+										if (photoFiles) values.photoFiles = photoFiles;
 										sendDataToServer(values);
 
 										clearFileInput();

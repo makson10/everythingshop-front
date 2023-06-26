@@ -5,7 +5,7 @@ import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import { IComment, CommentType } from '@/types/commentTypes';
 import { IProduct } from '@/types/productTypes';
 import Breadcrumb from './Sections/Breadcrumb';
-import Photo from './Sections/Photo';
+import PhotoCarousel from './Sections/PhotoCarousel';
 import Option from './Sections/Option';
 import Details from './Sections/Details';
 import Comments from './Sections/Comments';
@@ -62,9 +62,9 @@ export default function ProductInfoBlock({ productData }: Props) {
 		setTimeout(() => setIsOpenSuccessWindow(false), 3000);
 	}, [isOpenSuccessWindow]);
 
-	// if (authorizeUserData.isLoading) {
-	// 	return <ShowLoadingScreen />;
-	// }
+	if (authorizeUserData.isLoading) {
+		return <ShowLoadingScreen />;
+	}
 
 	return (
 		<>
@@ -75,7 +75,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 			<div className="pt-6">
 				<Breadcrumb productTitle={productData.title} />
 
-				<Photo productPhotoId={productData.uniqueProductId} />
+				<PhotoCarousel productPhotoIds={productData.photo_id} />
 
 				{/* Product info */}
 				<div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">

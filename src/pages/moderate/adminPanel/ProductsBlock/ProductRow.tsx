@@ -35,7 +35,7 @@ export default function ProductRow({ product }: Props) {
 					headers: {
 						Authorization: `Bearer ${dropboxToken}`,
 						'Dropbox-API-Arg': JSON.stringify({
-							path: `/${product.uniqueProductId}.png`,
+							path: '/' + product.photo_id[0],
 						}),
 					},
 					responseType: 'blob',

@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import '@/styles/variables.scss';
 import '@/styles/index.scss';
 import '@/styles/globals.scss';
+import 'swiper/css/bundle';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
