@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
-	const { deleteData, deleteTokens } = useUserDataUpdate();
+	const { deleteData } = useUserDataUpdate();
 	const { deleteAllProducts } = useCartUpdateContext();
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -17,7 +17,6 @@ export const ModalMenu = ({ isOpen, setIsOpenMenu, setIsUserLogin }: Props) => {
 		if (!isOpen) return;
 
 		deleteData();
-		deleteTokens();
 		deleteAllProducts();
 		setIsUserLogin(false);
 	}

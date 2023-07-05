@@ -5,7 +5,7 @@ import { useCartContext } from '@/hooks/useCartContext';
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 
 interface Props {
-	pageName: string | string[] | undefined;
+	pageName: string;
 	showCartIcon?: boolean;
 }
 
@@ -13,14 +13,14 @@ export default function Header({ pageName, showCartIcon = true }: Props) {
 	const isDarkTheme = useIsDarkTheme();
 	const cart = useCartContext();
 	const router = useRouter();
-	const [productsInCartAmount, setProductsInCartAmount] = useState<number>(0);
+	const [cartProducstAmount, setCartProducstAmount] = useState<number>(0);
 
 	useEffect(() => {
 		const newValue = cart.reduce((accumulator, currentValue) => {
 			return accumulator + currentValue.amount;
 		}, 0);
 
-		setProductsInCartAmount(newValue);
+		setCartProducstAmount(newValue);
 	}, [cart]);
 
 	return (
@@ -56,9 +56,9 @@ export default function Header({ pageName, showCartIcon = true }: Props) {
 									width={48}
 									height={48}
 								/>
-								{productsInCartAmount !== 0 && (
+								{cartProducstAmount !== 0 && (
 									<div className="flex justify-center items-center absolute top-[-20%] left-[65%] w-1/2 bg-[coral] rounded-full max-sm:text-[0.8rem] max-sm:h-1/2 max-sm:top-[-15%]">
-										<p>{productsInCartAmount}</p>
+										<p>{cartProducstAmount}</p>
 									</div>
 								)}
 							</button>

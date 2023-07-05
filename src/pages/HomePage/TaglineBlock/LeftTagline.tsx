@@ -1,7 +1,7 @@
 export default function LeftTagline() {
 	return (
 		<div className="pl-[12%] flex flex-col">
-			<p className="tracking-[1.5px] text-[1.3rem] text-[--first-color] font-sans">
+			<p className="tracking-[1.5px] text-[1.3rem] text-[#3c6255] font-sans">
 				{/* eslint-disable-next-line react/no-unescaped-entities */}
 				The best you've ever seen
 			</p>

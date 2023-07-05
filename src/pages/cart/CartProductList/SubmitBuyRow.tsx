@@ -6,7 +6,8 @@ interface Props {
 }
 
 export function SubmitBuyRow({ costSum }: Props) {
-	const [isOpenSubmitBuyForm, setIsOpenSubmitBuyForm] = useState<boolean>(false);
+	const [isOpenSubmitBuyForm, setIsOpenSubmitBuyForm] =
+		useState<boolean>(false);
 	const submitButtonRef = useRef<HTMLButtonElement>();
 
 	const handleSubmitBuy = () => {
@@ -21,7 +22,10 @@ export function SubmitBuyRow({ costSum }: Props) {
 	return (
 		<>
 			{isOpenSubmitBuyForm && (
-				<ShowSubmitBuyForm setIsOpenSubmitBuyForm={setIsOpenSubmitBuyForm} buyCost={costSum} />
+				<ShowSubmitBuyForm
+					setIsOpenSubmitBuyForm={setIsOpenSubmitBuyForm}
+					purchaseTotalPrice={costSum}
+				/>
 			)}
 
 			<div>

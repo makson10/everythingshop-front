@@ -1,20 +1,20 @@
 import Cookies from 'js-cookie';
 
 const useCookies = () => {
-	const getCookies = (cookieName: string) => {
-		return Cookies.get(cookieName);
+	const getCookies = (key: string) => {
+		return Cookies.get(key);
 	};
 
 	const setCookies = (
-		cookieName: string,
-		cookieValue: string,
+		key: string,
+		value: string,
 		options?: object
 	) => {
-		Cookies.set(cookieName, cookieValue, options);
+		Cookies.set(key, value, options);
 	};
 
-	const removeCookies = (cookieName: string) => {
-		Cookies.remove(cookieName);
+	const removeCookies = (key: string) => {
+		Cookies.remove(key);
 	};
 
 	return {

@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction } from 'react';
-import { ISortAndFilterParameters } from '@/types/sortOptionsTypes';
+import { IProductTransformationParameters } from '@/types/productTransformationTypes';
 import SortSelect from './Selects/SortSelect';
 import FilterSelect from './Selects/FilterSelect';
 import SearchInput from './Selects/SearchInput';
 
 interface Props {
-	setParameters: Dispatch<SetStateAction<ISortAndFilterParameters>>;
+	setParameters: Dispatch<SetStateAction<IProductTransformationParameters>>;
 }
 
 export default function FilterBar({ setParameters }: Props) {

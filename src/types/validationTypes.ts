@@ -26,3 +26,6 @@ export interface IValidateFeedbackData {
 export interface IValidateCommentsData {
 	newCommentText: string;
 }
+
+
+// TODO: replace this types with good existing types

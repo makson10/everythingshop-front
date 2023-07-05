@@ -1,17 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { OAuth2Client } from 'google-auth-library';
 
-export default async function login(req: NextApiRequest, res: NextApiResponse) {
-	let redirectUri;
-
-	if (req.query?.action_type === 'login') {
-		redirectUri = process.env.GOOGLE_LOGIN_REDIRECT_URI;
-	} else if (req.query.action_type === 'register') {
-		redirectUri = process.env.GOOGLE_REGISTER_REDIRECT_URI;
-	} else {
-		res.status(500).send('Error');
-	}
-
+const generateAuthUrl = (redirectUri: string) => {
 	const oAuth2Client = new OAuth2Client({
 		clientId: process.env.GOOGLE_CLIENT_ID,
 		clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -28,5 +18,20 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
 		scope: scopes,
 	});
 
+	return url;
+};
+
+export default async function login(req: NextApiRequest, res: NextApiResponse) {
+	let redirectUri;
+
+	if (req.query?.action_type === 'login') {
+		redirectUri = process.env.GOOGLE_LOGIN_REDIRECT_URI;
+	} else if (req.query.action_type === 'register') {
+		redirectUri = process.env.GOOGLE_REGISTER_REDIRECT_URI;
+	} else {
+		return res.status(500).send('Error');
+	}
+
+	const url = generateAuthUrl(redirectUri!);
 	res.redirect(url);
 }

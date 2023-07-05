@@ -24,12 +24,12 @@ export const ShowSuccessModalWindow = ({ successText }: SuccessType) => {
 
 export const ShowSubmitBuyForm = ({
 	setIsOpenSubmitBuyForm,
-	buyCost,
+	purchaseTotalPrice,
 }: ShowModalWindowProps) => {
 	return createPortal(
 		<SubmitBuyForm
 			setIsOpenSubmitBuyForm={setIsOpenSubmitBuyForm}
-			buyCost={buyCost}
+			purchaseTotalPrice={purchaseTotalPrice}
 		/>,
 		document.querySelector('#portal')!
 	);

@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useCookies from '@/hooks/useCookies';
-import useIsAdminLogIn from '@/hooks/useIsAdminLogIn';
+import useIsAdminAuthorized from '@/hooks/useIsAdminAuthorized';
 import { ProductType } from '@/types/productTypes';
 import { UserDataType } from '@/types/userTypes';
 import { FeedbackType } from '@/types/feedbackTypes';
@@ -27,16 +27,16 @@ export default function AdminPanel({
 }: FetchedData) {
 	const { removeCookies } = useCookies();
 	const router = useRouter();
-	const { isAdminLogIn, isLoading } = useIsAdminLogIn();
+	const { isAdminAuthorized, isLoading } = useIsAdminAuthorized();
 
 	useEffect(() => {
 		if (isLoading) return;
 
-		if (!isAdminLogIn) {
+		if (!isAdminAuthorized) {
 			removeCookies('isAdminAuthorized');
 			router.push('/moderate');
 		}
-	}, [isAdminLogIn, isLoading]);
+	}, [useIsAdminAuthorized]);
 
 	return (
 		<>

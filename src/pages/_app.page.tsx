@@ -15,13 +15,13 @@ export default function App({ Component, pageProps }: AppProps) {
 				<title>Everything Shop</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			</Head>
-			<ThemeProvider>
-				<UserDataProvider>
-					<CartProvider>
+			<UserDataProvider>
+				<CartProvider>
+					<ThemeProvider>
 						<Component {...pageProps} />
-					</CartProvider>
-				</UserDataProvider>
-			</ThemeProvider>
+					</ThemeProvider>
+				</CartProvider>
+			</UserDataProvider>
 		</>
 	);
 }

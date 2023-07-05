@@ -23,7 +23,7 @@ const FeedbackRow = ({ feedback }: Props) => {
 			<div className="flex flex-row justify-between">
 				<div className="flex flex-col gap-2 w-11/12">
 					<div className="flex flex-row gap-2">
-						{feedback.userName}, {new Date(feedback.date).toLocaleString()}
+						{feedback.name}, {new Date(feedback.date).toLocaleString()}
 					</div>
 					<p className="break-all">{feedback.feedbackText}</p>
 				</div>

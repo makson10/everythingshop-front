@@ -1,12 +1,7 @@
 import { IProduct, ProductType } from '@/types/productTypes';
 
-export const filterProducts = (
-	filterAction: string,
-	arrayForFilter: ProductType
-) => {
-	let filterFunction = (product: IProduct) => {
-		return true;
-	};
+const filterProducts = (filterAction: string, dataForFilter: ProductType) => {
+	let filterFunction = (product: IProduct) => true;
 
 	switch (filterAction) {
 		case 'cheaperThan1000':
@@ -37,11 +32,11 @@ export const filterProducts = (
 			break;
 	}
 
-	const filteredProducts: ProductType = arrayForFilter.filter(filterFunction);
+	const filteredProducts = dataForFilter.filter(filterFunction);
 	return filteredProducts;
 };
 
-export const sortProducts = (sortAction: string, arrayForSort: ProductType) => {
+const sortProducts = (sortAction: string, dataForSort: ProductType) => {
 	let sortFunction = (a: IProduct, b: IProduct) => a.price - b.price;
 
 	switch (sortAction) {
@@ -71,23 +66,22 @@ export const sortProducts = (sortAction: string, arrayForSort: ProductType) => {
 			break;
 	}
 
-	const sortedProducts: ProductType = arrayForSort.sort(sortFunction);
+	const sortedProducts = dataForSort.sort(sortFunction);
 	return sortedProducts;
 };
 
-export const searchProducts = (
-	searchName: string,
-	arrayForSearch: ProductType
-) => {
+const searchProducts = (searchName: string, dataForSearch: ProductType) => {
 	const newArray: ProductType = [];
+	searchName = searchName.toLowerCase();
 
-	arrayForSearch.map((product) => {
+	dataForSearch.map((product) => {
 		const productTitle = product.title.toLowerCase();
 		const productTitleStart = productTitle.slice(0, searchName.length);
-		searchName = searchName.toLowerCase();
 
 		if (productTitleStart === searchName) newArray.push(product);
 	});
 
 	return newArray;
 };
+
+export { filterProducts, sortProducts, searchProducts };

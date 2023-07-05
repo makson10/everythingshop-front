@@ -21,7 +21,7 @@ export function CartProvider({ children }: ProviderProps) {
 	const addProductToCard = (productToAdd: IProduct) => {
 		const existProducts = [...products];
 
-		let foundSameProduct: boolean = false;
+		let foundSameProduct = false;
 		existProducts.map((product) => {
 			if (
 				product.productsData.uniqueProductId === productToAdd.uniqueProductId
@@ -44,11 +44,13 @@ export function CartProvider({ children }: ProviderProps) {
 	const deleteProduct = (deleteProductId: string) => {
 		const newProducts = [...products];
 
-		newProducts.map((product, index) => {
-			if (product.productsData.uniqueProductId === deleteProductId) {
-				newProducts.splice(index, 1);
-			}
-		});
+		const appropriateProductIndex = products.findIndex(
+			(product) => product.productsData.uniqueProductId === deleteProductId
+		);
+
+		if (appropriateProductIndex !== -1) {
+			newProducts.splice(appropriateProductIndex, 1);
+		}
 
 		setProducts(newProducts);
 		localStorage.setItem('cartProducts', JSON.stringify(newProducts));
@@ -82,8 +84,9 @@ export function CartProvider({ children }: ProviderProps) {
 	};
 
 	useEffect(() => {
-		const cartProducts = localStorage.getItem('cartProducts');
-		if (cartProducts) setProducts(JSON.parse(cartProducts));
+		const cartProductsCookieValue = localStorage.getItem('cartProducts');
+		if (cartProductsCookieValue)
+			setProducts(JSON.parse(cartProductsCookieValue));
 	}, []);
 
 	return (

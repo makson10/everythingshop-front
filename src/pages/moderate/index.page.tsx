@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import useValidation from '@/hooks/useValidation';
 import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
 import useCookies from '@/hooks/useCookies';
-import useIsAdminLogIn from '@/hooks/useIsAdminLogIn';
+import useIsAdminAuthorized from '@/hooks/useIsAdminAuthorized';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import { ILogInUserData } from '@/types/validationTypes';
 import { IAdminData } from '@/types/adminTypes';
@@ -15,7 +15,7 @@ import axios from 'axios';
 export default function ModeratePage() {
 	const { validateLogInData } = useValidation();
 	const { setCookies } = useCookies();
-	const { isAdminLogIn, isLoading } = useIsAdminLogIn();
+	const { isAdminAuthorized, isLoading } = useIsAdminAuthorized();
 
 	const { isPasswordVisible, togglePasswordVisible } =
 		useIsPasswordVisible(false);
@@ -65,8 +65,8 @@ export default function ModeratePage() {
 	useEffect(() => {
 		if (isLoading) return;
 
-		if (isAdminLogIn) router.push('/moderate/adminPanel');
-	}, [isAdminLogIn, isLoading]);
+		if (isAdminAuthorized) router.push('/moderate/adminPanel');
+	}, [useIsAdminAuthorized]);
 
 	useEffect(() => {
 		if (isServerError === null) return;
@@ -78,7 +78,7 @@ export default function ModeratePage() {
 	return (
 		<>
 			{isOpenErrorWindow && (
-				<ShowErrorModalWindow errorList={[serverErrorMessage]} />
+				<ShowErrorModalWindow error={[serverErrorMessage]} />
 			)}
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#3c6255] text-white">

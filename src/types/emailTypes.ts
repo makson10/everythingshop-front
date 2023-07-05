@@ -3,6 +3,6 @@ export interface ISignUpEmail {
 }
 
 export interface IBuyEmail {
-	buyCost: number;
+	purchaseTotalPrice: number;
 	fullUserName: string;
 }

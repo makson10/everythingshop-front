@@ -1,9 +1,5 @@
 import { Email } from '@/libs/smtp';
-import {
-	SuccessSignUpMarkup,
-	SuccessBuyMarkup,
-	FeedbackMarkup,
-} from '@/assets/emailMarkups';
+import Markup from '@/assets/emailMarkups';
 import { IBuyEmail, ISignUpEmail } from '@/types/emailTypes';
 import { IFeedback } from '@/types/feedbackTypes';
 
@@ -16,13 +12,13 @@ const useSendEmail = () => {
 			To: userEmail,
 			From: process.env.NEXT_PUBLIC_USERNAME,
 			Subject: 'Success Sign Up',
-			Body: SuccessSignUpMarkup(userName),
+			Body: Markup.SuccessSignUpMarkup(userName),
 		});
 	};
 
 	const sendBuyEmail = (
 		userEmail: string,
-		{ buyCost, fullUserName }: IBuyEmail
+		{ purchaseTotalPrice, fullUserName }: IBuyEmail
 	) => {
 		Email.send({
 			Host: process.env.NEXT_PUBLIC_SMTP_HOST,
@@ -31,7 +27,7 @@ const useSendEmail = () => {
 			To: userEmail,
 			From: process.env.NEXT_PUBLIC_USERNAME,
 			Subject: 'Success purchase',
-			Body: SuccessBuyMarkup(buyCost, fullUserName),
+			Body: Markup.SuccessBuyMarkup(purchaseTotalPrice, fullUserName),
 		});
 	};
 
@@ -43,7 +39,7 @@ const useSendEmail = () => {
 			To: process.env.NEXT_PUBLIC_USERNAME,
 			From: process.env.NEXT_PUBLIC_USERNAME,
 			Subject: 'New Feedback',
-			Body: FeedbackMarkup(FeedbackData),
+			Body: Markup.FeedbackMarkup(FeedbackData),
 		});
 	};
 

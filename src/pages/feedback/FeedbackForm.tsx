@@ -31,7 +31,7 @@ export default function FeedbackForm() {
 	};
 
 	useEffect(() => {
-		setDidUserAuthorized(!!authorizedUserData.data?.name);
+		setDidUserAuthorized(!!authorizedUserData.data?.email);
 	}, [authorizedUserData]);
 
 	if (authorizedUserData.isLoading) {
@@ -59,7 +59,7 @@ export default function FeedbackForm() {
 						onSubmit={(values, { setSubmitting, resetForm }) => {
 							setTimeout(() => {
 								const feedbackData: IFeedback = {
-									userName: authorizedUserData.data?.name!,
+									name: authorizedUserData.data?.name!,
 									date: +new Date(),
 									feedbackText: values.feedbackText,
 									uniqueFeedbackId: uuidv4(),

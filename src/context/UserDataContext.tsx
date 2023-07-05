@@ -11,6 +11,8 @@ interface ProviderProps {
 	children: React.ReactNode;
 }
 
+// TODO: change name from UserDataUpdateContext to UpdateUserDataContext
+
 export const UserDataContext = createContext<UserDataContextType>({
 	data: null,
 	isLoading: false,
@@ -18,17 +20,11 @@ export const UserDataContext = createContext<UserDataContextType>({
 export const UserDataUpdateContext = createContext<UserDataUpdateContextType>({
 	saveData: (credential: IUnionUserData) => {},
 	deleteData: () => {},
-	deleteTokens: () => {},
 });
 
 const initialValue = {
-	name: '',
-	dateOfBirth: '',
-	email: '',
-	login: '',
-	password: '',
-	id: '',
-	picture: '',
+	name: null,
+	email: null,
 };
 
 export function UserDataProvider({ children }: ProviderProps) {
@@ -36,18 +32,41 @@ export function UserDataProvider({ children }: ProviderProps) {
 	const [data, setData] = useState<IUnionUserData>(initialValue);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	function saveData(credential: IUnionUserData) {
+	const saveData = (credential: IUnionUserData) => {
 		setData(credential);
-	}
+	};
 
-	function deleteData() {
-		setData(initialValue);
-	}
-
-	function deleteTokens() {
+	const deleteTokens = () => {
 		removeCookies('jwtToken');
 		removeCookies('googleJWTToken');
-	}
+	};
+
+	const deleteData = () => {
+		setData(initialValue);
+		deleteTokens();
+	};
+
+	const getAndStoreUserData = async (
+		jwtToken: string,
+		isGoogleUser: boolean
+	) => {
+		const urlForFetch = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${
+			isGoogleUser ? 'googleCustomers' : 'customers'
+		}/verify`;
+
+		const loginedUserData = await axios
+			.post(urlForFetch, {
+				jwtToken: jwtToken,
+			})
+			.then((res) => res.data);
+
+		if (
+			loginedUserData.id ||
+			(loginedUserData.login && loginedUserData.password)
+		) {
+			setData(loginedUserData);
+		}
+	};
 
 	useEffect(() => {
 		const getUserData = async () => {
@@ -58,27 +77,9 @@ export function UserDataProvider({ children }: ProviderProps) {
 
 			try {
 				if (jwtToken) {
-					const loginedUserData = await axios
-						.post(
-							`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/verify`,
-							{
-								jwtToken: jwtToken,
-							}
-						)
-						.then((res) => res.data);
-
-					if (loginedUserData.login && loginedUserData.password) {
-						setData(loginedUserData);
-					}
+					getAndStoreUserData(jwtToken, false);
 				} else if (googleJWTToken) {
-					const loginedGoogleUserData = await axios
-						.post(
-							`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/verify`,
-							{ jwtToken: googleJWTToken }
-						)
-						.then((res) => res.data);
-
-					if (loginedGoogleUserData.id) setData(loginedGoogleUserData);
+					getAndStoreUserData(googleJWTToken, true);
 				}
 			} catch (error) {
 				console.error(error);
@@ -92,8 +93,7 @@ export function UserDataProvider({ children }: ProviderProps) {
 
 	return (
 		<UserDataContext.Provider value={{ data, isLoading }}>
-			<UserDataUpdateContext.Provider
-				value={{ saveData, deleteData, deleteTokens }}>
+			<UserDataUpdateContext.Provider value={{ saveData, deleteData }}>
 				{children}
 			</UserDataUpdateContext.Provider>
 		</UserDataContext.Provider>

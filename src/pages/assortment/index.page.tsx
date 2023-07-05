@@ -8,7 +8,7 @@ import {
 import { paginate } from '@/functions/paginate';
 import Header from '@/components/Header/Header';
 import { ProductType } from '@/types/productTypes';
-import { ISortAndFilterParameters } from '@/types/sortOptionsTypes';
+import { IProductTransformationParameters } from '@/types/productTransformationTypes';
 import { ProductsList } from './ProductsList/ProductsList';
 import { PaginationBar } from './PaginationBar/PaginationBar';
 import { ProductsNotFoundPage } from './ProductsNotFoundPage';
@@ -22,7 +22,11 @@ interface FetchedDataType {
 export default function Assortment({ productsData }: FetchedDataType) {
 	const [products, setProducts] = useState<ProductType>(productsData);
 	const [productListParameters, setProductListParameters] =
-		useState<ISortAndFilterParameters>({ filter: '', sort: '', search: '' });
+		useState<IProductTransformationParameters>({
+			filter: '',
+			sort: '',
+			search: '',
+		});
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const showingProductAmount = 16;

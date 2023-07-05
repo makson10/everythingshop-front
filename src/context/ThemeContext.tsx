@@ -25,15 +25,15 @@ export function ThemeProvider({ children }: ProviderProps) {
 					mutation.attributeName !== 'class'
 				) {
 					return;
-				};
-				const elementClassList = mutation.target.classList.values();
+				}
+				const mutationClassList = mutation.target.classList.values();
 
-				let isDarkThemeClassExists = false;
-				for (const value of elementClassList) {
-					if (value === 'dark') isDarkThemeClassExists = true;
+				let isDarkClassExists = false;
+				for (const value of mutationClassList) {
+					if (value === 'dark') isDarkClassExists = true;
 				}
 
-				localStorage.setItem('isDarkTheme', `${isDarkThemeClassExists}`);
+				localStorage.setItem('isDarkTheme', `${isDarkClassExists}`);
 			});
 		};
 
@@ -44,8 +44,8 @@ export function ThemeProvider({ children }: ProviderProps) {
 	}, []);
 
 	useEffect(() => {
-		const storedIsDarkTheme = localStorage.getItem('isDarkTheme');
-		if (storedIsDarkTheme) setIsDarkTheme(storedIsDarkTheme === 'true');
+		const darkThemeCookieValue = localStorage.getItem('isDarkTheme');
+		setIsDarkTheme(darkThemeCookieValue === 'true');
 	}, []);
 
 	useEffect(() => {

@@ -14,8 +14,8 @@ export interface IGoogleUserData {
 }
 
 export interface IUnionUserData {
-	name: string;
-	email: string;
+	name: string | null;
+	email: string | null;
 	id?: string;
 	picture?: string;
 	dateOfBirth?: string;

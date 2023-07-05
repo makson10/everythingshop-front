@@ -1,13 +1,5 @@
-import { IProduct } from './productTypes';
 import { IUnionUserData } from './userTypes';
-
-export type CartUpdateContextType = {
-	addProductToCard: (productData: IProduct) => void;
-	deleteProduct: (deleteProductId: string) => void;
-	deleteAllProducts: () => void;
-	decreaseProductAmount: (productId: string) => void;
-	increaseProductAmount: (productId: string) => void;
-};
+import { IProduct } from './productTypes';
 
 export type UserDataContextType = {
 	data: IUnionUserData | null;
@@ -17,7 +9,21 @@ export type UserDataContextType = {
 export type UserDataUpdateContextType = {
 	saveData: (credential: IUnionUserData) => void;
 	deleteData: () => void;
-	deleteTokens: () => void;
+};
+
+export interface ICartProduct {
+	amount: number;
+	productsData: IProduct;
+}
+
+export type CartProductType = ICartProduct[];
+
+export type CartUpdateContextType = {
+	addProductToCard: (productData: IProduct) => void;
+	deleteProduct: (deleteProductId: string) => void;
+	deleteAllProducts: () => void;
+	decreaseProductAmount: (productId: string) => void;
+	increaseProductAmount: (productId: string) => void;
 };
 
 export type ThemeContextType = boolean;

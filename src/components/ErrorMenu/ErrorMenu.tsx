@@ -1,4 +1,4 @@
-import { LegacyRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
 	error: string | string[];

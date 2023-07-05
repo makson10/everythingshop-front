@@ -9,24 +9,26 @@ export default function AddGoogleJWTToken() {
 	const { sendSignUpEmail } = useSendEmail();
 	const { getCookies, setCookies, removeCookies } = useCookies();
 
+	const deleteOldTokenAndSetUpNew = (googleJWTToken: string) => {
+		if (getCookies('jwtToken')) removeCookies('jwtToken');
+		setCookies('googleJWTToken', googleJWTToken, {
+			sameSite: 'Lax',
+		});
+	};
+
 	useEffect(() => {
-		const googleJWTToken = router.query.setGoogleJWTToken;
+		const googleJWTToken = router.query.googleJWTToken;
 		const userEmail = router.query.userEmail;
 		const userName = router.query.userName;
 
-		if (!googleJWTToken) return;
-
-		if (getCookies('jwtToken')) removeCookies('jwtToken');
 		if (typeof googleJWTToken === 'string') {
-			setCookies('googleJWTToken', googleJWTToken, {
-				sameSite: 'Lax',
-			});
+			deleteOldTokenAndSetUpNew(googleJWTToken);
 		}
 
 		if (
 			userEmail &&
-			typeof userEmail === 'string' &&
 			userName &&
+			typeof userEmail === 'string' &&
 			typeof userName === 'string'
 		) {
 			sendSignUpEmail(userEmail, { userName: userName });

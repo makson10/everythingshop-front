@@ -18,24 +18,23 @@ export default function ProductRow({ product }: Props) {
 
 	useEffect(() => {
 		(async () => {
-			const dropboxToken = await axios
-				.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/getDropboxToken`)
+			const photoAccessKey = await axios
+				.get('http://127.0.0.1:10000/products/getPhotoAccessKey')
+				.then((res) => res.data.token);
+
+			const photoFile = await axios
+				.get(
+					`https://www.googleapis.com/drive/v3/files/${product.productsData.photo_id[0]}?alt=media`,
+					{
+						headers: {
+							Authorization: 'Bearer ' + photoAccessKey,
+						},
+						responseType: 'blob',
+					}
+				)
 				.then((res) => res.data);
 
-			const res = await axios.get(
-				`https://content.dropboxapi.com/2/files/download`,
-				{
-					headers: {
-						Authorization: `Bearer ${dropboxToken}`,
-						'Dropbox-API-Arg': JSON.stringify({
-							path: `/${product.productsData.uniqueProductId}.png`,
-						}),
-					},
-					responseType: 'blob',
-				}
-			);
-
-			const imageObjectUrl = URL.createObjectURL(res.data);
+			const imageObjectUrl = URL.createObjectURL(photoFile);
 			setProductPhoto(imageObjectUrl);
 			setIsPhotoChanges(true);
 		})();

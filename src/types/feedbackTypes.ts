@@ -1,8 +1,8 @@
 export interface IFeedback {
-	userName: string;
+	name: string;
 	date: number;
 	feedbackText: string;
-    uniqueFeedbackId?: string;
+	uniqueFeedbackId: string;
 }
 
 export type FeedbackType = IFeedback[];

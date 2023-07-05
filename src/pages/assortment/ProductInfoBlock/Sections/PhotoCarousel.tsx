@@ -21,25 +21,24 @@ export default function PhotoCarousel({ productPhotoIds }: Props) {
 		}
 
 		const getURLs = async () => {
-			const dropboxToken = await axios
-				.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/getDropboxToken`)
-				.then((res) => res.data);
+			const photoAccessKey = await axios
+				.get('http://127.0.0.1:10000/products/getPhotoAccessKey')
+				.then((res) => res.data.token);
 
 			productPhotoIds.map(async (photoId) => {
-				const res = await axios.get(
-					`https://content.dropboxapi.com/2/files/download`,
-					{
-						headers: {
-							Authorization: `Bearer ${dropboxToken}`,
-							'Dropbox-API-Arg': JSON.stringify({
-								path: '/' + photoId,
-							}),
-						},
-						responseType: 'blob',
-					}
-				);
+				const photoFile = await axios
+					.get(
+						`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`,
+						{
+							headers: {
+								Authorization: 'Bearer ' + photoAccessKey,
+							},
+							responseType: 'blob',
+						}
+					)
+					.then((res) => res.data);
 
-				const imageObjectUrl = URL.createObjectURL(res.data);
+				const imageObjectUrl = URL.createObjectURL(photoFile);
 				setProductPhotoURLs((prevValue) => [...prevValue, imageObjectUrl]);
 			});
 		};

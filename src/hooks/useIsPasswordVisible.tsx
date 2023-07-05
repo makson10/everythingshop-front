@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-const useIsPasswordVisible = (initialValues: boolean) => {
+const useIsPasswordVisible = (initialValue: boolean) => {
 	const [isPasswordVisible, setIsPasswordVisible] =
-		useState<boolean>(initialValues);
+		useState<boolean>(initialValue);
 
 	const togglePasswordVisible = () => {
 		setIsPasswordVisible((prevValue) => !prevValue);

@@ -1,4 +1,4 @@
-import { IComment } from './commentTypes';
+import { CommentType } from './commentTypes';
 
 export interface IProduct {
 	title: string;
@@ -7,14 +7,7 @@ export interface IProduct {
 	creator: string;
 	price: number;
 	uniqueProductId: string;
-	comments: IComment[];
+	comments: CommentType;
 }
 
 export type ProductType = IProduct[];
-
-export interface ICartProduct {
-	amount: number;
-	productsData: IProduct;
-}
-
-export type CartProductType = ICartProduct[];
