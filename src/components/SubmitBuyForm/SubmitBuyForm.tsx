@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import useValidation from '@/hooks/useValidation';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { useCartUpdateContext } from '@/hooks/useCartContext';
 import useSendEmail from '@/hooks/useSendEmail';
 import { ISubmitForm, SubmitFormData } from '@/types/formDataTypes';
 import { Formik } from 'formik';
+import Schema from '@/assets/validationSchemas';
 
 interface Props {
 	setIsOpenSubmitBuyForm: Dispatch<SetStateAction<boolean>>;
@@ -19,7 +19,6 @@ export default function SubmitBuyForm({
 	const authorizedUserData = useUserData();
 	const { deleteAllProducts } = useCartUpdateContext();
 	const { sendBuyEmail } = useSendEmail();
-	const { validateBuySubmitData } = useValidation();
 
 	const [useAccountFullName, setUseAccountFullName] = useState<boolean>(true);
 	const [useAccountEmail, setUseAccountEmail] = useState<boolean>(true);
@@ -44,16 +43,14 @@ export default function SubmitBuyForm({
 	const handleSubmit = (values: ISubmitForm) => {
 		const fullName = `${values.firstName} ${values.lastName}`;
 
-		const userFullName = useAccountFullName
-			? typeof authorizedUserData.data?.name === 'string'
+		const userFullName =
+			useAccountFullName && typeof authorizedUserData.data?.name === 'string'
 				? authorizedUserData.data?.name
-				: fullName
-			: fullName;
-		const userEmail = useAccountEmail
-			? typeof authorizedUserData.data?.email === 'string'
+				: fullName;
+		const userEmail =
+			useAccountEmail && typeof authorizedUserData.data?.email === 'string'
 				? authorizedUserData.data?.email
-				: values.email
-			: values.email;
+				: values.email;
 
 		const submitFormData: SubmitFormData = {
 			fullName: userFullName,
@@ -103,9 +100,7 @@ export default function SubmitBuyForm({
 							useAccountEmail: useAccountEmail,
 							deliveryAddress: '',
 						}}
-						validate={(values: ISubmitForm) => {
-							return validateBuySubmitData(values);
-						}}
+						validationSchema={Schema.BuySubmitValidateSchema}
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
 								handleSubmit(values);
@@ -226,6 +221,9 @@ export default function SubmitBuyForm({
 										type="text"
 										placeholder="Enter your delivery address"
 										className="min-w-[20rem] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-[#c9c9c9]"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										value={values.deliveryAddress}
 									/>
 									{errors.deliveryAddress &&
 										touched.deliveryAddress &&

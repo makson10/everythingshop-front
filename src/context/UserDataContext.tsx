@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState, ReactNode } from 'react';
 import useCookies from '@/hooks/useCookies';
 import { IUnionUserData } from '@/types/userTypes';
 import {
@@ -8,7 +8,7 @@ import {
 import axios from 'axios';
 
 interface ProviderProps {
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 // TODO: change name from UserDataUpdateContext to UpdateUserDataContext

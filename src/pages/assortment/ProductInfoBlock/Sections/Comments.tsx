@@ -1,11 +1,10 @@
 import { LegacyRef, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import useValidation from '@/hooks/useValidation';
 import { useUserData } from '@/hooks/useUserDataContext';
-import { IValidateCommentsData } from '@/types/validationTypes';
 import { IComment } from '@/types/commentTypes';
 import { Formik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
+import Schema from '@/assets/validationSchemas';
 
 interface Props {
 	productComments: IComment[];
@@ -16,7 +15,6 @@ export default function Comments({
 	productComments,
 	sendCommentToServer,
 }: Props) {
-	const { validateCommentsData } = useValidation();
 	const authorizeUserData = useUserData();
 
 	const inputNewCommentRef = useRef<HTMLInputElement>();
@@ -76,9 +74,7 @@ export default function Comments({
 						initialValues={{
 							newCommentText: '',
 						}}
-						validate={(values: IValidateCommentsData) => {
-							return validateCommentsData(values);
-						}}
+						validationSchema={Schema.NewCommentValidateSchema}
 						onSubmit={(
 							values,
 							{ setSubmitting, setFieldValue, setFieldTouched }

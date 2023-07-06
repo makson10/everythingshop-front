@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import Error from 'next/error';
 import Link from 'next/link';
 import Image from 'next/image';
-import useValidation from '@/hooks/useValidation';
 import { useUserData, useUserDataUpdate } from '@/hooks/useUserDataContext';
 import useCookies from '@/hooks/useCookies';
 import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
@@ -11,22 +10,21 @@ import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '@/components/GoogleButton/GoogleButton';
-import { ISignUpUserData, ILogInUserData } from '@/types/validationTypes';
+import { IUserData, ILogInUserData } from '@/types/userTypes';
 import { Formik } from 'formik';
 import axios from 'axios';
+import Schema from '@/assets/validationSchemas';
 
 export default function LogIn() {
 	const isDarkTheme = useIsDarkTheme();
 	const userData = useUserData();
 	const { saveData } = useUserDataUpdate();
-	const { validateLogInData } = useValidation();
 	const { setCookies } = useCookies();
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 	const { isPasswordVisible, togglePasswordVisible } =
 		useIsPasswordVisible(false);
 
-	const [logInUserCredential, setLogInUserCredential] =
-		useState<ISignUpUserData>();
+	const [logInUserCredential, setLogInUserCredential] = useState<IUserData>();
 
 	const [isServerError, setIsServerError] = useState<boolean | null>(null);
 	const [isServerOff, setIsServerOff] = useState<boolean>(false);
@@ -136,9 +134,7 @@ export default function LogIn() {
 							login: '',
 							password: '',
 						}}
-						validate={(values: ILogInUserData) => {
-							return validateLogInData(values);
-						}}
+						validationSchema={Schema.LogInValidateSchema}
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
 								sendDataToServer(values);

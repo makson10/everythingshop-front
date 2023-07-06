@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
-import useValidation from '@/hooks/useValidation';
 import useSendEmail from '@/hooks/useSendEmail';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
-import { IValidateFeedbackData } from '@/types/validationTypes';
 import { IFeedback } from '@/types/feedbackTypes';
 import { Formik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import Schema from '@/assets/validationSchemas';
 
 export default function FeedbackForm() {
 	const authorizedUserData = useUserData();
 	const [didUserAuthorized, setDidUserAuthorized] = useState(false);
 	const [isOpenSuccessMenu, setIsOpenSuccessMenu] = useState<boolean>(false);
 	const { sendFeedbackEmail } = useSendEmail();
-	const { validateFeedbackData } = useValidation();
 
 	const sendDataToServer = async (data: IFeedback) => {
 		try {
@@ -53,9 +51,7 @@ export default function FeedbackForm() {
 						initialValues={{
 							feedbackText: '',
 						}}
-						validate={(values: IValidateFeedbackData) => {
-							return validateFeedbackData(values);
-						}}
+						validationSchema={Schema.NewFeedbackValidateSchema}
 						onSubmit={(values, { setSubmitting, resetForm }) => {
 							setTimeout(() => {
 								const feedbackData: IFeedback = {

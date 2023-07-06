@@ -6,6 +6,11 @@ export interface IUserData {
 	password: string;
 }
 
+export interface ILogInUserData {
+	login: string;
+	password: string;
+}
+
 export interface IGoogleUserData {
 	id: string;
 	name: string;

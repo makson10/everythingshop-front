@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import useValidation from '@/hooks/useValidation';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
@@ -14,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { Navigation, Pagination, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Schema from '@/assets/validationSchemas';
 
 interface ProductDataType {
 	photoFiles?: File[];
@@ -26,7 +26,6 @@ interface ProductDataType {
 
 export function AddForm() {
 	const isDarkTheme = useIsDarkTheme();
-	const { validateAddNewProduct } = useValidation();
 	const authorizationUserData = useUserData();
 
 	const [photoFiles, setPhotoFiles] = useState<File[]>([]);
@@ -173,10 +172,11 @@ export function AddForm() {
 									price: 0,
 									uniqueProductId: uuidv4(),
 								}}
-								validate={(values: ProductDataType) => {
-									return validateAddNewProduct(values);
-								}}
-								onSubmit={(values, { setSubmitting, resetForm }) => {
+								validationSchema={Schema.AddNewProductValidateSchema}
+								onSubmit={(
+									values: ProductDataType,
+									{ setSubmitting, resetForm }
+								) => {
 									setTimeout(() => {
 										if (photoFiles) values.photoFiles = photoFiles;
 										sendDataToServer(values);

@@ -2,18 +2,16 @@ import { useEffect, useState } from 'react';
 import Error from 'next/error';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import useValidation from '@/hooks/useValidation';
 import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
 import useCookies from '@/hooks/useCookies';
 import useIsAdminAuthorized from '@/hooks/useIsAdminAuthorized';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
-import { ILogInUserData } from '@/types/validationTypes';
 import { IAdminData } from '@/types/adminTypes';
 import { Formik } from 'formik';
+import Schema from '@/assets/validationSchemas';
 import axios from 'axios';
 
 export default function ModeratePage() {
-	const { validateLogInData } = useValidation();
 	const { setCookies } = useCookies();
 	const { isAdminAuthorized, isLoading } = useIsAdminAuthorized();
 
@@ -101,11 +99,11 @@ export default function ModeratePage() {
 							login: '',
 							password: '',
 						}}
-						validate={(values: ILogInUserData) => {
-							return validateLogInData(values);
-						}}
+						validationSchema={Schema.LogInValidateSchema}
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
+								console.log('done');
+								console.log(values);
 								checkAdminData(values);
 								setSubmitting(false);
 							}, 400);

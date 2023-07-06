@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
-import useValidation from '@/hooks/useValidation';
 import { useUserData, useUserDataUpdate } from '@/hooks/useUserDataContext';
 import useIsPasswordVisible from '@/hooks/useIsPasswordVisible';
 import useSendEmail from '@/hooks/useSendEmail';
@@ -11,7 +10,8 @@ import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import GoogleButton from '@/components/GoogleButton/GoogleButton';
-import { ISignUpUserData } from '@/types/validationTypes';
+import { IUserData } from '@/types/userTypes';
+import Schema from '@/assets/validationSchemas';
 import { Formik } from 'formik';
 import axios from 'axios';
 
@@ -21,11 +21,9 @@ export default function SignUp() {
 	const { setCookies } = useCookies();
 	const { saveData } = useUserDataUpdate();
 	const { sendSignUpEmail } = useSendEmail();
-	const { validateSignUpData } = useValidation();
 
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
-	const [signUpUserCredential, setSignUpUserCredential] =
-		useState<ISignUpUserData>();
+	const [signUpUserCredential, setSignUpUserCredential] = useState<IUserData>();
 	const { isPasswordVisible, togglePasswordVisible } =
 		useIsPasswordVisible(false);
 
@@ -34,7 +32,7 @@ export default function SignUp() {
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const router = useRouter();
 
-	const sendDataToServer = async (data: ISignUpUserData) => {
+	const sendDataToServer = async (data: IUserData) => {
 		try {
 			const registerResult = await axios
 				.post(
@@ -128,9 +126,7 @@ export default function SignUp() {
 							login: '',
 							password: '',
 						}}
-						validate={(values: ISignUpUserData) => {
-							return validateSignUpData(values);
-						}}
+						validationSchema={Schema.SignUpValidateSchema}
 						onSubmit={(values, { setSubmitting }) => {
 							setTimeout(() => {
 								sendDataToServer(values);
