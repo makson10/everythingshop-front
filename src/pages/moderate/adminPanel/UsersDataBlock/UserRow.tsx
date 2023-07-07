@@ -16,7 +16,7 @@ export default function UserRow({
 	const [customerAge, setCustomerAge] = useState<number>(0);
 
 	useEffect(() => {
-		if (isGoogleCustomers || !customer.dateOfBirth) return;
+		if (!customer.dateOfBirth) return;
 
 		const dateNow = Date.now();
 		const customerDateOfBirth = new Date(customer.dateOfBirth);

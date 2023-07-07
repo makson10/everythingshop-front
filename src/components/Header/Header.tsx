@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useCartContext } from '@/hooks/useCartContext';
-import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
+import { useDarkTheme } from '@/hooks/useDarkTheme';
 
 interface Props {
 	pageName: string;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function Header({ pageName, showCartIcon = true }: Props) {
-	const isDarkTheme = useIsDarkTheme();
+	const isDarkTheme = useDarkTheme();
 	const cart = useCartContext();
 	const router = useRouter();
 	const [cartProducstAmount, setCartProducstAmount] = useState<number>(0);

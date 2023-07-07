@@ -1,12 +1,12 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { ThemeContextType, ThemeUpdateContextType } from '@/types/contextTypes';
+import { ThemeContextType, UpdateThemeContextType } from '@/types/contextTypes';
 
 interface ProviderProps {
 	children: ReactNode;
 }
 
 export const ThemeContext = createContext<ThemeContextType>(false);
-export const ThemeUpdateContext = createContext<ThemeUpdateContextType>({
+export const UpdateThemeContext = createContext<UpdateThemeContextType>({
 	toggleIsDarkTheme: () => {},
 });
 
@@ -57,12 +57,12 @@ export function ThemeProvider({ children }: ProviderProps) {
 
 	return (
 		<ThemeContext.Provider value={isDarkTheme}>
-			<ThemeUpdateContext.Provider
+			<UpdateThemeContext.Provider
 				value={{
 					toggleIsDarkTheme,
 				}}>
 				{children}
-			</ThemeUpdateContext.Provider>
+			</UpdateThemeContext.Provider>
 		</ThemeContext.Provider>
 	);
 }

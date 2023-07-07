@@ -44,8 +44,7 @@ export default async function callback(
 
 		const url = await generateRedirectURL(code);
 		res.status(200).redirect(url);
-	} catch (error: any) {
-		console.log(error);
+	} catch (error) {
 		res.status(500).redirect(`/googleAuthFailed`);
 	}
 }

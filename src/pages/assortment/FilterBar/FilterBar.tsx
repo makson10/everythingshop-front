@@ -41,9 +41,9 @@ export default function FilterBar({ setParameters }: Props) {
 
 	return (
 		<div className="flex justify-between items-center p-8 px-12 max-sm:flex-col max-sm:gap-4">
-			<SortSelect handleFunction={handleSortSelectChange} />
-			<FilterSelect handleFunction={handleFilterSelectChange} />
-			<SearchInput handleFunction={handleSearchInputChange} />
+			<SortSelect handleSelect={handleSortSelectChange} />
+			<FilterSelect handleSelect={handleFilterSelectChange} />
+			<SearchInput handleSearch={handleSearchInputChange} />
 		</div>
 	);
 }

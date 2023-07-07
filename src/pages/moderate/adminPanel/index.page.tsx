@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useCookies from '@/hooks/useCookies';
 import useIsAdminAuthorized from '@/hooks/useIsAdminAuthorized';
@@ -11,6 +11,7 @@ import ProductsBlock from './ProductsBlock/ProductsBlock';
 import CommentsBlock from './CommentsBlock/CommentsBlock';
 import FeedbackBlock from './FeedbackBlock/FeedbackBlock';
 import axios from 'axios';
+import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 
 interface FetchedData {
 	customers: UserDataType;
@@ -26,17 +27,23 @@ export default function AdminPanel({
 	feedbacks,
 }: FetchedData) {
 	const { removeCookies } = useCookies();
-	const router = useRouter();
 	const { isAdminAuthorized, isLoading } = useIsAdminAuthorized();
+	const [shouldShowLoadingScreen, setShouldShowLoadingScreen] =
+		useState<boolean>();
+	const router = useRouter();
 
 	useEffect(() => {
-		if (isLoading) return;
-
-		if (!isAdminAuthorized) {
+		if (!isAdminAuthorized && !isLoading) {
 			removeCookies('isAdminAuthorized');
 			router.push('/moderate');
 		}
-	}, [useIsAdminAuthorized]);
+	}, [isAdminAuthorized, isLoading]);
+
+	useEffect(() => {
+		setShouldShowLoadingScreen(isLoading);
+	}, [isLoading]);
+
+	if (shouldShowLoadingScreen) return <ShowLoadingScreen />;
 
 	return (
 		<>

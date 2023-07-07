@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ICartProduct } from '@/types/productTypes';
-import { useCartUpdateContext } from '@/hooks/useCartContext';
+import { useUpdateCartContext } from '@/hooks/useCartContext';
 import axios from 'axios';
 
 interface Props {
@@ -14,7 +14,7 @@ export default function ProductRow({ product }: Props) {
 	);
 	const [isPhotoChanges, setIsPhotoChanges] = useState<boolean>(false);
 	const { deleteProduct, decreaseProductAmount, increaseProductAmount } =
-		useCartUpdateContext();
+		useUpdateCartContext();
 
 	useEffect(() => {
 		(async () => {

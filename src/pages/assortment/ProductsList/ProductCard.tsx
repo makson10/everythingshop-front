@@ -3,33 +3,33 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import { IProduct } from '@/types/productTypes';
-import { useIsDarkTheme } from '@/hooks/useIsDarkTheme';
 import axios from 'axios';
 
 interface Props {
-	productData: IProduct;
+	product: IProduct;
 }
 
-export function ProductCard({ productData }: Props) {
-	const isDarkTheme = useIsDarkTheme();
+export function ProductCard({ product }: Props) {
 	const [productPhoto, setProductPhoto] = useState(
 		`https://img.icons8.com/ios/250/808080/product--v1.png`
 	);
 	const router = useRouter();
 
 	const handleGoToProductPage = () => {
-		router.push(`/assortment/${productData.uniqueProductId}`);
+		router.push(`/assortment/${product.uniqueProductId}`);
 	};
 
 	useEffect(() => {
-		(async () => {
+		const getProductPhoto = async () => {
 			const photoAccessKey = await axios
-				.get('http://127.0.0.1:10000/products/getPhotoAccessKey')
+				.get(
+					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
+				)
 				.then((res) => res.data.token);
 
 			const photoFile = await axios
 				.get(
-					`https://www.googleapis.com/drive/v3/files/${productData.photo_id[0]}?alt=media`,
+					`https://www.googleapis.com/drive/v3/files/${product.photo_id[0]}?alt=media`,
 					{
 						headers: {
 							Authorization: 'Bearer ' + photoAccessKey,
@@ -41,7 +41,9 @@ export function ProductCard({ productData }: Props) {
 
 			const imageObjectUrl = URL.createObjectURL(photoFile);
 			setProductPhoto(imageObjectUrl);
-		})();
+		};
+
+        getProductPhoto();
 	}, []);
 
 	return (
@@ -61,17 +63,17 @@ export function ProductCard({ productData }: Props) {
 			<div className="mt-4 flex justify-between">
 				<div>
 					<h3 className="text-sm text-gray-700 dark:text-white">
-						<Link href={`/assortment/${productData.uniqueProductId}`}>
+						<Link href={`/assortment/${product.uniqueProductId}`}>
 							<span aria-hidden="true" className="absolute inset-0" />
-							{productData.title}
+							{product.title}
 						</Link>
 					</h3>
 					<p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-						Seller: {productData.creator}
+						Seller: {product.creator}
 					</p>
 				</div>
 				<p className="text-sm font-medium text-gray-900 dark:text-white">
-					${productData.price}
+					${product.price}
 				</p>
 			</div>
 		</div>

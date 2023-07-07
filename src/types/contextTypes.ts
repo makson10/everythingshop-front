@@ -6,7 +6,7 @@ export type UserDataContextType = {
 	isLoading: boolean;
 };
 
-export type UserDataUpdateContextType = {
+export type UpdateUserDataContextType = {
 	saveData: (credential: IUnionUserData) => void;
 	deleteData: () => void;
 };
@@ -18,7 +18,7 @@ export interface ICartProduct {
 
 export type CartProductType = ICartProduct[];
 
-export type CartUpdateContextType = {
+export type UpdateCartContextType = {
 	addProductToCard: (productData: IProduct) => void;
 	deleteProduct: (deleteProductId: string) => void;
 	deleteAllProducts: () => void;
@@ -28,6 +28,6 @@ export type CartUpdateContextType = {
 
 export type ThemeContextType = boolean;
 
-export type ThemeUpdateContextType = {
+export type UpdateThemeContextType = {
 	toggleIsDarkTheme: () => void;
 };

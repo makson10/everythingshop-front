@@ -1,5 +1,5 @@
 export interface IFeedback {
-	name: string;
+	author: string;
 	date: number;
 	feedbackText: string;
 	uniqueFeedbackId: string;

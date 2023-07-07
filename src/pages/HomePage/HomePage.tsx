@@ -1,19 +1,19 @@
 import HomePageBg from './HomePageBg';
 import Header from './Header/Header';
-import TaglineBlock from './TaglineBlock/TaglineBlock';
+import Tagline from './Tagline/Tagline';
 import OurAdventures from './OurAdventures/OurAdventures';
-import AboutUsBlock from './AboutUsBlock/AboutUsBlock';
-import ReviewBlock from './ReviewBlock/ReviewBlock';
+import AboutUs from './AboutUs/AboutUs';
+import Review from './Review/Review';
 import Footer from './Footer/Footer';
 
 export default function HomePage() {
-	return (        
+	return (
 		<HomePageBg>
 			<Header />
-			<TaglineBlock />
+			<Tagline />
 			<OurAdventures />
-			<AboutUsBlock />
-			<ReviewBlock />
+			<AboutUs />
+			<Review />
 			<Footer />
 		</HomePageBg>
 	);

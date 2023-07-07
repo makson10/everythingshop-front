@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUserData } from '@/hooks/useUserDataContext';
-import { useCartUpdateContext } from '@/hooks/useCartContext';
+import { useUpdateCartContext } from '@/hooks/useCartContext';
 import useSendEmail from '@/hooks/useSendEmail';
 import { ISubmitForm, SubmitFormData } from '@/types/formDataTypes';
 import { Formik } from 'formik';
@@ -17,7 +17,7 @@ export default function SubmitBuyForm({
 	purchaseTotalPrice,
 }: Props) {
 	const authorizedUserData = useUserData();
-	const { deleteAllProducts } = useCartUpdateContext();
+	const { deleteAllProducts } = useUpdateCartContext();
 	const { sendBuyEmail } = useSendEmail();
 
 	const [useAccountFullName, setUseAccountFullName] = useState<boolean>(true);
@@ -40,8 +40,8 @@ export default function SubmitBuyForm({
 		setUseAccountEmail((prevValue) => !prevValue);
 	};
 
-	const handleSubmit = (values: ISubmitForm) => {
-		const fullName = `${values.firstName} ${values.lastName}`;
+	const shapeUserData = (formValues: ISubmitForm) => {
+		const fullName = `${formValues.firstName} ${formValues.lastName}`;
 
 		const userFullName =
 			useAccountFullName && typeof authorizedUserData.data?.name === 'string'
@@ -50,19 +50,30 @@ export default function SubmitBuyForm({
 		const userEmail =
 			useAccountEmail && typeof authorizedUserData.data?.email === 'string'
 				? authorizedUserData.data?.email
-				: values.email;
+				: formValues.email;
 
 		const submitFormData: SubmitFormData = {
 			fullName: userFullName,
 			email: userEmail,
-			deliveryAddress: values.deliveryAddress,
+			deliveryAddress: formValues.deliveryAddress,
 		};
 
-		sendBuyEmail(userEmail, {
-			purchaseTotalPrice: purchaseTotalPrice,
-			fullUserName: userFullName,
-		});
+		return submitFormData;
+	};
+
+	const handleSubmit = (values: ISubmitForm) => {
+		const formData = shapeUserData(values);
+		sendDataToServer(formData);
 		handleSuccess();
+	};
+
+	const sendDataToServer = (formData: SubmitFormData) => {
+		//* sending data to server...
+
+		sendBuyEmail(formData.email, {
+			purchaseTotalPrice: purchaseTotalPrice,
+			fullUserName: formData.fullName,
+		});
 	};
 
 	const handleSuccess = () => {

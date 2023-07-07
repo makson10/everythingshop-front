@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import Link from 'next/link';
 import { IComment, CommentType } from '@/types/commentTypes';
 import axios from 'axios';
-import Link from 'next/link';
 
 interface Props {
 	comments: CommentType;
@@ -60,7 +59,7 @@ function Comment({ comment, productId, productName }: CommentProps) {
 						width={100}
 						height={100}
 					/>
-					{comment.name}, {new Date(comment.date).toLocaleString()}; to post{' '}
+					{comment.author}, {new Date(comment.date).toLocaleString()}; to post{' '}
 					<Link
 						className="hover:underline"
 						href={`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/assortment/${productId}`}>

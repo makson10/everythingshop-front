@@ -1,4 +1,4 @@
-export const cardData = [
+const cardData = [
 	{
 		titleText: 'Plain usage 👨‍💻',
 		bodyText:
@@ -22,3 +22,5 @@ export const cardData = [
 			'https://st3.idealista.it/cms/archivie/styles/amp_1200x675_16_9/public/2018-09/media/image/shopping%20pixabay.jpg?VersionId=gHatHqg8cQAwKPJCGv1AtiwS2U8xlh9b&fv=BTYXIiQU&itok=iHaocw3u',
 	},
 ];
+
+export default cardData;

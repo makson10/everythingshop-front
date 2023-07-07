@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useCartContext, useCartUpdateContext } from '@/hooks/useCartContext';
+import { useCartContext, useUpdateCartContext } from '@/hooks/useCartContext';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import { SubmitBuyRow } from './SubmitBuyRow';
@@ -8,7 +8,7 @@ import ProductRow from './ProductRow/ProductRow';
 import axios from 'axios';
 
 export function CartProductList() {
-	const { deleteProduct } = useCartUpdateContext();
+	const { deleteProduct } = useUpdateCartContext();
 	const authorizedUser = useUserData();
 	const products = useCartContext();
 	const [costSum, setCostSum] = useState<number>(0);

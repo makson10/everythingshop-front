@@ -1,46 +1,29 @@
-import { useEffect, useState } from 'react';
-import { useCartUpdateContext } from '@/hooks/useCartContext';
+import { useState } from 'react';
+import { useUpdateCartContext } from '@/hooks/useCartContext';
 import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
-import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
+import Breadcrumb from './Parts/Breadcrumb';
+import PhotoCarousel from './Parts/PhotoCarousel';
+import Option from './Parts/Option';
+import Details from './Parts/Details';
+import Comments from './Parts/Comments';
 import { IComment, CommentType } from '@/types/commentTypes';
 import { IProduct } from '@/types/productTypes';
-import Breadcrumb from './Sections/Breadcrumb';
-import PhotoCarousel from './Sections/PhotoCarousel';
-import Option from './Sections/Option';
-import Details from './Sections/Details';
-import Comments from './Sections/Comments';
 import axios from 'axios';
-import { useUserData } from '@/hooks/useUserDataContext';
+
+// TODO: fix bugs, refactor cart and form component
 
 interface Props {
 	productData: IProduct;
 }
 
 export default function ProductInfoBlock({ productData }: Props) {
-	const authorizeUserData = useUserData();
-	const { addProductToCard } = useCartUpdateContext();
+	const { addProductToCard } = useUpdateCartContext();
 
 	const [productComments, setProductComments] = useState<CommentType>(
 		productData.comments
 	);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
-
-	const handleClickBuyButton = () => {
-		setIsOpenSuccessWindow(true);
-
-		const product = {
-			title: productData.title,
-			description: productData.description,
-			photo_id: productData.photo_id,
-			creator: productData.creator,
-			price: productData.price,
-			uniqueProductId: productData.uniqueProductId,
-			comments: productData.comments,
-		};
-
-		addProductToCard(product);
-	};
 
 	const sendCommentToServer = async (newCommentData: IComment) => {
 		await axios.post(
@@ -57,14 +40,15 @@ export default function ProductInfoBlock({ productData }: Props) {
 		setProductComments(newComments);
 	};
 
-	useEffect(() => {
-		if (!isOpenSuccessWindow) return;
-		setTimeout(() => setIsOpenSuccessWindow(false), 3000);
-	}, [isOpenSuccessWindow]);
+	const handleClickBuyButton = () => {
+		addProductToCard(productData);
+		openSuccessWindow();
+	};
 
-	if (authorizeUserData.isLoading) {
-		return <ShowLoadingScreen />;
-	}
+	const openSuccessWindow = () => {
+		setIsOpenSuccessWindow(true);
+		setTimeout(() => setIsOpenSuccessWindow(false), 3000);
+	};
 
 	return (
 		<>
@@ -87,7 +71,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 
 					<Option
 						productPrice={productData.price}
-						commentsLength={productComments.length}
+						commentsAmount={productComments.length}
 						handleClickBuyButton={handleClickBuyButton}
 					/>
 

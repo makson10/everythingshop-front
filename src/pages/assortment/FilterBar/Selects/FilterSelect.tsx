@@ -4,18 +4,18 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { filterOptions } from '@/assets/selectOptions';
 
 interface Props {
-	handleFunction: (filterParameter: string) => void;
+	handleSelect: (filterParameter: string) => void;
 }
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ');
 }
 
-export default function FilterSelect({ handleFunction }: Props) {
+export default function FilterSelect({ handleSelect }: Props) {
 	const [selected, setSelected] = useState(filterOptions[0]);
 
 	useEffect(() => {
-		handleFunction(selected.value);
+		handleSelect(selected.value);
 	}, [selected]);
 
 	return (

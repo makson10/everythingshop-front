@@ -3,7 +3,7 @@ import useCookies from '@/hooks/useCookies';
 import { IUnionUserData } from '@/types/userTypes';
 import {
 	UserDataContextType,
-	UserDataUpdateContextType,
+	UpdateUserDataContextType,
 } from '@/types/contextTypes';
 import axios from 'axios';
 
@@ -11,13 +11,11 @@ interface ProviderProps {
 	children: ReactNode;
 }
 
-// TODO: change name from UserDataUpdateContext to UpdateUserDataContext
-
 export const UserDataContext = createContext<UserDataContextType>({
 	data: null,
 	isLoading: false,
 });
-export const UserDataUpdateContext = createContext<UserDataUpdateContextType>({
+export const UpdateUserDataContext = createContext<UpdateUserDataContextType>({
 	saveData: (credential: IUnionUserData) => {},
 	deleteData: () => {},
 });
@@ -93,9 +91,9 @@ export function UserDataProvider({ children }: ProviderProps) {
 
 	return (
 		<UserDataContext.Provider value={{ data, isLoading }}>
-			<UserDataUpdateContext.Provider value={{ saveData, deleteData }}>
+			<UpdateUserDataContext.Provider value={{ saveData, deleteData }}>
 				{children}
-			</UserDataUpdateContext.Provider>
+			</UpdateUserDataContext.Provider>
 		</UserDataContext.Provider>
 	);
 }

@@ -12,7 +12,7 @@ export default function FeedbackBlock({ feedbacks }: Props) {
 		return (
 			<>
 				{feedbacks.map((feedback, index) => {
-					return <FeedbackRow feedback={feedback} key={index} />;
+					return <FeedbackRow key={index} feedback={feedback} />;
 				})}
 			</>
 		);

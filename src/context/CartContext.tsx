@@ -1,13 +1,13 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { IProduct, CartProductType } from '@/types/productTypes';
-import { CartUpdateContextType } from '@/types/contextTypes';
+import { IProduct } from '@/types/productTypes';
+import { CartProductType, UpdateCartContextType } from '@/types/contextTypes';
 
 interface ProviderProps {
 	children: ReactNode;
 }
 
 export const CartContext = createContext<CartProductType>([]);
-export const CartUpdateContext = createContext<CartUpdateContextType>({
+export const UpdateCartContext = createContext<UpdateCartContextType>({
 	addProductToCard: (product: IProduct) => {},
 	deleteProduct: (deleteProductId: string) => {},
 	deleteAllProducts: () => {},
@@ -91,7 +91,7 @@ export function CartProvider({ children }: ProviderProps) {
 
 	return (
 		<CartContext.Provider value={products}>
-			<CartUpdateContext.Provider
+			<UpdateCartContext.Provider
 				value={{
 					addProductToCard,
 					deleteProduct,
@@ -100,7 +100,7 @@ export function CartProvider({ children }: ProviderProps) {
 					increaseProductAmount,
 				}}>
 				{children}
-			</CartUpdateContext.Provider>
+			</UpdateCartContext.Provider>
 		</CartContext.Provider>
 	);
 }

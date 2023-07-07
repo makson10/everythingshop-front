@@ -7,12 +7,12 @@ import {
 } from '@/functions/productsTransformation';
 import { paginate } from '@/functions/paginate';
 import Header from '@/components/Header/Header';
-import { ProductType } from '@/types/productTypes';
-import { IProductTransformationParameters } from '@/types/productTransformationTypes';
 import { ProductsList } from './ProductsList/ProductsList';
 import { PaginationBar } from './PaginationBar/PaginationBar';
-import { ProductsNotFoundPage } from './ProductsNotFoundPage';
+import { ProductsNotFoundPage } from '@/components/ProductsNotFoundPage/ProductsNotFoundPage';
 import FilterBar from './FilterBar/FilterBar';
+import { ProductType } from '@/types/productTypes';
+import { IProductTransformationParameters } from '@/types/productTransformationTypes';
 import axios from 'axios';
 
 interface FetchedDataType {
@@ -21,7 +21,7 @@ interface FetchedDataType {
 
 export default function Assortment({ productsData }: FetchedDataType) {
 	const [products, setProducts] = useState<ProductType>(productsData);
-	const [productListParameters, setProductListParameters] =
+	const [listParameters, setListParameters] =
 		useState<IProductTransformationParameters>({
 			filter: '',
 			sort: '',
@@ -43,39 +43,33 @@ export default function Assortment({ productsData }: FetchedDataType) {
 
 	useEffect(() => {
 		let searchedProducts = productsData;
-		if (productListParameters.search) {
-			searchedProducts = searchProducts(
-				productListParameters.search,
-				productsData
-			);
+
+		if (listParameters.search) {
+			searchedProducts = searchProducts(listParameters.search, productsData);
 		}
 
 		setProducts(searchedProducts);
+	}, [listParameters]);
 
-		if (
-			productListParameters.sort === '' &&
-			productListParameters.filter === ''
-		) {
+	useEffect(() => {
+		if (listParameters.sort === '' && listParameters.filter === '') {
 			return;
 		}
 
 		const filteredProducts = filterProducts(
-			productListParameters.filter,
-			searchedProducts
+			listParameters.filter,
+			productsData
 		);
 
-		const sortedProducts = sortProducts(
-			productListParameters.sort,
-			filteredProducts
-		);
+		const sortedProducts = sortProducts(listParameters.sort, filteredProducts);
 
 		setProducts(sortedProducts);
-	}, [productListParameters]);
+	}, [listParameters]);
 
 	return (
 		<>
 			<Header pageName={'Assortment'} />
-			<FilterBar setParameters={setProductListParameters} />
+			<FilterBar setParameters={setListParameters} />
 			{productsForDisplay.length !== 0 ? (
 				<ProductsList products={productsForDisplay} />
 			) : (
@@ -105,8 +99,6 @@ export const getServerSideProps: GetServerSideProps<
 			},
 		};
 	} catch (error) {
-		console.error(error);
-
 		return {
 			notFound: true,
 		};

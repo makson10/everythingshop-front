@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 
 interface Props {
 	product: IProduct;
@@ -16,7 +16,7 @@ export default function ProductRow({ product }: Props) {
 	const router = useRouter();
 
 	const handleClick = async () => {
-		const res = await axios.delete(
+		await axios.delete(
 			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/deleteProduct/${product.uniqueProductId}`
 		);
 

@@ -1,8 +1,8 @@
-import { cardData } from '@/assets/cardData';
+import cardData from '@/assets/cardData';
 import InfoCard from './InfoCard';
 import Heading from './Heading';
 
-export default function ChooseInfoSection() {
+export default function OurAdventures() {
 	return (
 		<div className="flex flex-col gap-[3rem] max-sm:p-4 text-base">
 			<Heading />
