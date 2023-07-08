@@ -10,8 +10,6 @@ import { IComment, CommentType } from '@/types/commentTypes';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
 
-// TODO: fix bugs, refactor cart and form component
-
 interface Props {
 	productData: IProduct;
 }

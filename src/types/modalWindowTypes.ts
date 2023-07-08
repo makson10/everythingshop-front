@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
 
-export interface ErrorListType {
+export interface ErrorWindowProps {
 	error: string | string[];
 }
 
-export interface SuccessType {
+export interface SuccessWindowProps {
 	successText: string;
 }
 
-export interface ShowModalWindowProps {
-	setIsOpenSubmitBuyForm: Dispatch<SetStateAction<boolean>>;
+export interface ConfirmPurchaseFormProps {
+	handleCloseConfirmPurchaseForm: () => void;
 	purchaseTotalPrice: number;
 }

@@ -26,7 +26,7 @@ export default function ProductRow({ product }: Props) {
 	useEffect(() => {
 		const getProductPhoto = async () => {
 			const photoAccessKey = await axios
-				.get('http://127.0.0.1:10000/products/getPhotoAccessKey')
+				.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`)
 				.then((res) => res.data.token);
 
 			const photoFile = await axios

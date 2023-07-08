@@ -1,34 +1,34 @@
 import { createPortal } from 'react-dom';
 import SuccessMenu from '@/components/SuccessMenu/SuccessMenu';
 import ErrorMenu from '@/components/ErrorMenu/ErrorMenu';
-import SubmitBuyForm from '@/components/SubmitBuyForm/SubmitBuyForm';
+import ConfirmPurchaseForm from '@/components/ConfirmPurchaseForm/ConfirmPurchaseForm';
 import {
-	ErrorListType,
-	ShowModalWindowProps,
-	SuccessType,
+	SuccessWindowProps,
+	ErrorWindowProps,
+	ConfirmPurchaseFormProps,
 } from '@/types/modalWindowTypes';
 
-export const ShowErrorModalWindow = ({ error }: ErrorListType) => {
-	return createPortal(
-		<ErrorMenu error={error} />,
-		document.querySelector('#portal')!
-	);
-};
-
-export const ShowSuccessModalWindow = ({ successText }: SuccessType) => {
+export const ShowSuccessModalWindow = ({ successText }: SuccessWindowProps) => {
 	return createPortal(
 		<SuccessMenu successText={successText} />,
 		document.querySelector('#portal')!
 	);
 };
 
-export const ShowSubmitBuyForm = ({
-	setIsOpenSubmitBuyForm,
-	purchaseTotalPrice,
-}: ShowModalWindowProps) => {
+export const ShowErrorModalWindow = ({ error }: ErrorWindowProps) => {
 	return createPortal(
-		<SubmitBuyForm
-			setIsOpenSubmitBuyForm={setIsOpenSubmitBuyForm}
+		<ErrorMenu error={error} />,
+		document.querySelector('#portal')!
+	);
+};
+
+export const ShowConfirmPurchaseForm = ({
+	handleCloseConfirmPurchaseForm,
+	purchaseTotalPrice,
+}: ConfirmPurchaseFormProps) => {
+	return createPortal(
+		<ConfirmPurchaseForm
+			handleCloseConfirmPurchaseForm={handleCloseConfirmPurchaseForm}
 			purchaseTotalPrice={purchaseTotalPrice}
 		/>,
 		document.querySelector('#portal')!

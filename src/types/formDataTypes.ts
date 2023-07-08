@@ -1,10 +1,10 @@
-export interface SubmitFormData {
+export interface ConfirmPurchaseFormData {
 	fullName: string;
 	email: string;
 	deliveryAddress: string;
 }
 
-export interface ISubmitForm {
+export interface IConfirmPurchaseForm {
 	firstName: string;
 	lastName: string;
 	useAccountFullName: boolean;
