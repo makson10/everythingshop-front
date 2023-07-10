@@ -29,7 +29,7 @@ export function ProductCard({ product }: Props) {
 
 			const photoFile = await axios
 				.get(
-					`https://www.googleapis.com/drive/v3/files/${product.photo_id[0]}?alt=media`,
+					`https://www.googleapis.com/drive/v3/files/${product.photoIds[0]}?alt=media`,
 					{
 						headers: {
 							Authorization: 'Bearer ' + photoAccessKey,
@@ -43,7 +43,7 @@ export function ProductCard({ product }: Props) {
 			setProductPhoto(imageObjectUrl);
 		};
 
-        getProductPhoto();
+		getProductPhoto();
 	}, []);
 
 	return (

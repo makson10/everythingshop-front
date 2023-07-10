@@ -1,3 +1,4 @@
+import { useDarkTheme } from '@/hooks/useDarkTheme';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 
 interface Props {
@@ -13,6 +14,7 @@ export function PaginationBar({
 	currentPage,
 	showingProductAmount,
 }: Props) {
+	const isDarkTheme = useDarkTheme();
 	const pagesAmount = Math.ceil(productsAmount / showingProductAmount);
 
 	if (pagesAmount < 2) return null;
@@ -39,7 +41,9 @@ export function PaginationBar({
 								onClick={() => onPageChange(page)}
 								className={`relative z-10 inline-flex items-center px-4 py-2 text-2xl font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
 									page === currentPage
-										? 'bg-indigo-600 text-white'
+										? `${
+												isDarkTheme ? 'bg-orange-600' : 'bg-indigo-600'
+										  } text-white`
 										: 'bg-white text-black ring-1 ring-inset ring-gray-300'
 								}`}>
 								{page}

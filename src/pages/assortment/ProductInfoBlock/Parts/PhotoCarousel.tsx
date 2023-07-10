@@ -6,14 +6,28 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import axios from 'axios';
 
 interface Props {
-	productPhotoIds: string[];
+	photoIds: string[];
 }
 
-export default function PhotoCarousel({ productPhotoIds }: Props) {
+export default function PhotoCarousel({ photoIds }: Props) {
 	const isDarkTheme = useDarkTheme();
 	const didComponentMount = useRef<boolean>(false);
-	const [productPhotoURLs, setProductPhotoURLs] = useState<string[]>([]);
+	const [photoURLs, setPhotoURLs] = useState<string[]>([]);
 	const [photoAccessKey, setPhotoAccessKey] = useState<string>();
+
+	const fetchPhotoFileAndCreateObjectUrl = async (photoId: string) => {
+		const photoFile = await axios
+			.get(`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`, {
+				headers: {
+					Authorization: 'Bearer ' + photoAccessKey,
+				},
+				responseType: 'blob',
+			})
+			.then((res) => res.data);
+
+		const imageObjectUrl = URL.createObjectURL(photoFile);
+		return imageObjectUrl;
+	};
 
 	useEffect(() => {
 		const getPhotoAccessKey = async () => {
@@ -38,22 +52,16 @@ export default function PhotoCarousel({ productPhotoIds }: Props) {
 		if (!photoAccessKey) return;
 
 		const getURLs = async () => {
-			productPhotoIds.map(async (photoId) => {
-				const photoFile = await axios
-					.get(
-						`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`,
-						{
-							headers: {
-								Authorization: 'Bearer ' + photoAccessKey,
-							},
-							responseType: 'blob',
-						}
-					)
-					.then((res) => res.data);
-
-				const imageObjectUrl = URL.createObjectURL(photoFile);
-				setProductPhotoURLs((prevValue) => [...prevValue, imageObjectUrl]);
+			const imageUrlsPromises = photoIds.map(async (photoId) => {
+				const imageObjectUrl = await fetchPhotoFileAndCreateObjectUrl(photoId);
+				return imageObjectUrl;
 			});
+
+			const imageObjectURLs = await Promise.all(imageUrlsPromises).then(
+				(res) => res
+			);
+
+			setPhotoURLs(imageObjectURLs);
 		};
 
 		getURLs();
@@ -68,7 +76,7 @@ export default function PhotoCarousel({ productPhotoIds }: Props) {
 						modules={[Navigation, Pagination, A11y]}
 						navigation
 						pagination={{ clickable: true }}>
-						{productPhotoURLs.length === 0 ? (
+						{photoURLs.length === 0 ? (
 							<SwiperSlide>
 								<div className="flex flex-row justify-center">
 									<Image
@@ -84,7 +92,7 @@ export default function PhotoCarousel({ productPhotoIds }: Props) {
 								</div>
 							</SwiperSlide>
 						) : (
-							productPhotoURLs.map((photoLink, index) => {
+							photoURLs.map((photoLink, index) => {
 								return (
 									<SwiperSlide key={index}>
 										<Image

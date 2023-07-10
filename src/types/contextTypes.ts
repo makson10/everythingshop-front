@@ -20,6 +20,7 @@ export type CartProductType = ICartProduct[];
 
 export type UpdateCartContextType = {
 	addProductToCard: (productData: IProduct) => void;
+	addPhotoToProduct: (productId: string, photoObjectUrl: string) => void;
 	deleteProduct: (deleteProductId: string) => void;
 	deleteAllProducts: () => void;
 	decreaseProductAmount: (productId: string) => void;

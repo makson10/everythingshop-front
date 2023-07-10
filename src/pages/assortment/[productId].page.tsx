@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<FetchedDataType> = async (
 
 		return {
 			props: {
-				productData: productData,
+				productData,
 			},
 		};
 	} catch (error) {

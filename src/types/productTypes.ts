@@ -3,11 +3,12 @@ import { CommentType } from './commentTypes';
 export interface IProduct {
 	title: string;
 	description: string;
-	photo_id: string[];
+	photoIds: string[];
 	creator: string;
 	price: number;
 	uniqueProductId: string;
 	comments: CommentType;
+	imageObjectUrl?: string;
 }
 
 export type ProductType = IProduct[];

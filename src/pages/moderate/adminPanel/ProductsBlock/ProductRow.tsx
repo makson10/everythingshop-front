@@ -26,12 +26,14 @@ export default function ProductRow({ product }: Props) {
 	useEffect(() => {
 		const getProductPhoto = async () => {
 			const photoAccessKey = await axios
-				.get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`)
+				.get(
+					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
+				)
 				.then((res) => res.data.token);
 
 			const photoFile = await axios
 				.get(
-					`https://www.googleapis.com/drive/v3/files/${product.photo_id[0]}?alt=media`,
+					`https://www.googleapis.com/drive/v3/files/${product.photoIds[0]}?alt=media`,
 					{
 						headers: {
 							Authorization: 'Bearer ' + photoAccessKey,
@@ -52,7 +54,7 @@ export default function ProductRow({ product }: Props) {
 		<div className="flex flex-row border-b-[2px] border-[gray] p-2">
 			<div className="flex flex-row items-center gap-[10px]">
 				<Image
-					className="w-[50px] h-[50px] rounded"
+					className="w-[50px] h-[50px] rounded object-cover"
 					src={productPhoto}
 					alt="#"
 					width={100}

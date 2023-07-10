@@ -9,6 +9,7 @@ interface ProviderProps {
 export const CartContext = createContext<CartProductType>([]);
 export const UpdateCartContext = createContext<UpdateCartContextType>({
 	addProductToCard: (product: IProduct) => {},
+	addPhotoToProduct: (productId: string, photoObjectUrl: string) => {},
 	deleteProduct: (deleteProductId: string) => {},
 	deleteAllProducts: () => {},
 	decreaseProductAmount: (productId: string) => {},
@@ -21,24 +22,38 @@ export function CartProvider({ children }: ProviderProps) {
 	const addProductToCard = (productToAdd: IProduct) => {
 		const existProducts = [...products];
 
-		let foundSameProduct = false;
-		existProducts.map((product) => {
-			if (
+		const foundSameProduct = existProducts.some(
+			(product) =>
 				product.productsData.uniqueProductId === productToAdd.uniqueProductId
-			) {
-				product.amount++;
-				foundSameProduct = true;
-			}
-		});
+		);
+
+		if (foundSameProduct) {
+			increaseProductAmount(productToAdd.uniqueProductId);
+			return;
+		}
 
 		setProducts((prevValue) => {
-			const newProducts = foundSameProduct
-				? existProducts
-				: [...prevValue, { amount: 1, productsData: productToAdd }];
+			const newProducts = [
+				...prevValue,
+				{ amount: 1, productsData: productToAdd },
+			];
 
 			localStorage.setItem('cartProducts', JSON.stringify(newProducts));
 			return newProducts;
 		});
+	};
+
+	const addPhotoToProduct = (productId: string, photoObjectUrl: string) => {
+		const newProducts = [...products];
+
+		newProducts.map((product) => {
+			if (product.productsData.uniqueProductId === productId) {
+				product.productsData.imageObjectUrl = photoObjectUrl;
+			}
+		});
+
+		setProducts(newProducts);
+		localStorage.setItem('cartProducts', JSON.stringify(newProducts));
 	};
 
 	const deleteProduct = (deleteProductId: string) => {
@@ -61,22 +76,22 @@ export function CartProvider({ children }: ProviderProps) {
 		localStorage.setItem('cartProducts', '[]');
 	};
 
-	const decreaseProductAmount = (productId: string) => {
+	const increaseProductAmount = (productId: string) => {
 		const newProducts = [...products];
 
 		newProducts.map((product) => {
-			if (product.productsData.uniqueProductId === productId) product.amount--;
+			if (product.productsData.uniqueProductId === productId) product.amount++;
 		});
 
 		setProducts(newProducts);
 		localStorage.setItem('cartProducts', JSON.stringify(newProducts));
 	};
 
-	const increaseProductAmount = (productId: string) => {
+	const decreaseProductAmount = (productId: string) => {
 		const newProducts = [...products];
 
 		newProducts.map((product) => {
-			if (product.productsData.uniqueProductId === productId) product.amount++;
+			if (product.productsData.uniqueProductId === productId) product.amount--;
 		});
 
 		setProducts(newProducts);
@@ -94,6 +109,7 @@ export function CartProvider({ children }: ProviderProps) {
 			<UpdateCartContext.Provider
 				value={{
 					addProductToCard,
+					addPhotoToProduct,
 					deleteProduct,
 					deleteAllProducts,
 					decreaseProductAmount,

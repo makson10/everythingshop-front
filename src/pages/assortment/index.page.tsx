@@ -29,7 +29,7 @@ export default function Assortment({ productsData }: FetchedDataType) {
 		});
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const showingProductAmount = 16;
+	const showingProductAmount = 2; //16
 
 	const productsForDisplay = paginate(
 		products,
@@ -70,7 +70,7 @@ export default function Assortment({ productsData }: FetchedDataType) {
 		<>
 			<Header pageName={'Assortment'} />
 			<FilterBar setParameters={setListParameters} />
-			{productsForDisplay.length !== 0 ? (
+			{productsForDisplay.length ? (
 				<ProductsList products={productsForDisplay} />
 			) : (
 				<ProductsNotFoundPage />
