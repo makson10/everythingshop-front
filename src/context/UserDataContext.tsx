@@ -17,7 +17,7 @@ export const UserDataContext = createContext<UserDataContextType>({
 });
 export const UpdateUserDataContext = createContext<UpdateUserDataContextType>({
 	saveData: (credential: IUnionUserData) => {},
-	deleteData: () => {},
+	logOut: () => {},
 });
 
 const initialValue = {
@@ -39,7 +39,7 @@ export function UserDataProvider({ children }: ProviderProps) {
 		removeCookies('googleJWTToken');
 	};
 
-	const deleteData = () => {
+	const logOut = () => {
 		setData(initialValue);
 		deleteTokens();
 	};
@@ -91,7 +91,7 @@ export function UserDataProvider({ children }: ProviderProps) {
 
 	return (
 		<UserDataContext.Provider value={{ data, isLoading }}>
-			<UpdateUserDataContext.Provider value={{ saveData, deleteData }}>
+			<UpdateUserDataContext.Provider value={{ saveData, logOut }}>
 				{children}
 			</UpdateUserDataContext.Provider>
 		</UserDataContext.Provider>

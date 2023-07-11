@@ -92,7 +92,6 @@ export default function LogIn() {
 					<LogInForm handleSubmitForm={handleSubmitForm} />
 
 					<p className="mt-2 text-center text-base text-gray-500 dark:text-white">
-						{/* eslint-disable-next-line react/no-unescaped-entities */}
 						Already haven't account?{' '}
 						<Link
 							href="/signUp"

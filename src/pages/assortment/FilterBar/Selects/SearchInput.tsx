@@ -9,7 +9,7 @@ export default function SearchInput({ handleSearch }: Props) {
 	const isDarkTheme = useDarkTheme();
 
 	return (
-		<div className="flex flex-row items-center gap-[10px]">
+		<div className="flex flex-row items-center gap-[10px] max-sm:pr-[12%] max-sm:pt-[0.4rem] max-sm:gap-[8px]">
 			<Image
 				className="w-[32px] h-[32px]"
 				src={`https://img.icons8.com/ios-glyphs/32/${

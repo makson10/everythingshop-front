@@ -4,12 +4,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
+import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 
 interface Props {
 	product: IProduct;
 }
 
 export function ProductCard({ product }: Props) {
+	const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
 	const [productPhoto, setProductPhoto] = useState(
 		`https://img.icons8.com/ios/250/808080/product--v1.png`
 	);
@@ -21,6 +23,8 @@ export function ProductCard({ product }: Props) {
 
 	useEffect(() => {
 		const getProductPhoto = async () => {
+			setIsPhotoLoading(true);
+
 			const photoAccessKey = await axios
 				.get(
 					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
@@ -41,10 +45,14 @@ export function ProductCard({ product }: Props) {
 
 			const imageObjectUrl = URL.createObjectURL(photoFile);
 			setProductPhoto(imageObjectUrl);
+
+			setIsPhotoLoading(false);
 		};
 
 		getProductPhoto();
 	}, []);
+
+	if (isPhotoLoading) return <ShowLoadingScreen />;
 
 	return (
 		<div className="group relative">

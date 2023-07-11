@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useSendEmail from '@/hooks/useSendEmail';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
@@ -11,6 +11,11 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
 export default function FeedbackPageContent() {
+	const authorizedUserData = useUserData();
+
+	if (authorizedUserData.isLoading) return <ShowLoadingScreen />;
+	if (!authorizedUserData.data?.email) return <UserNotLoginWindow />;
+
 	return (
 		<div className="flex-[2_1_auto] flex justify-center items-center max-sm:p-8">
 			<div className="flex flex-col gap-10">
@@ -23,7 +28,6 @@ export default function FeedbackPageContent() {
 
 function FeedbackForm() {
 	const authorizedUserData = useUserData();
-	const [didUserAuthorized, setDidUserAuthorized] = useState(false);
 	const [isOpenSuccessMenu, setIsOpenSuccessMenu] = useState<boolean>(false);
 	const { sendFeedbackEmail } = useSendEmail();
 
@@ -55,13 +59,6 @@ function FeedbackForm() {
 			console.log(error);
 		}
 	};
-
-	useEffect(() => {
-		setDidUserAuthorized(!!authorizedUserData.data?.email);
-	}, [authorizedUserData]);
-
-	if (authorizedUserData.isLoading) return <ShowLoadingScreen />;
-	if (!didUserAuthorized) return <UserNotLoginWindow />;
 
 	return (
 		<>

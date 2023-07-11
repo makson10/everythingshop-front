@@ -8,7 +8,7 @@ export type UserDataContextType = {
 
 export type UpdateUserDataContextType = {
 	saveData: (credential: IUnionUserData) => void;
-	deleteData: () => void;
+	logOut: () => void;
 };
 
 export interface ICartProduct {

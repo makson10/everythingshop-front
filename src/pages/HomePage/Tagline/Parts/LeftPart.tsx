@@ -1,11 +1,10 @@
 export default function LeftPart() {
 	return (
-		<div className="pl-[12%] flex flex-col">
-			<p className="tracking-[1.5px] text-[1.3rem] text-[#3c6255] font-sans">
-				{/* eslint-disable-next-line react/no-unescaped-entities */}
+		<div className="pl-[12%] flex flex-col max-sm:pl-0">
+			<p className="tracking-[1.5px] text-[1.3rem] text-[#3c6255] font-sans max-sm:text-[1rem]">
 				The best you've ever seen
 			</p>
-			<p className="text-[3rem] leading-[4rem] font-sans">
+			<p className="text-[3rem] leading-[4rem] font-sans max-sm:text-[2.5rem] max-sm:leading-[3rem]">
 				Marketplace
 				<br />
 				&emsp;&ensp;={'>'} for <b>all</b>
@@ -15,5 +14,3 @@ export default function LeftPart() {
 		</div>
 	);
 }
-
-// TODO: Remove all eslink exceptions

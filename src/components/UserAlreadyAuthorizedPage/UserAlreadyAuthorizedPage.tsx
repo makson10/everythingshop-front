@@ -2,25 +2,27 @@ import { useRouter } from 'next/router';
 import { useUpdateUserData } from '@/hooks/useUserDataContext';
 
 export default function UserAlreadyAuthorizedPage() {
-	const { deleteData } = useUpdateUserData();
+	const { logOut } = useUpdateUserData();
 	const router = useRouter();
 
-	const handleClick = () => {
-		deleteData();
+	const handleLogOut = () => {
+		logOut();
 		router.reload();
 	};
 
 	return (
-		<div className="h-screen flex justify-center items-center">
-			<div className="w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-[30px]">
-				<h1 className="text-black text-[1.3rem] font-bold">
+		<div className="h-full flex justify-center items-center gap-6 max-sm:px-8">
+			<div className="flex flex-col gap-4 bg-[bisque] border-[1px] border-black rounded-[1rem] p-[1.8rem]">
+				<p className="text-[2rem] text-black font-sans max-sm:text-[1.7rem] max-sm:text-center">
 					You are already authorized
-				</h1>
-				<button
-					className="bg-[coral] p-[0.6rem] rounded-[8px] text-white text-[1.2rem] font-bold transition-all ease-in diraction-150 hover:scale-[1.2]"
-					onClick={handleClick}>
-					Log Out
-				</button>
+				</p>
+				<div className="flex justify-center bg-[coral] p-[0.6rem] rounded-[8px]">
+					<button
+						className="text-white text-[1.2rem] focus-visible:outline-0"
+						onClick={handleLogOut}>
+						Log Out
+					</button>
+				</div>
 			</div>
 		</div>
 	);

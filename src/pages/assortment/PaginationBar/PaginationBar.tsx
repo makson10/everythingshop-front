@@ -21,7 +21,7 @@ export function PaginationBar({
 	const pages = Array.from({ length: pagesAmount }, (_, i) => i + 1);
 
 	return (
-		<div className="flex items-center justify-center border-t-4 border-gray-200 px-4 py-3 sm:px-6">
+		<div className="flex items-center justify-center border-t-[5px] border-[#ffa500] px-4 py-3 sm:px-6">
 			<div className="sm:flex sm:flex-1 sm:items-center sm:justify-center">
 				<div>
 					<nav

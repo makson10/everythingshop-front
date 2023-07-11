@@ -8,7 +8,6 @@ export default function HoursPart() {
 			<div className="flex flex-col gap-[20px] text-[1.4rem] max-sm:text-[1.1rem]">
 				<div className="flex flex-row gap-[30px] w-full justify-between">
 					<p>Real shop</p>
-					{/* eslint-disable-next-line react/no-unescaped-entities */}
 					<p className="text-[#eae7b1] max-sm:text-right">we haven't it)</p>
 				</div>
 				<div className="flex flex-row gap-[30px] w-full justify-between">

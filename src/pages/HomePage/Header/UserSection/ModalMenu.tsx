@@ -13,14 +13,14 @@ export default function ModalMenu({
 	setIsOpenMenu,
 	setIsUserLogin,
 }: Props) {
-	const { deleteData } = useUpdateUserData();
+	const { logOut } = useUpdateUserData();
 	const { deleteAllProducts } = useUpdateCartContext();
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	function handleLogOut() {
 		if (!isOpen) return;
 
-		deleteData();
+		logOut();
 		deleteAllProducts();
 		setIsUserLogin(false);
 	}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useDarkTheme } from '@/hooks/useDarkTheme';
+import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import { Navigation, Pagination, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import axios from 'axios';
@@ -13,6 +14,7 @@ export default function PhotoCarousel({ photoIds }: Props) {
 	const isDarkTheme = useDarkTheme();
 	const didComponentMount = useRef<boolean>(false);
 	const [photoURLs, setPhotoURLs] = useState<string[]>([]);
+	const [isPhotosLoading, setIsPhotosLoading] = useState<boolean>(false);
 	const [photoAccessKey, setPhotoAccessKey] = useState<string>();
 
 	const fetchPhotoFileAndCreateObjectUrl = async (photoId: string) => {
@@ -52,6 +54,8 @@ export default function PhotoCarousel({ photoIds }: Props) {
 		if (!photoAccessKey) return;
 
 		const getURLs = async () => {
+			setIsPhotosLoading(true);
+
 			const imageUrlsPromises = photoIds.map(async (photoId) => {
 				const imageObjectUrl = await fetchPhotoFileAndCreateObjectUrl(photoId);
 				return imageObjectUrl;
@@ -62,10 +66,14 @@ export default function PhotoCarousel({ photoIds }: Props) {
 			);
 
 			setPhotoURLs(imageObjectURLs);
+            
+			setIsPhotosLoading(false);
 		};
 
 		getURLs();
 	}, [photoAccessKey]);
+
+	if (isPhotosLoading) return <ShowLoadingScreen />;
 
 	return (
 		<>

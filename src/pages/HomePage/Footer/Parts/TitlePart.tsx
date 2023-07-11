@@ -5,8 +5,8 @@ export default function TitlePart() {
 	const isMobileDevice = useDeviceDetect();
 
 	return (
-		<div className="flex flex-col justify-between items-center max-sm:order-1">
-			<p className="text-[2.3rem] max-sm:text-[1.8rem]">
+		<div className="flex flex-col justify-between items-center max-sm:order-1 max-sm:gap-3">
+			<p className="text-[2.3rem] max-sm:text-[1.8rem] max-sm:text-center">
 				<b>Market EVERYTHING</b>
 			</p>
 			<div className="flex flex-col items-center gap-[5px]">
@@ -22,7 +22,6 @@ export default function TitlePart() {
 			</div>
 			<div className="flex flex-col items-center gap-[10px] text-[1.2rem] max-sm:text-[1.1rem]">
 				<p className="text-center">
-					{/* eslint-disable-next-line react/no-unescaped-entities */}
 					Still don't already have an account? {isMobileDevice && <br />}
 					<Link
 						className="text-[1.4rem] hover:drop-shadow-[0_0_10px_bisque] max-sm:text-[1rem] max-sm:text-[#8cb8ff]"

@@ -18,9 +18,11 @@ export default function InfoCard({ data }: Props) {
 				width={400}
 				height={300}
 			/>
-			<div className="flex flex-col gap-4 w-[330px]">
+			<div className="flex flex-col gap-4 w-[330px] text-center">
 				<p className="text-[1.8rem]">{data.titleText}</p>
-				<p className="text-[1.2rem] font-[400]">{data.bodyText}</p>
+				<p className="text-[1.2rem] font-[400] max-sm:text-[1.1rem]">
+					{data.bodyText}
+				</p>
 			</div>
 		</div>
 	);

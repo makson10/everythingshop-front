@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useCartContext, useUpdateCartContext } from '@/hooks/useCartContext';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { FailWindow } from '@/components/FailWindow/FailWindow';
@@ -6,6 +6,7 @@ import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import ProductRow from './ProductRow/ProductRow';
 import TotalPriceSection from './TotalPriceSection';
 import axios from 'axios';
+import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 
 export default function ProductList() {
 	const authorizedUser = useUserData();
@@ -56,11 +57,7 @@ export default function ProductList() {
 		prepareProductDataToShow();
 	}, [products]);
 
-	if (!authorizedUser.data?.email) {
-		return (
-			<FailWindow failMessage="Cart is not available for unauthorized users" />
-		);
-	}
+	if (!authorizedUser.data?.email) return <UserNotLoginWindow />;
 
 	if (!products || products.length === 0) {
 		return <FailWindow failMessage="There are no products in cart" />;
@@ -81,7 +78,7 @@ export default function ProductList() {
 								return (
 									<div
 										key={index}
-										className="flex justify-between gap-x-6 py-5 max-sm:justify-center">
+										className="flex justify-between gap-x-6 py-5 max-sm:justify-center max-sm:gap-x-2">
 										<ProductRow product={product} setIsLoading={setIsLoading} />
 									</div>
 								);
