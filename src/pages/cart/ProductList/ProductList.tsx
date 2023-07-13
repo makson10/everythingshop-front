@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useCartContext, useUpdateCartContext } from '@/hooks/useCartContext';
-import { useUserData } from '@/hooks/useUserDataContext';
 import { FailWindow } from '@/components/FailWindow/FailWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
+import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
+import { useUserData } from '@/hooks/useUserDataContext';
 import ProductRow from './ProductRow/ProductRow';
 import TotalPriceSection from './TotalPriceSection';
 import axios from 'axios';
-import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 
 export default function ProductList() {
 	const authorizedUser = useUserData();
@@ -14,7 +14,6 @@ export default function ProductList() {
 	const { deleteProduct } = useUpdateCartContext();
 	const [purchaseTotalPrice, setPurchaseTotalPrice] = useState<number>(0);
 	const [readyToShowList, setReadyToShowList] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const calculateTotalPrice = async () => {
 		const totalPrice = products.reduce(
@@ -68,21 +67,21 @@ export default function ProductList() {
 			<div className="flex flex-col justify-center items-center gap-8 min-w-full">
 				<div className="w-1/2 max-sm:w-full">
 					<div role="list" className="divide-y divide-gray-100">
-						{isLoading && <ShowLoadingScreen />}
-						{readyToShowList &&
-							products.map((product, index) => {
-								console.log(
-									product.productsData.uniqueProductId,
-									product.productsData.photoIds[0]
-								);
-								return (
-									<div
-										key={index}
-										className="flex justify-between gap-x-6 py-5 max-sm:justify-center max-sm:gap-x-2">
-										<ProductRow product={product} setIsLoading={setIsLoading} />
-									</div>
-								);
-							})}
+						{readyToShowList ? (
+							<>
+								{products.map((product, index) => {
+									return (
+										<div
+											key={index}
+											className="flex justify-between gap-x-6 py-5 max-sm:justify-center max-sm:gap-x-2">
+											<ProductRow product={product} />
+										</div>
+									);
+								})}
+							</>
+						) : (
+							<ShowLoadingScreen />
+						)}
 					</div>
 				</div>
 				{purchaseTotalPrice && (

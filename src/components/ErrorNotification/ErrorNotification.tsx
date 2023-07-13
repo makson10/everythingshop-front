@@ -4,12 +4,12 @@ interface Props {
 	error: string | string[];
 }
 
-export default function ErrorMenu({ error }: Props) {
-	const [show, setShow] = useState(false);
+export default function ErrorNotification({ error }: Props) {
+	const [show, setShow] = useState<boolean | null>(null);
 
 	useEffect(() => {
 		setShow(true);
-		setTimeout(() => setShow(false), 2000);
+		setTimeout(() => setShow(null), 2000);
 	}, []);
 
 	return (

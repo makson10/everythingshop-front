@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
-import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 
 interface Props {
 	product: IProduct;
+	photoAccessKey: string;
 }
 
-export function ProductCard({ product }: Props) {
+export function ProductCard({ product, photoAccessKey }: Props) {
 	const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
 	const [productPhoto, setProductPhoto] = useState(
 		`https://img.icons8.com/ios/250/808080/product--v1.png`
@@ -22,14 +23,10 @@ export function ProductCard({ product }: Props) {
 	};
 
 	useEffect(() => {
+		if (!photoAccessKey) return;
+
 		const getProductPhoto = async () => {
 			setIsPhotoLoading(true);
-
-			const photoAccessKey = await axios
-				.get(
-					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
-				)
-				.then((res) => res.data.token);
 
 			const photoFile = await axios
 				.get(
@@ -50,23 +47,25 @@ export function ProductCard({ product }: Props) {
 		};
 
 		getProductPhoto();
-	}, []);
-
-	if (isPhotoLoading) return <ShowLoadingScreen />;
+	}, [product.photoIds, photoAccessKey]);
 
 	return (
 		<div className="group relative">
-			<div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-transparent lg:aspect-none group-hover:opacity-75 lg:h-80">
-				<Image
-					className="h-full w-full object-contain object-center lg:h-full lg:w-full"
-					src={productPhoto}
-					alt="#"
-					crossOrigin="use-credentials"
-					width={1000}
-					height={1000}
-					onClick={handleGoToProductPage}
-					loading="lazy"
-				/>
+			<div className="flex flex-col justify-center items-center min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-transparent lg:aspect-none group-hover:opacity-75 lg:h-80">
+				{isPhotoLoading ? (
+					<LoadingSpinner />
+				) : (
+					<Image
+						className="h-full w-full object-contain object-center lg:h-full lg:w-full"
+						src={productPhoto}
+						alt="#"
+						crossOrigin="use-credentials"
+						width={1000}
+						height={1000}
+						onClick={handleGoToProductPage}
+						loading="lazy"
+					/>
+				)}
 			</div>
 			<div className="mt-4 flex justify-between">
 				<div>

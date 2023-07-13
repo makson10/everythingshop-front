@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useSendEmail from '@/hooks/useSendEmail';
 import { useUserData } from '@/hooks/useUserDataContext';
-import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import { ShowSuccessNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import { IFeedback } from '@/types/feedbackTypes';
@@ -28,7 +28,8 @@ export default function FeedbackPageContent() {
 
 function FeedbackForm() {
 	const authorizedUserData = useUserData();
-	const [isOpenSuccessMenu, setIsOpenSuccessMenu] = useState<boolean>(false);
+	const [isOpenSuccessNotification, setIsOpenSuccessNotification] =
+		useState<boolean>(false);
 	const { sendFeedbackEmail } = useSendEmail();
 
 	const sendDataToServer = async (data: IFeedback) => {
@@ -54,7 +55,7 @@ function FeedbackForm() {
 			const feedbackData = shapeFeedbackData(feedbackText);
 			sendDataToServer(feedbackData);
 			sendFeedbackEmail(feedbackData);
-			setIsOpenSuccessMenu(true);
+			setIsOpenSuccessNotification(true);
 		} catch (error) {
 			console.log(error);
 		}
@@ -62,8 +63,8 @@ function FeedbackForm() {
 
 	return (
 		<>
-			{isOpenSuccessMenu && (
-				<ShowSuccessModalWindow successText="Thank you for your feedback. It is very important for us" />
+			{isOpenSuccessNotification && (
+				<ShowSuccessNotification successText="Thank you for your feedback. It is very important for us" />
 			)}
 
 			<Formik

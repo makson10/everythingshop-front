@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import AdminPanelBlock from '@/components/AdminPanelBlock/AdminPanelBlock';
-import { UserDataType } from '@/types/userTypes';
 import UserRow from './UserRow';
+import { UserDataType } from '@/types/userTypes';
 
 interface Props {
 	customers: UserDataType;

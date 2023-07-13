@@ -16,7 +16,7 @@ export default function Document() {
 				/>
 			</Head>
 			<body className="bg-[--first-color] dark:bg-[--first-dark-color] dark:text-white">
-				<div id="portal"></div>
+				<div id="portal" className="z-50 absolute"></div>
 				<Main />
 				<NextScript />
 			</body>

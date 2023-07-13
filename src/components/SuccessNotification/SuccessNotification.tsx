@@ -4,7 +4,7 @@ interface Props {
 	successText: string;
 }
 
-export default function SuccessMenu({ successText }: Props) {
+export default function SuccessNotification({ successText }: Props) {
 	const [show, setShow] = useState<boolean | null>(null);
 
 	useEffect(() => {

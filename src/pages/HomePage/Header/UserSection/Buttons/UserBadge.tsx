@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { useDarkTheme } from '@/hooks/useDarkTheme';
-import Image from 'next/image';
 
 interface Props {
 	userName: string;
@@ -17,7 +17,7 @@ export default function UserBadge({ userName, handleToggleIsOpenMenu }: Props) {
 			onClick={handleToggleIsOpenMenu}>
 			<button>
 				<Image
-					className="w-12 rounded-xl"
+					className="min-w-12 max-w-[3rem] rounded-xl"
 					src={
 						userData.data?.picture
 							? userData.data?.picture
@@ -30,7 +30,7 @@ export default function UserBadge({ userName, handleToggleIsOpenMenu }: Props) {
 					height={100}
 				/>
 			</button>
-			<p className="font-[600] cursor-pointer">{userName}</p>
+			<p className="font-[600] cursor-pointer break-words">{userName}</p>
 		</div>
 	);
 }

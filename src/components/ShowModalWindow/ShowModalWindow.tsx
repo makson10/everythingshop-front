@@ -1,36 +1,39 @@
 import { createPortal } from 'react-dom';
-import SuccessMenu from '@/components/SuccessMenu/SuccessMenu';
-import ErrorMenu from '@/components/ErrorMenu/ErrorMenu';
+import SuccessNotification from '@/components/SuccessNotification/SuccessNotification';
+import ErrorNotification from '@/components/ErrorNotification/ErrorNotification';
 import ConfirmPurchaseForm from '@/components/ConfirmPurchaseForm/ConfirmPurchaseForm';
+import FullscreenPhotoCarousel from '@/components/FullscreenPhotoCarousel/FullscreenPhotoCarousel';
 import {
 	SuccessWindowProps,
 	ErrorWindowProps,
 	ConfirmPurchaseFormProps,
+	FullscreenPhotoCarouselProps,
 } from '@/types/modalWindowTypes';
 
-export const ShowSuccessModalWindow = ({ successText }: SuccessWindowProps) => {
+export const ShowSuccessNotification = (props: SuccessWindowProps) => {
 	return createPortal(
-		<SuccessMenu successText={successText} />,
+		<SuccessNotification {...props} />,
 		document.querySelector('#portal')!
 	);
 };
 
-export const ShowErrorModalWindow = ({ error }: ErrorWindowProps) => {
+export const ShowErrorNotification = (props: ErrorWindowProps) => {
 	return createPortal(
-		<ErrorMenu error={error} />,
+		<ErrorNotification {...props} />,
 		document.querySelector('#portal')!
 	);
 };
 
-export const ShowConfirmPurchaseForm = ({
-	handleCloseConfirmPurchaseForm,
-	purchaseTotalPrice,
-}: ConfirmPurchaseFormProps) => {
+export const ShowConfirmPurchaseForm = (props: ConfirmPurchaseFormProps) => {
 	return createPortal(
-		<ConfirmPurchaseForm
-			handleCloseConfirmPurchaseForm={handleCloseConfirmPurchaseForm}
-			purchaseTotalPrice={purchaseTotalPrice}
-		/>,
+		<ConfirmPurchaseForm {...props} />,
+		document.querySelector('#portal')!
+	);
+};
+
+export const ShowPhotoInFullscreen = (props: FullscreenPhotoCarouselProps) => {
+	return createPortal(
+		<FullscreenPhotoCarousel {...props} />,
 		document.querySelector('#portal')!
 	);
 };

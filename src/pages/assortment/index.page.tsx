@@ -7,9 +7,9 @@ import {
 } from '@/functions/productsTransformation';
 import { paginate } from '@/functions/paginate';
 import Header from '@/components/Header/Header';
+import { ProductsNotFoundPage } from '@/components/ProductsNotFoundPage/ProductsNotFoundPage';
 import { ProductsList } from './ProductsList/ProductsList';
 import { PaginationBar } from './PaginationBar/PaginationBar';
-import { ProductsNotFoundPage } from '@/components/ProductsNotFoundPage/ProductsNotFoundPage';
 import FilterBar from './FilterBar/FilterBar';
 import { ProductType } from '@/types/productTypes';
 import { IProductTransformationParameters } from '@/types/productTransformationTypes';
@@ -29,7 +29,7 @@ export default function Assortment({ productsData }: FetchedDataType) {
 		});
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const showingProductAmount = 2; //16
+	const showingProductAmount = 16;
 
 	const productsForDisplay = paginate(
 		products,

@@ -22,18 +22,21 @@ export default function CommentRow({
 	productName,
 }: Props) {
 	return (
-		<div className="flex flex-col gap-[5px] p-[0.5rem] border-b-2 border-b-[gray]">
+		<>
 			{comments.map((comment, index) => {
 				return (
-					<Comment
-						comment={comment}
-						productId={productId}
-						productName={productName}
+					<div
 						key={index}
-					/>
+						className="flex flex-col gap-[5px] p-[0.5rem] border-b-2 border-b-[gray]">
+						<Comment
+							comment={comment}
+							productId={productId}
+							productName={productName}
+						/>
+					</div>
 				);
 			})}
-		</div>
+		</>
 	);
 }
 

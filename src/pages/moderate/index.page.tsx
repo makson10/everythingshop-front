@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import useCookies from '@/hooks/useCookies';
 import useIsAdminAuthorized from '@/hooks/useIsAdminAuthorized';
-import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import AuthorizationForm from './AuthorizationForm';
 import { IAdminData } from '@/types/adminTypes';
@@ -65,7 +65,9 @@ export default function ModeratePage() {
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow error={serverErrorMessage} />}
+			{isOpenErrorWindow && (
+				<ShowErrorNotification error={serverErrorMessage} />
+			)}
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#3c6255] text-white">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">

@@ -4,7 +4,8 @@ const useIsPasswordVisible = (initialValue: boolean) => {
 	const [isPasswordVisible, setIsPasswordVisible] =
 		useState<boolean>(initialValue);
 
-	const togglePasswordVisible = () => {
+	const togglePasswordVisible = (event: any) => {
+		event.preventDefault();
 		setIsPasswordVisible((prevValue) => !prevValue);
 	};
 

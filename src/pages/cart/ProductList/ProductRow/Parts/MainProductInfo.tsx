@@ -1,16 +1,17 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useUpdateCartContext } from '@/hooks/useCartContext';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
 
 interface Props {
 	productData: IProduct;
-	setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function MainProductInfo({ productData, setIsLoading }: Props) {
+export default function MainProductInfo({ productData }: Props) {
+	const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
 	const { addPhotoToProduct } = useUpdateCartContext();
 	const defaultProductPhoto =
 		'https://img.icons8.com/ios/50/000000/product--v1.png';
@@ -42,13 +43,13 @@ export default function MainProductInfo({ productData, setIsLoading }: Props) {
 
 	useEffect(() => {
 		const getPhotoObjectURL = async () => {
-			setIsLoading(true);
+			setIsPhotoLoading(true);
 
 			const photoFile = await getPhotoFile(productData.photoIds[0]);
 			const imageObjectUrl = URL.createObjectURL(photoFile);
 			addPhotoToProduct(productData.uniqueProductId, imageObjectUrl);
 
-			setIsLoading(false);
+			setIsPhotoLoading(false);
 		};
 
 		getPhotoObjectURL();
@@ -56,14 +57,20 @@ export default function MainProductInfo({ productData, setIsLoading }: Props) {
 
 	return (
 		<div className="flex gap-x-4">
-			<Image
-				className={'h-12 w-12 flex-none object-cover rounded-full bg-gray-50'}
-				src={productData.imageObjectUrl || defaultProductPhoto}
-				alt="#"
-				width={100}
-				height={100}
-				loading="lazy"
-			/>
+			{isPhotoLoading ? (
+				<div className="w-[48px] h-[48px] scale-50 flex flex-col justify-center items-center">
+					<LoadingSpinner />
+				</div>
+			) : (
+				<Image
+					className={'h-12 w-12 flex-none object-cover rounded-full bg-gray-50'}
+					src={productData.imageObjectUrl || defaultProductPhoto}
+					alt="#"
+					width={100}
+					height={100}
+					loading="lazy"
+				/>
+			)}
 			<div className="min-w-0 flex-auto">
 				<Link
 					href={`/assortment/${productData.uniqueProductId}`}

@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 export interface ErrorWindowProps {
 	error: string | string[];
 }
@@ -11,4 +9,9 @@ export interface SuccessWindowProps {
 export interface ConfirmPurchaseFormProps {
 	handleCloseConfirmPurchaseForm: () => void;
 	purchaseTotalPrice: number;
+}
+
+export interface FullscreenPhotoCarouselProps {
+	handleClose: () => void;
+	photoURLs: string[];
 }

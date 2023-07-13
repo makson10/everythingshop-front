@@ -145,10 +145,7 @@ export default function SignUpForm({ handleSubmitForm }: Props) {
 								<button
 									className="block bg-white rounded-md border-0 py-1.5 px-1 shadow-sm ring-1 ring-inset ring-gray-300"
 									tabIndex={-1}
-									onClick={(event) => {
-										event.preventDefault();
-										togglePasswordVisible();
-									}}>
+									onClick={togglePasswordVisible}>
 									<Image
 										src={isPasswordVisible ? '/hide.png' : '/show.png'}
 										alt="#"

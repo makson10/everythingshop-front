@@ -13,7 +13,7 @@ export default function PhotoCarousel({ photoFiles, handleFileInput }: Props) {
 	const isDarkTheme = useDarkTheme();
 
 	return (
-		<div className="h-1/4">
+		<div className="max-h-[300px]">
 			<Swiper
 				modules={[Navigation, Pagination, A11y]}
 				slidesPerView={1}
@@ -23,7 +23,13 @@ export default function PhotoCarousel({ photoFiles, handleFileInput }: Props) {
 					const imageObjectUrl = URL.createObjectURL(file);
 					return (
 						<SwiperSlide key={index}>
-							<Image width={1000} height={1000} src={imageObjectUrl} alt="#" />
+							<Image
+								className="min-h-[100px] max-h-[300px] m-auto object-contain"
+								width={300}
+								height={300}
+								src={imageObjectUrl}
+								alt="#"
+							/>
 						</SwiperSlide>
 					);
 				})}

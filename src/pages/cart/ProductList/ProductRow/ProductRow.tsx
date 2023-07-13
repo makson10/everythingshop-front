@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { useUpdateCartContext } from '@/hooks/useCartContext';
 import MainProductInfo from './Parts/MainProductInfo';
 import AmountRegulator from './Parts/AmountRegulator';
@@ -8,10 +7,9 @@ import { ICartProduct } from '@/types/contextTypes';
 
 interface Props {
 	product: ICartProduct;
-	setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ProductRow({ product, setIsLoading }: Props) {
+export default function ProductRow({ product }: Props) {
 	const { deleteProduct } = useUpdateCartContext();
 
 	const handleDeleteThisProduct = () => {
@@ -20,10 +18,7 @@ export default function ProductRow({ product, setIsLoading }: Props) {
 
 	return (
 		<>
-			<MainProductInfo
-				productData={product.productsData}
-				setIsLoading={setIsLoading}
-			/>
+			<MainProductInfo productData={product.productsData} />
 			<AmountRegulator
 				productId={product.productsData.uniqueProductId}
 				productAmount={product.amount}

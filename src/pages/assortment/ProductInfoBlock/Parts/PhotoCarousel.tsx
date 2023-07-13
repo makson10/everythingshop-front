@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useDarkTheme } from '@/hooks/useDarkTheme';
-import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
+import { ShowPhotoInFullscreen } from '@/components/ShowModalWindow/ShowModalWindow';
 import { Navigation, Pagination, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import axios from 'axios';
@@ -16,6 +17,16 @@ export default function PhotoCarousel({ photoIds }: Props) {
 	const [photoURLs, setPhotoURLs] = useState<string[]>([]);
 	const [isPhotosLoading, setIsPhotosLoading] = useState<boolean>(false);
 	const [photoAccessKey, setPhotoAccessKey] = useState<string>();
+	const [isOpenPhotosInFullscreen, setIsOpenPhotosInFullscreen] =
+		useState<boolean>(false);
+
+	const handleOpenPhotoInFullscreen = () => {
+		setIsOpenPhotosInFullscreen(true);
+	};
+
+	const handleClosePhotoInFullscreen = () => {
+		setIsOpenPhotosInFullscreen(false);
+	};
 
 	const fetchPhotoFileAndCreateObjectUrl = async (photoId: string) => {
 		const photoFile = await axios
@@ -66,56 +77,66 @@ export default function PhotoCarousel({ photoIds }: Props) {
 			);
 
 			setPhotoURLs(imageObjectURLs);
-            
+
 			setIsPhotosLoading(false);
 		};
 
 		getURLs();
 	}, [photoAccessKey]);
 
-	if (isPhotosLoading) return <ShowLoadingScreen />;
-
 	return (
 		<>
+			{isOpenPhotosInFullscreen && (
+				<ShowPhotoInFullscreen
+					handleClose={handleClosePhotoInFullscreen}
+					photoURLs={photoURLs}
+				/>
+			)}
+
 			{/* Image gallery */}
-			<div className="flex flex-row justify-center mx-auto mt-6 max-w-2xl sm:px-6">
+			<div className="min-h-[400px] max-h-[400px] flex flex-row justify-center mx-auto mt-6 max-w-2xl sm:px-6">
 				<div className="w-4/5 overflow-hidden rounded-lg lg:block">
-					<Swiper
-						modules={[Navigation, Pagination, A11y]}
-						navigation
-						pagination={{ clickable: true }}>
-						{photoURLs.length === 0 ? (
-							<SwiperSlide>
-								<div className="flex flex-row justify-center">
-									<Image
-										className="w-1/2 h-1/2 object-contain object-center"
-										src={`https://img.icons8.com/ios/300/${
-											isDarkTheme ? 'ffffff' : '000000'
-										}/stack-of-photos--v1.png`}
-										alt="#"
-										width={300}
-										height={300}
-										loading="lazy"
-									/>
-								</div>
-							</SwiperSlide>
-						) : (
-							photoURLs.map((photoLink, index) => {
-								return (
-									<SwiperSlide key={index}>
+					{isPhotosLoading ? (
+						<LoadingSpinner />
+					) : (
+						<Swiper
+							onClick={handleOpenPhotoInFullscreen}
+							modules={[Navigation, Pagination, A11y]}
+							navigation
+							pagination={{ clickable: true }}>
+							{photoURLs.length === 0 ? (
+								<SwiperSlide>
+									<div className="flex flex-row justify-center">
 										<Image
-											className="h-full w-full object-contain object-center"
-											src={photoLink}
+											className="w-1/2 h-1/2 object-contain object-center"
+											src={`https://img.icons8.com/ios/300/${
+												isDarkTheme ? 'ffffff' : '000000'
+											}/stack-of-photos--v1.png`}
 											alt="#"
-											width={1000}
-											height={1000}
+											width={300}
+											height={300}
 											loading="lazy"
 										/>
-									</SwiperSlide>
-								);
-							})
-						)}
-					</Swiper>
+									</div>
+								</SwiperSlide>
+							) : (
+								photoURLs.map((photoLink, index) => {
+									return (
+										<SwiperSlide key={index}>
+											<Image
+												className="h-[400px] w-full object-contain object-center"
+												src={photoLink}
+												alt="#"
+												width={400}
+												height={400}
+												loading="lazy"
+											/>
+										</SwiperSlide>
+									);
+								})
+							)}
+						</Swiper>
+					)}
 				</div>
 			</div>
 		</>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useUpdateCartContext } from '@/hooks/useCartContext';
-import { ShowSuccessModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import { ShowSuccessNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import Breadcrumb from './Parts/Breadcrumb';
 import Title from './Parts/Title';
 import PhotoCarousel from './Parts/PhotoCarousel';
@@ -58,7 +58,7 @@ export default function ProductInfoBlock({ productData }: Props) {
 	return (
 		<>
 			{isOpenSuccessWindow && (
-				<ShowSuccessModalWindow successText="You have successfully added this item to your cart" />
+				<ShowSuccessNotification successText="You have successfully added this item to your cart" />
 			)}
 
 			<div className="pt-6">

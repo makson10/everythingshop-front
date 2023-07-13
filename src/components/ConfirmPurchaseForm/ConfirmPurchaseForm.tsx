@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import { useUserData } from '@/hooks/useUserDataContext';
 import { useUpdateCartContext } from '@/hooks/useCartContext';
 import useSendEmail from '@/hooks/useSendEmail';
-import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import Header from './Parts/Header';
-import CloseButton from './Parts/CloseButton';
+import CloseButton from '../CloseButton/CloseButton';
 import Form from './Parts/Form';
 import {
 	IConfirmPurchaseForm,
@@ -99,10 +99,12 @@ export default function ConfirmPurchaseForm({
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow error={serverErrorMessage} />}
+			{isOpenErrorWindow && (
+				<ShowErrorNotification error={serverErrorMessage} />
+			)}
 
 			<div className="z-50 fixed w-full h-screen bg-black/[0.6] flex justify-center items-center overflow-hidden dark:text-black max-sm:px-4">
-				<div className="relative w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-2xl max-sm:w-full">
+				<div className="relative w-fit px-[4rem] py-[3rem] flex flex-col justify-center items-center gap-[30px] bg-white rounded-2xl max-sm:w-full max-sm:py-[2rem]">
 					<CloseButton handleClick={handleCloseConfirmPurchaseForm} />
 					<Header />
 					<Form handleSubmitForm={handleSubmitForm} />

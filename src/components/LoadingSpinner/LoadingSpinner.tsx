@@ -1,21 +1,6 @@
-import { useEffect } from 'react';
-import { createPortal } from 'react-dom';
-
-export const ShowLoadingScreen = () => {
-	return createPortal(<LoadingScreen />, document.querySelector('#portal')!);
-};
-
-export default function LoadingScreen() {
-	useEffect(() => {
-		document.body.classList.add('overflow-hidden');
-
-		return () => {
-			document.body.classList.remove('overflow-hidden');
-		};
-	}, []);
-
+export default function LoadingSpinner() {
 	return (
-		<div className="w-screen h-screen overflow-hidden text-black flex justify-center items-center bg-[--first-color] dark:bg-[--first-dark-color]">
+		<div className="h-full text-black flex justify-center items-center">
 			<div className="relative left-1" role="status">
 				<svg
 					aria-hidden="true"

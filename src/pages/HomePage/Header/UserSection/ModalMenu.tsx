@@ -30,7 +30,7 @@ export default function ModalMenu({
 
 		const handleClickOutOfMenu = (event: any) => {
 			if (menuRef.current && !menuRef.current.contains(event.target)) {
-				setIsOpenMenu((prevValue) => false);
+				setIsOpenMenu(false);
 			}
 		};
 

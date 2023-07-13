@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useUserData, useUpdateUserData } from '@/hooks/useUserDataContext';
 import useSendEmail from '@/hooks/useSendEmail';
 import useCookies from '@/hooks/useCookies';
-import { ShowErrorModalWindow } from '@/components/ShowModalWindow/ShowModalWindow';
+import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import AuthorizationPageHeader from '@/components/AuthorizationPageHeader/AuthorizationPageHeader';
 import GoogleAuthSection from '@/components/GoogleAuthSection/GoogleAuthSection';
@@ -85,7 +85,9 @@ export default function SignUp() {
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow error={serverErrorMessage} />}
+			{isOpenErrorWindow && (
+				<ShowErrorNotification error={serverErrorMessage} />
+			)}
 
 			<div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-10 lg:px-8">
 				<AuthorizationPageHeader pageTitle="Create new account" />

@@ -2,8 +2,8 @@ import { ChangeEvent, useState } from 'react';
 import { useUserData } from '@/hooks/useUserDataContext';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import {
-	ShowSuccessModalWindow,
-	ShowErrorModalWindow,
+	ShowSuccessNotification,
+	ShowErrorNotification,
 } from '@/components/ShowModalWindow/ShowModalWindow';
 import { FormProductType } from '@/types/productTypes';
 import PhotoCarousel from './PhotoCarousel';
@@ -85,9 +85,11 @@ export default function PageContent() {
 
 	return (
 		<>
-			{isOpenErrorWindow && <ShowErrorModalWindow error={serverErrorMessage} />}
+			{isOpenErrorWindow && (
+				<ShowErrorNotification error={serverErrorMessage} />
+			)}
 			{isOpenSuccessWindow && (
-				<ShowSuccessModalWindow
+				<ShowSuccessNotification
 					successText={'You have created your product successful'}
 				/>
 			)}
@@ -96,7 +98,7 @@ export default function PageContent() {
 				<div className="flex flex-col gap-8 w-[350px]">
 					<h1 className="text-4xl text-center">Add new product</h1>
 					<div className="flex flex-col">
-						<div className="flex flex-col gap-4">
+						<div className="flex flex-col gap-8">
 							<PhotoCarousel
 								photoFiles={photoFiles}
 								handleFileInput={handleFileInput}
