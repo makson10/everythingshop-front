@@ -22,7 +22,7 @@ export default function TitlePart() {
 			</div>
 			<div className="flex flex-col items-center gap-[10px] text-[1.2rem] max-sm:text-[1.1rem]">
 				<p className="text-center">
-					Still don't already have an account? {isMobileDevice && <br />}
+					Still don&apos;t already have an account? {isMobileDevice && <br />}
 					<Link
 						className="text-[1.4rem] hover:drop-shadow-[0_0_10px_bisque] max-sm:text-[1rem] max-sm:text-[#8cb8ff]"
 						href="/signUp">

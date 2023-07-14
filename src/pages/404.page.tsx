@@ -11,7 +11,7 @@ export default function Custom404() {
 					Page not found
 				</h1>
 				<p className="mt-6 text-base leading-7 text-gray-600 dark:text-gray-300">
-					Sorry, it looks like you are going to a page that doesn't exist.
+					Sorry, it looks like you are going to a page that doesn&apos;t exist.
 				</p>
 				<div className="mt-10 flex items-center justify-center gap-x-6">
 					<Link

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { FullscreenPhotoCarouselProps } from '@/types/modalWindowTypes';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { A11y, Navigation, Pagination } from 'swiper';
+import { A11y, Navigation, Pagination, Zoom } from 'swiper';
 
 export default function FullscreenPhotoCarousel({
 	handleClose,
@@ -39,7 +39,8 @@ export default function FullscreenPhotoCarousel({
 			<div className="h-full flex justify-center items-center">
 				<Swiper
 					className={photoURLs.length === 1 ? '' : 'scale-[85%]'}
-					modules={[Navigation, Pagination, A11y]}
+					modules={[Navigation, Pagination, A11y, Zoom]}
+					zoom
 					navigation
 					pagination={{ clickable: true }}
 					initialSlide={initialPhotoIndex}>

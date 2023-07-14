@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,32 +22,32 @@ export function ProductCard({ product, photoAccessKey }: Props) {
 		router.push(`/assortment/${product.uniqueProductId}`);
 	};
 
-	useEffect(() => {
+	const getProductPhoto = useCallback(async () => {
 		if (!photoAccessKey) return;
 
-		const getProductPhoto = async () => {
-			setIsPhotoLoading(true);
+		setIsPhotoLoading(true);
 
-			const photoFile = await axios
-				.get(
-					`https://www.googleapis.com/drive/v3/files/${product.photoIds[0]}?alt=media`,
-					{
-						headers: {
-							Authorization: 'Bearer ' + photoAccessKey,
-						},
-						responseType: 'blob',
-					}
-				)
-				.then((res) => res.data);
+		const photoFile = await axios
+			.get(
+				`https://www.googleapis.com/drive/v3/files/${product.photoIds[0]}?alt=media`,
+				{
+					headers: {
+						Authorization: 'Bearer ' + photoAccessKey,
+					},
+					responseType: 'blob',
+				}
+			)
+			.then((res) => res.data);
 
-			const imageObjectUrl = URL.createObjectURL(photoFile);
-			setProductPhoto(imageObjectUrl);
+		const imageObjectUrl = URL.createObjectURL(photoFile);
+		setProductPhoto(imageObjectUrl);
 
-			setIsPhotoLoading(false);
-		};
-
-		getProductPhoto();
+		setIsPhotoLoading(false);
 	}, [product.photoIds, photoAccessKey]);
+
+	useEffect(() => {
+		getProductPhoto();
+	}, [getProductPhoto]);
 
 	return (
 		<div className="group relative">

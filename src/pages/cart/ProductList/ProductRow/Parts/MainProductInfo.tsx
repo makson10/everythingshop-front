@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useUpdateCartContext } from '@/hooks/useCartContext';
@@ -8,31 +8,23 @@ import axios from 'axios';
 
 interface Props {
 	productData: IProduct;
+	photoAccessKey: string;
 }
 
-export default function MainProductInfo({ productData }: Props) {
+export default function MainProductInfo({
+	productData,
+	photoAccessKey,
+}: Props) {
 	const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
 	const { addPhotoToProduct } = useUpdateCartContext();
 	const defaultProductPhoto =
 		'https://img.icons8.com/ios/50/000000/product--v1.png';
 
-	const getPhotoAccessKey = async () => {
-		const token = await axios
-			.get(
-				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
-			)
-			.then((res) => res.data.token);
-
-		return token;
-	};
-
 	const getPhotoFile = async (photoId: string) => {
-		const accessKey = await getPhotoAccessKey();
-
 		const file = await axios
 			.get(`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`, {
 				headers: {
-					Authorization: 'Bearer ' + accessKey,
+					Authorization: 'Bearer ' + photoAccessKey,
 				},
 				responseType: 'blob',
 			})
@@ -41,19 +33,21 @@ export default function MainProductInfo({ productData }: Props) {
 		return file;
 	};
 
+	const getPhotoObjectURL = useCallback(async () => {
+		if (!photoAccessKey) return;
+
+		setIsPhotoLoading(true);
+
+		const photoFile = await getPhotoFile(productData.photoIds[0]);
+		const imageObjectUrl = URL.createObjectURL(photoFile);
+		addPhotoToProduct(productData.uniqueProductId, imageObjectUrl);
+
+		setIsPhotoLoading(false);
+	}, [productData.photoIds, photoAccessKey]);
+
 	useEffect(() => {
-		const getPhotoObjectURL = async () => {
-			setIsPhotoLoading(true);
-
-			const photoFile = await getPhotoFile(productData.photoIds[0]);
-			const imageObjectUrl = URL.createObjectURL(photoFile);
-			addPhotoToProduct(productData.uniqueProductId, imageObjectUrl);
-
-			setIsPhotoLoading(false);
-		};
-
 		getPhotoObjectURL();
-	}, []);
+	}, [getPhotoObjectURL]);
 
 	return (
 		<div className="flex gap-x-4">

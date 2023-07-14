@@ -94,7 +94,7 @@ export default function LogIn() {
 					<LogInForm handleSubmitForm={handleSubmitForm} />
 
 					<p className="mt-2 text-center text-base text-gray-500 dark:text-white">
-						Already haven't account?{' '}
+						Already haven&apos;t account?{' '}
 						<Link
 							href="/signUp"
 							className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-orange-600 dark:hover:text-orange-500">

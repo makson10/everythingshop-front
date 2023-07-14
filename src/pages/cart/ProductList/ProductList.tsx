@@ -14,6 +14,7 @@ export default function ProductList() {
 	const { deleteProduct } = useUpdateCartContext();
 	const [purchaseTotalPrice, setPurchaseTotalPrice] = useState<number>(0);
 	const [readyToShowList, setReadyToShowList] = useState<boolean>(false);
+	const [photoAccessKey, setPhotoAccessKey] = useState<string>('');
 
 	const calculateTotalPrice = async () => {
 		const totalPrice = products.reduce(
@@ -40,6 +41,20 @@ export default function ProductList() {
 
 		await Promise.all(getPhotoFunctionsPromises);
 	};
+
+	const getPhotoAccessKey = async () => {
+		const key = await axios
+			.get(
+				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
+			)
+			.then((res) => res.data.token);
+
+		setPhotoAccessKey(key);
+	};
+
+	useEffect(() => {
+		getPhotoAccessKey();
+	}, []);
 
 	useEffect(() => {
 		const prepareProductDataToShow = async () => {
@@ -69,15 +84,13 @@ export default function ProductList() {
 					<div role="list" className="divide-y divide-gray-100">
 						{readyToShowList ? (
 							<>
-								{products.map((product, index) => {
-									return (
-										<div
-											key={index}
-											className="flex justify-between gap-x-6 py-5 max-sm:justify-center max-sm:gap-x-2">
-											<ProductRow product={product} />
-										</div>
-									);
-								})}
+								{products.map((product, index) => (
+									<ProductRow
+										product={product}
+										key={index}
+										photoAccessKey={photoAccessKey}
+									/>
+								))}
 							</>
 						) : (
 							<ShowLoadingScreen />

@@ -1,20 +1,16 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
+import RowPhoto from './RowPhoto';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
 
 interface Props {
 	product: IProduct;
+	photoAccessKey: string;
 }
 
-export default function ProductRow({ product }: Props) {
-	const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
-	const [productPhoto, setProductPhoto] = useState(
-		'https://img.icons8.com/ios/50/000000/product--v1.png'
-	);
+export default function ProductRow({ product, photoAccessKey }: Props) {
 	const router = useRouter();
 
 	const handleDeleteProduct = async () => {
@@ -25,55 +21,13 @@ export default function ProductRow({ product }: Props) {
 		router.reload();
 	};
 
-	useEffect(() => {
-		const getProductPhoto = async () => {
-			setIsPhotoLoading(true);
-
-			const photoAccessKey = await axios
-				.get(
-					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
-				)
-				.then((res) => res.data.token);
-
-			const photoFile = await axios
-				.get(
-					`https://www.googleapis.com/drive/v3/files/${product.photoIds[0]}?alt=media`,
-					{
-						headers: {
-							Authorization: 'Bearer ' + photoAccessKey,
-						},
-						responseType: 'blob',
-					}
-				)
-				.then((res) => res.data);
-
-			const imageObjectUrl = URL.createObjectURL(photoFile);
-			setProductPhoto(imageObjectUrl);
-
-			setIsPhotoLoading(false);
-		};
-
-		getProductPhoto();
-	}, []);
-
 	return (
 		<div className="flex flex-row border-b-[2px] border-[gray] p-2">
 			<div className="flex flex-row items-center gap-[10px]">
-				{isPhotoLoading ? (
-					<div className="w-[50px] h-[50px] flex flex-col justify-center items-center">
-						<div className="scale-50">
-							<LoadingSpinner />
-						</div>
-					</div>
-				) : (
-					<Image
-						className="w-[50px] h-[50px] rounded object-cover"
-						src={productPhoto}
-						alt="#"
-						width={100}
-						height={100}
-					/>
-				)}
+				<RowPhoto
+					photoId={product.photoIds[0]}
+					photoAccessKey={photoAccessKey}
+				/>
 				<p>
 					<Link
 						className="text-black hover:underline"

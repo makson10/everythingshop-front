@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { useDarkTheme } from '@/hooks/useDarkTheme';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
@@ -14,7 +14,6 @@ interface Props {
 
 export default function PhotoCarousel({ photoIds }: Props) {
 	const isDarkTheme = useDarkTheme();
-	const didComponentMount = useRef<boolean>(false);
 
 	const [photoURLs, setPhotoURLs] = useState<string[]>([]);
 	const [isPhotosLoading, setIsPhotosLoading] = useState<boolean>(false);
@@ -35,6 +34,25 @@ export default function PhotoCarousel({ photoIds }: Props) {
 	const handleCloseFullscreenMode = () => {
 		setIsOpenPhotosInFullscreen(false);
 	};
+
+	const getPhotoURLs = useCallback(async () => {
+		if (!photoAccessKey) return;
+
+		setIsPhotosLoading(true);
+
+		const imageUrlsPromises = photoIds.map(async (photoId) => {
+			const imageObjectUrl = await fetchPhotoFileAndCreateObjectUrl(photoId);
+			return imageObjectUrl;
+		});
+
+		const imageObjectURLs = await Promise.all(imageUrlsPromises).then(
+			(res) => res
+		);
+
+		setPhotoURLs(imageObjectURLs);
+
+		setIsPhotosLoading(false);
+	}, [photoAccessKey]);
 
 	const fetchPhotoFileAndCreateObjectUrl = async (photoId: string) => {
 		const photoFile = await axios
@@ -65,32 +83,8 @@ export default function PhotoCarousel({ photoIds }: Props) {
 	}, []);
 
 	useEffect(() => {
-		if (!didComponentMount.current) {
-			didComponentMount.current = true;
-			return;
-		}
-
-		if (!photoAccessKey) return;
-
-		const getURLs = async () => {
-			setIsPhotosLoading(true);
-
-			const imageUrlsPromises = photoIds.map(async (photoId) => {
-				const imageObjectUrl = await fetchPhotoFileAndCreateObjectUrl(photoId);
-				return imageObjectUrl;
-			});
-
-			const imageObjectURLs = await Promise.all(imageUrlsPromises).then(
-				(res) => res
-			);
-
-			setPhotoURLs(imageObjectURLs);
-
-			setIsPhotosLoading(false);
-		};
-
-		getURLs();
-	}, [photoAccessKey]);
+		getPhotoURLs();
+	}, [getPhotoURLs]);
 
 	return (
 		<>
