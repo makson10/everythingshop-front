@@ -96,7 +96,7 @@ export default function LogIn() {
 					<p className="mt-2 text-center text-base text-gray-500 dark:text-white">
 						Already haven&apos;t account?{' '}
 						<Link
-							href="/signUp"
+							href="/signup"
 							className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-orange-600 dark:hover:text-orange-500">
 							Sign Up
 						</Link>

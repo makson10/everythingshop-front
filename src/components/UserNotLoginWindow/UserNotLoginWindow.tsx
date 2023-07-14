@@ -9,7 +9,7 @@ export default function UserNotLoginWindow() {
 				</p>
 				<div className="flex justify-center bg-[coral] p-[0.6rem] rounded-[8px]">
 					<Link
-						href={'/logIn'}
+						href={'/login'}
 						className="text-white text-[1.2rem] focus-visible:outline-0">
 						Log in
 					</Link>

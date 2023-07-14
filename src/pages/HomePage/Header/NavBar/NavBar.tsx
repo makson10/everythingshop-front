@@ -6,7 +6,7 @@ export default function NavBar() {
 			<div className="flex items-center py-4 max-sm:py-0">
 				<ul className="flex flex-row gap-[30px]">
 					<li>
-						<Inscription title="Add item" urlToRedirect="/addProduct" />
+						<Inscription title="Add item" urlToRedirect="/addproduct" />
 					</li>
 					<li>
 						<Inscription title="Assortment" urlToRedirect="/assortment" />

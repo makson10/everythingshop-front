@@ -30,8 +30,8 @@ export default async function callback(
 			)
 			.then((res) => res.data.jwtToken);
 
-		res.redirect(`/addGoogleJWTToken?googleJWTToken=${googleJWTToken}`);
+		res.redirect(`/addgooglejwttoken?googleJWTToken=${googleJWTToken}`);
 	} catch (error) {
-		res.status(500).redirect(`/googleAuthFailed`);
+		res.status(500).redirect(`/googleauthfailed`);
 	}
 }

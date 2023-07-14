@@ -42,7 +42,7 @@ export default function ModeratePage() {
 	};
 
 	const redirectUserToAdminPanel = () => {
-		router.push(`${router.pathname}/adminPanel`);
+		router.push(`${router.pathname}/adminpanel`);
 	};
 
 	const handleFailure = () => {
@@ -54,7 +54,7 @@ export default function ModeratePage() {
 	};
 
 	useEffect(() => {
-		if (isAdminAuthorized && !isLoading) router.push('/moderate/adminPanel');
+		if (isAdminAuthorized && !isLoading) router.push('/moderate/adminpanel');
 	}, [isAdminAuthorized, isLoading]);
 
 	useEffect(() => {

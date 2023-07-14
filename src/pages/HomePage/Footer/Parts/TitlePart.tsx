@@ -25,13 +25,13 @@ export default function TitlePart() {
 					Still don&apos;t already have an account? {isMobileDevice && <br />}
 					<Link
 						className="text-[1.4rem] hover:drop-shadow-[0_0_10px_bisque] max-sm:text-[1rem] max-sm:text-[#8cb8ff]"
-						href="/signUp">
+						href="/signup">
 						Sign Up
 					</Link>{' '}
 					/{' '}
 					<Link
 						className="text-[1.4rem] hover:drop-shadow-[0_0_10px_bisque] max-sm:text-[1rem] max-sm:text-[#8cb8ff]"
-						href="/logIn">
+						href="/login">
 						Log In
 					</Link>
 				</p>

@@ -30,7 +30,7 @@ async function generateRedirectURL(code: string | string[] | undefined) {
 		)
 		.then((res) => res.data);
 
-	redirectURL = `${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/addGoogleJWTToken?googleJWTToken=${registerResult.jwtToken}&userEmail=${userData.email}&userName=${userData.name}&ie=UTF-8&oe=UTF-8`;
+	redirectURL = `${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/addgooglejwttoken?googleJWTToken=${registerResult.jwtToken}&userEmail=${userData.email}&userName=${userData.name}&ie=UTF-8&oe=UTF-8`;
 
 	return encodeURI(redirectURL);
 }
@@ -45,6 +45,6 @@ export default async function callback(
 		const url = await generateRedirectURL(code);
 		res.status(200).redirect(url);
 	} catch (error) {
-		res.status(500).redirect(`/googleAuthFailed`);
+		res.status(500).redirect(`/googleauthfailed`);
 	}
 }
