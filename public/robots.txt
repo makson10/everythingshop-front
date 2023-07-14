@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /moderate/
+Disallow: /moderate/adminpanel/
+Disallow: /googleauthfailed/
+Disallow: /addgooglejwttoken/

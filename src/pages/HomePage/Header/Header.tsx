@@ -1,13 +1,13 @@
-import OptionSection from './OptionSection/OptionSection';
-import styles from './Header.module.scss';
+import LogoSection from './LogoSection/LogoSection';
+import NavBar from './NavBar/NavBar';
+import UserSection from './UserSection/UserSection';
 
 export default function Header() {
 	return (
-		<header id={styles['header']}>
-			<p id={styles['header-title']}>
-				<small>MarketPlace</small> <strong>EVERYTHING</strong>
-			</p>
-			<OptionSection />
+		<header className="flex flex-row justify-between px-12 py-8 max-sm:flex-col max-sm:gap-6">
+			<LogoSection />
+			<NavBar />
+			<UserSection />
 		</header>
 	);
 }

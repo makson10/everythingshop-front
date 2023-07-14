@@ -1,12 +1,12 @@
-:root {
-	--main-font: 'Montserrat', sans-serif;
-	--main-font-weight: 700;
-	--main-font-second-weight: 400;
-	--second-font: 'Lato', sans-serif;
-	--second-font-weight: 400;
+@import 'tailwindcss/base';
 
-	--first-color: #3c6255;
-	--second-color: #61876e;
-	--third-color: #a6bb8d;
-	--four-color: #eae7b1;
+@layer base {
+	:root {
+		--main-font: 'Montserrat', sans-serif;
+		--main-font-weight: 700;
+
+		--first-color: #f6ffde;
+        --second-color: #eae7b1;
+		--first-dark-color: #0c1f3d;
+	}
 }
