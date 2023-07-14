@@ -7,6 +7,7 @@ import { A11y, Navigation, Pagination } from 'swiper';
 export default function FullscreenPhotoCarousel({
 	handleClose,
 	photoURLs,
+	initialPhotoIndex,
 }: FullscreenPhotoCarouselProps) {
 	useEffect(() => {
 		document.body.classList.add('overflow-hidden');
@@ -38,25 +39,22 @@ export default function FullscreenPhotoCarousel({
 			<div className="h-full flex justify-center items-center">
 				<Swiper
 					className={photoURLs.length === 1 ? '' : 'scale-[85%]'}
-					centeredSlides={true}
-					centeredSlidesBounds={true}
 					modules={[Navigation, Pagination, A11y]}
 					navigation
-					pagination={{ clickable: true }}>
-					{photoURLs.map((photoLink, index) => {
-						return (
-							<SwiperSlide key={index}>
-								<Image
-									className="max-h-screen w-full object-contain object-center"
-									src={photoLink}
-									alt="#"
-									width={1000}
-									height={1000}
-									loading="lazy"
-								/>
-							</SwiperSlide>
-						);
-					})}
+					pagination={{ clickable: true }}
+					initialSlide={initialPhotoIndex}>
+					{photoURLs.map((photoLink, index) => (
+						<SwiperSlide key={index}>
+							<Image
+								className="max-h-screen w-full object-contain object-center"
+								src={photoLink}
+								alt="#"
+								width={1000}
+								height={1000}
+								loading="lazy"
+							/>
+						</SwiperSlide>
+					))}
 				</Swiper>
 			</div>
 		</div>

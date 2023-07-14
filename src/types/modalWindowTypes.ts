@@ -14,4 +14,5 @@ export interface ConfirmPurchaseFormProps {
 export interface FullscreenPhotoCarouselProps {
 	handleClose: () => void;
 	photoURLs: string[];
+	initialPhotoIndex: number;
 }

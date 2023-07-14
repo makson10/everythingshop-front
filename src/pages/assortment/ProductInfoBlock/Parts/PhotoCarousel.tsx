@@ -5,6 +5,7 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { ShowPhotoInFullscreen } from '@/components/ShowModalWindow/ShowModalWindow';
 import { Navigation, Pagination, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper as SwiperType } from 'swiper/types';
 import axios from 'axios';
 
 interface Props {
@@ -14,17 +15,24 @@ interface Props {
 export default function PhotoCarousel({ photoIds }: Props) {
 	const isDarkTheme = useDarkTheme();
 	const didComponentMount = useRef<boolean>(false);
+
 	const [photoURLs, setPhotoURLs] = useState<string[]>([]);
 	const [isPhotosLoading, setIsPhotosLoading] = useState<boolean>(false);
 	const [photoAccessKey, setPhotoAccessKey] = useState<string>();
+
 	const [isOpenPhotosInFullscreen, setIsOpenPhotosInFullscreen] =
 		useState<boolean>(false);
+	const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
 
-	const handleOpenPhotoInFullscreen = () => {
+	const changeCurrentSlideIndex = (swiper: SwiperType) => {
+		setCurrentSlideIndex(swiper.activeIndex);
+	};
+
+	const handleOpenFullscreenMode = () => {
 		setIsOpenPhotosInFullscreen(true);
 	};
 
-	const handleClosePhotoInFullscreen = () => {
+	const handleCloseFullscreenMode = () => {
 		setIsOpenPhotosInFullscreen(false);
 	};
 
@@ -88,8 +96,9 @@ export default function PhotoCarousel({ photoIds }: Props) {
 		<>
 			{isOpenPhotosInFullscreen && (
 				<ShowPhotoInFullscreen
-					handleClose={handleClosePhotoInFullscreen}
+					handleClose={handleCloseFullscreenMode}
 					photoURLs={photoURLs}
+					initialPhotoIndex={currentSlideIndex}
 				/>
 			)}
 
@@ -100,7 +109,8 @@ export default function PhotoCarousel({ photoIds }: Props) {
 						<LoadingSpinner />
 					) : (
 						<Swiper
-							onClick={handleOpenPhotoInFullscreen}
+							onClick={handleOpenFullscreenMode}
+							onSlideChange={changeCurrentSlideIndex}
 							modules={[Navigation, Pagination, A11y]}
 							navigation
 							pagination={{ clickable: true }}>
