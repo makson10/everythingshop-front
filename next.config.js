@@ -6,7 +6,6 @@ const nextConfig = {
     sassOptions: {
         includePaths: [path.join(__dirname, 'src')],
     },
-    distDir: 'build',
     pageExtensions: ['page.js', 'page.jsx', 'page.ts', 'page.tsx'],
     images: {
         remotePatterns: [
