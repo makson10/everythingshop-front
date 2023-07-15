@@ -1,8 +1,8 @@
+import { useUserData } from '@/hooks/useUserDataContext';
 import Schema from '@/assets/validationSchemas';
 import { FormProductType } from '@/types/productTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { Formik } from 'formik';
-import { useUserData } from '@/hooks/useUserDataContext';
 
 interface Props {
 	photoFiles: File[];

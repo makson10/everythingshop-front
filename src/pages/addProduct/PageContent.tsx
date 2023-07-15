@@ -5,9 +5,9 @@ import {
 	ShowSuccessNotification,
 	ShowErrorNotification,
 } from '@/components/ShowModalWindow/ShowModalWindow';
-import { FormProductType } from '@/types/productTypes';
 import PhotoCarousel from './PhotoCarousel';
 import AddProductForm from './AddProductForm';
+import { FormProductType } from '@/types/productTypes';
 import axios from 'axios';
 
 export default function PageContent() {
@@ -18,12 +18,19 @@ export default function PageContent() {
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
 
-	const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleAddFile = (e: ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		if (!e.target.files) return;
 
 		const file = e.target.files[0];
 		setPhotoFiles((prevValue) => [...prevValue, file]);
+	};
+
+	const handleDeleteFile = (index: number) => {
+		const newFileList = [...photoFiles];
+
+		newFileList.splice(index, 1);
+		setPhotoFiles(newFileList);
 	};
 
 	const shapeFormDataForStoring = (newProductData: FormProductType) => {
@@ -101,7 +108,8 @@ export default function PageContent() {
 						<div className="flex flex-col gap-8">
 							<PhotoCarousel
 								photoFiles={photoFiles}
-								handleFileInput={handleFileInput}
+								handleAddFile={handleAddFile}
+								handleDeleteFile={handleDeleteFile}
 							/>
 							<AddProductForm
 								photoFiles={photoFiles}

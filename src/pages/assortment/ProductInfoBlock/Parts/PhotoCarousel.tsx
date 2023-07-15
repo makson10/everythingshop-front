@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useDarkTheme } from '@/hooks/useDarkTheme';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { ShowPhotoInFullscreen } from '@/components/ShowModalWindow/ShowModalWindow';
-import { Navigation, Pagination, A11y } from 'swiper';
+import { Navigation, Pagination, A11y, EffectCoverflow } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper/types';
 import axios from 'axios';
@@ -105,7 +105,8 @@ export default function PhotoCarousel({ photoIds }: Props) {
 						<Swiper
 							onClick={handleOpenFullscreenMode}
 							onSlideChange={changeCurrentSlideIndex}
-							modules={[Navigation, Pagination, A11y]}
+							modules={[Navigation, Pagination, A11y, EffectCoverflow]}
+							effect="coverflow"
 							navigation
 							pagination={{ clickable: true }}>
 							{photoURLs.length === 0 ? (
