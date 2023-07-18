@@ -27,7 +27,6 @@ export default function AddProductForm({
 			validationSchema={Schema.AddNewProductValidateSchema}
 			onSubmit={(values: FormProductType, { setSubmitting, resetForm }) => {
 				setTimeout(() => {
-					if (photoFiles) values.photoFiles = photoFiles;
 					handleSubmitForm(values);
 
 					resetForm();

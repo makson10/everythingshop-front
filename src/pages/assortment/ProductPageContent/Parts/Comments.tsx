@@ -8,11 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
 	productComments: CommentType;
-	sendCommentToServer: (newCommentData: IComment) => void;
+	sendCommentToServer: (newCommentText: string) => void;
 }
 
 interface CommentFormProps {
-	sendCommentToServer: (newCommentData: IComment) => void;
+	sendCommentToServer: (newCommentText: string) => void;
 }
 
 export default function Comments({
@@ -71,22 +71,25 @@ export default function Comments({
 
 function CommentForm({ sendCommentToServer }: CommentFormProps) {
 	const authorizeUserData = useUserData();
-	const inputNewCommentRef = useRef<HTMLInputElement>();
+	const inputNewCommentRef = useRef<HTMLTextAreaElement>();
 	const sendNewCommentButtonRef = useRef<HTMLButtonElement>();
 
-	const shapeNewCommentData = (newCommentText: string) => {
-		const newComment = {
-			author: authorizeUserData.data?.name!,
-			date: +new Date(),
-			picture:
-				authorizeUserData.data?.picture ||
-				'https://img.icons8.com/material-two-tone/24/null/guest-male--v1.png',
-			text: newCommentText,
-			uniqueCommentId: uuidv4(),
-		};
-
-		return newComment;
+	const removeFocusFromNewCommentInput = () => {
+		inputNewCommentRef.current?.blur();
 	};
+
+	useEffect(() => {
+		const textarea = inputNewCommentRef.current!;
+		if (!textarea) return;
+
+		textarea.addEventListener('keyup', () => {
+			if (textarea?.scrollTop! > 0) {
+				textarea.style.height = textarea.scrollHeight + 'px';
+			} else {
+				textarea.style.height = '100%';
+			}
+		});
+	}, [inputNewCommentRef]);
 
 	useEffect(() => {
 		const didUserAuthorized = !authorizeUserData.data?.name;
@@ -105,10 +108,10 @@ function CommentForm({ sendCommentToServer }: CommentFormProps) {
 			validationSchema={Schema.NewCommentValidateSchema}
 			onSubmit={(values, { setSubmitting, resetForm }) => {
 				setTimeout(() => {
-					const newComment = shapeNewCommentData(values.newCommentText);
-					sendCommentToServer(newComment);
+					sendCommentToServer(values.newCommentText);
 
 					resetForm();
+					removeFocusFromNewCommentInput();
 					setSubmitting(false);
 				}, 400);
 			}}>
@@ -123,16 +126,15 @@ function CommentForm({ sendCommentToServer }: CommentFormProps) {
 			}) => (
 				<form className="flex flex-col gap-2" onSubmit={handleSubmit}>
 					<div className="flex flex-row px-2 py-1">
-						<input
-							className="py-2 px-4 border border-gray-300 rounded-l-md flex-1 dark:text-black"
-							type="text"
+						<textarea
+							className="resize-none overflow-hidden py-2 px-4 border border-gray-300 rounded-l-md flex-1 dark:text-black"
 							name="newCommentText"
 							placeholder={
 								authorizeUserData.data?.name
 									? 'Enter comment'
 									: 'Not available to unauthorized users'
 							}
-							ref={inputNewCommentRef as LegacyRef<HTMLInputElement>}
+							ref={inputNewCommentRef as LegacyRef<HTMLTextAreaElement>}
 							onChange={handleChange}
 							onBlur={handleBlur}
 							value={values.newCommentText}

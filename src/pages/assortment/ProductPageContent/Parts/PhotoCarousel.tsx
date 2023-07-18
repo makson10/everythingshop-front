@@ -17,7 +17,7 @@ export default function PhotoCarousel({ photoIds }: Props) {
 
 	const [photoURLs, setPhotoURLs] = useState<string[]>([]);
 	const [isPhotosLoading, setIsPhotosLoading] = useState<boolean>(false);
-	const [photoAccessKey, setPhotoAccessKey] = useState<string>();
+	const [photoAccessKey, setPhotoAccessKey] = useState<string>('');
 
 	const [isOpenPhotosInFullscreen, setIsOpenPhotosInFullscreen] =
 		useState<boolean>(false);

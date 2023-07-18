@@ -27,7 +27,13 @@ export default function ProductsBlock({ products }: Props) {
 		return (
 			<>
 				{products.map((product, index) => {
-					return <ProductRow key={index} product={product} photoAccessKey={photoAccessKey} />;
+					return (
+						<ProductRow
+							key={index}
+							product={product}
+							photoAccessKey={photoAccessKey}
+						/>
+					);
 				})}
 			</>
 		);

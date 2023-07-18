@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import Header from '@/components/Header/Header';
-import ProductInfoBlock from './ProductInfoBlock/ProductInfoBlock';
+import ProductPageContent from './ProductPageContent/ProductPageContent';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
 
@@ -21,7 +21,7 @@ export default function ProductPage({ productData }: Props) {
 	return (
 		<div className="flex flex-col h-screen">
 			<Header pageName={productData.title} />
-			<ProductInfoBlock productData={productData} />
+			<ProductPageContent productData={productData} />
 		</div>
 	);
 }

@@ -10,6 +10,9 @@ import AddProductForm from './AddProductForm';
 import { FormProductType } from '@/types/productTypes';
 import axios from 'axios';
 
+// TODO: make error if file size larger than 5mb
+// TODO: make loader while handleSubmitForm work
+
 export default function PageContent() {
 	const authorizedUserData = useUserData();
 	const [photoFiles, setPhotoFiles] = useState<File[]>([]);
@@ -33,32 +36,73 @@ export default function PageContent() {
 		setPhotoFiles(newFileList);
 	};
 
-	const shapeFormDataForStoring = (newProductData: FormProductType) => {
-		const formData = new FormData();
-		newProductData.photoFiles!.map((file) => {
-			formData.append('file', file);
-		});
-		formData.append('title', newProductData.title);
-		formData.append('description', newProductData.description);
-		formData.append('creator', newProductData.creator);
-		formData.append('price', newProductData.price.toString());
-		formData.append('uniqueProductId', newProductData.uniqueProductId);
-		formData.append('comments', JSON.stringify([]));
+	const getPhotoAccessKey = async () => {
+		const key = await axios
+			.get(
+				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
+			)
+			.then((res) => res.data.token);
 
-		return formData;
+		return key;
+	};
+
+	const storePhotoFiles = async () => {
+		const photoAccessKey = await getPhotoAccessKey();
+		const fileIds: string[] = [];
+
+		const storeFilePromises = photoFiles.map(async (file) => {
+			const fileId = await axios
+				.post(
+					'https://www.googleapis.com/upload/drive/v3/files?uploadType=media',
+					file,
+					{
+						headers: {
+							'Content-Type': 'image/png',
+							'Content-Length': file.size,
+							Authorization: 'Bearer ' + photoAccessKey,
+						},
+					}
+				)
+				.then((res) => res.data.id);
+
+			fileIds.push(fileId);
+		});
+
+		await Promise.all(storeFilePromises);
+
+		return fileIds;
+	};
+
+	const shapeDataForStoring = (
+		{ title, description, creator, price, uniqueProductId }: FormProductType,
+		fileIds: string[]
+	) => {
+		const newProductData = {
+			photoIds: fileIds,
+			title: title,
+			description: description,
+			creator: creator,
+			price: price,
+			comments: JSON.stringify([]),
+			uniqueProductId: uniqueProductId,
+		};
+
+		return newProductData;
 	};
 
 	const handleSubmitForm = async (newProductData: FormProductType) => {
 		try {
-			if (!newProductData.photoFiles?.length) {
+			if (!photoFiles.length) {
 				const error = new Error('File field is empty!');
 				throw error;
 			}
 
-			const newProductFormData = shapeFormDataForStoring(newProductData);
-			axios.post(
+			const fileIds = await storePhotoFiles();
+			const newProduct = shapeDataForStoring(newProductData, fileIds);
+
+			await axios.post(
 				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/addNewProduct`,
-				newProductFormData
+				newProduct
 			);
 
 			clearFileInput();
