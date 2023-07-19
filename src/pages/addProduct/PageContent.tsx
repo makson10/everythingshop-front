@@ -8,25 +8,42 @@ import {
 import PhotoCarousel from './PhotoCarousel';
 import AddProductForm from './AddProductForm';
 import { FormProductType } from '@/types/productTypes';
+import imageCompression from 'browser-image-compression';
 import axios from 'axios';
-
-// TODO: make error if file size larger than 5mb
-// TODO: make loader while handleSubmitForm work
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 
 export default function PageContent() {
 	const authorizedUserData = useUserData();
 	const [photoFiles, setPhotoFiles] = useState<File[]>([]);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
 	const [isOpenSuccessWindow, setIsOpenSuccessWindow] =
 		useState<boolean>(false);
 
-	const handleAddFile = (e: ChangeEvent<HTMLInputElement>) => {
+	const compressFile = async (file: File) => {
+		const options = {
+			maxSizeMB: 5,
+			maxWidthOrHeight: 1920,
+		};
+
+		const compressedFile = await imageCompression(file, options);
+		return compressedFile;
+	};
+
+	const handleAddFile = async (e: ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		if (!e.target.files) return;
+		setIsLoading(true);
 
-		const file = e.target.files[0];
+		let file = e.target.files[0];
+
+		if (file.size > 5 * 1024 * 1024) {
+			file = await compressFile(file);
+		}
+
 		setPhotoFiles((prevValue) => [...prevValue, file]);
+		setIsLoading(false);
 	};
 
 	const handleDeleteFile = (index: number) => {
@@ -46,25 +63,30 @@ export default function PageContent() {
 		return key;
 	};
 
+	const saveFileInGoogleDrive = async (file: File, photoAccessKey: string) => {
+		const fileId = await axios
+			.post(
+				'https://www.googleapis.com/upload/drive/v3/files?uploadType=media',
+				file,
+				{
+					headers: {
+						'Content-Type': file.type,
+						'Content-Length': file.size,
+						Authorization: 'Bearer ' + photoAccessKey,
+					},
+				}
+			)
+			.then((res) => res.data.id);
+
+		return fileId;
+	};
+
 	const storePhotoFiles = async () => {
 		const photoAccessKey = await getPhotoAccessKey();
 		const fileIds: string[] = [];
 
 		const storeFilePromises = photoFiles.map(async (file) => {
-			const fileId = await axios
-				.post(
-					'https://www.googleapis.com/upload/drive/v3/files?uploadType=media',
-					file,
-					{
-						headers: {
-							'Content-Type': 'image/png',
-							'Content-Length': file.size,
-							Authorization: 'Bearer ' + photoAccessKey,
-						},
-					}
-				)
-				.then((res) => res.data.id);
-
+			const fileId = await saveFileInGoogleDrive(file, photoAccessKey);
 			fileIds.push(fileId);
 		});
 
@@ -97,6 +119,7 @@ export default function PageContent() {
 				throw error;
 			}
 
+			setIsLoading(true);
 			const fileIds = await storePhotoFiles();
 			const newProduct = shapeDataForStoring(newProductData, fileIds);
 
@@ -106,6 +129,7 @@ export default function PageContent() {
 			);
 
 			clearFileInput();
+			setIsLoading(false);
 			openSuccessWindow();
 		} catch (error: any) {
 			const errorMessage =
@@ -139,30 +163,37 @@ export default function PageContent() {
 			{isOpenErrorWindow && (
 				<ShowErrorNotification error={serverErrorMessage} />
 			)}
+
 			{isOpenSuccessWindow && (
 				<ShowSuccessNotification
 					successText={'You have created your product successful'}
 				/>
 			)}
 
-			<div className="flex-[2_1_auto] flex justify-center items-center p-6">
-				<div className="flex flex-col gap-8 w-[350px]">
-					<h1 className="text-4xl text-center">Add new product</h1>
-					<div className="flex flex-col">
-						<div className="flex flex-col gap-8">
-							<PhotoCarousel
-								photoFiles={photoFiles}
-								handleAddFile={handleAddFile}
-								handleDeleteFile={handleDeleteFile}
-							/>
-							<AddProductForm
-								photoFiles={photoFiles}
-								handleSubmitForm={handleSubmitForm}
-							/>
+			{isLoading ? (
+				<div className="flex-[2_1_auto] z-50 flex flex-col justify-center items-center">
+					<LoadingSpinner />
+				</div>
+			) : (
+				<div className="flex-[2_1_auto] flex justify-center items-center p-6">
+					<div className="flex flex-col gap-8 w-[350px]">
+						<h1 className="text-4xl text-center">Add new product</h1>
+						<div className="flex flex-col">
+							<div className="flex flex-col gap-8">
+								<PhotoCarousel
+									photoFiles={photoFiles}
+									handleAddFile={handleAddFile}
+									handleDeleteFile={handleDeleteFile}
+								/>
+								<AddProductForm
+									photoFiles={photoFiles}
+									handleSubmitForm={handleSubmitForm}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</>
 	);
 }
