@@ -1,5 +1,4 @@
 import { string, number, boolean, date, object } from 'yup';
-import { rusBadWordsRegex, engBadWordsRegex } from '@/assets/badWordsRegex';
 
 const SignUpValidateSchema = object().shape({
 	name: string()
@@ -27,16 +26,10 @@ const LogInValidateSchema = object().shape({
 });
 
 const AddNewProductValidateSchema = object().shape({
-	title: string()
-		.required('Title is required!')
-		.min(3, 'Title is too short!')
-		.matches(rusBadWordsRegex, 'Your title contain bad words!')
-		.matches(engBadWordsRegex, 'Your title contain bad words!'),
+	title: string().required('Title is required!').min(3, 'Title is too short!'),
 	description: string()
 		.required('Description is required!')
-		.min(4, 'Description is too short!')
-		.matches(rusBadWordsRegex, 'Your description contain bad words!')
-		.matches(engBadWordsRegex, 'Your description contain bad words!'),
+		.min(4, 'Description is too short!'),
 	price: number()
 		.required('Price is required!')
 		.max(9_999_999, 'Your product is too expensive'),
