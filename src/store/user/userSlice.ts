@@ -17,15 +17,14 @@ export const userSlice = createSlice({
 			state.isLoading = initialState.isLoading;
 		},
 		saveData: (state, action) => {
-			state.data = action.payload.user;
-			Cookies.set('jwtToken', action.payload.user.jwtToken);
+			state.data = action.payload;
 		},
 		logOut: (state) => {
 			state.data = initialState.data;
 			state.isLoading = initialState.isLoading;
 
-			Cookies.remove('jwtToken');
-			Cookies.remove('googleJWTToken');
+			Cookies.remove('token');
+			Cookies.remove('googleToken');
 		},
 	},
 	extraReducers: (builder) => {

@@ -10,8 +10,7 @@ import StoreProvider from '@/store/StoreProvider';
 
 // TODO:
 //? check on bugs
-//? add nomemon to server
-//? fix undef bug in jwt login
+//? make form field error red
 //? add slices for another context
 
 export default function App({ Component, pageProps }: AppProps) {

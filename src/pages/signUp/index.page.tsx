@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import useSendEmail from '@/hooks/useSendEmail';
-import useCookies from '@/hooks/useCookies';
 import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import AuthorizationPageHeader from '@/components/AuthorizationPageHeader/AuthorizationPageHeader';
@@ -11,12 +10,12 @@ import SignUpForm from './SignUpForm';
 import { IUserData } from '@/types/userTypes';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { saveData } from '@/store/user/userSlice';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
 export default function SignUp() {
 	const userData = useAppSelector((state) => state.user.data);
 	const dispatch = useAppDispatch();
-	const { setCookies } = useCookies();
 	const { sendSignUpEmail } = useSendEmail();
 
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
@@ -26,53 +25,31 @@ export default function SignUp() {
 
 	const handleSubmitForm = async (data: IUserData) => {
 		try {
-			const jwtToken = await axios
+			const authResponse = await axios
 				.post(
 					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/register`,
 					data
 				)
-				.then((res) => res.data.jwtToken);
+				.then((res) => res.data);
 
-			setJWTTokenCookie(jwtToken);
+			Cookies.set('token', authResponse.token);
+			dispatch(saveData(authResponse.user));
 			sendEmail(data.name, data.email);
-			setNewUserDataToContext(data);
-			redirectUserToHomePage();
+			router.push('/');
 		} catch (error: any) {
-			console.log(error);
-			const errorMessage =
-				error.response?.data?.error || error.message || 'Something went wrong';
-			setServerErrorMessage(errorMessage);
-			handleFailure();
+			handleFailure(error);
 		}
-	};
-
-	const setJWTTokenCookie = (token: string) => {
-		setCookies('jwtToken', token, {
-			sameSite: 'Lax',
-		});
 	};
 
 	const sendEmail = (name: string, email: string) => {
 		sendSignUpEmail(email, { userName: name });
 	};
 
-	const setNewUserDataToContext = (credentials: IUserData) => {
-		dispatch(
-			saveData({
-				name: credentials.name,
-				dateOfBirth: credentials.dateOfBirth,
-				email: credentials.email,
-				login: credentials.login,
-				password: credentials.password,
-			})
-		);
-	};
+	const handleFailure = (error: any) => {
+		const errorMessage =
+			error.response?.data?.error || error.message || 'Something went wrong';
+		setServerErrorMessage(errorMessage);
 
-	const redirectUserToHomePage = () => {
-		router.push('/');
-	};
-
-	const handleFailure = () => {
 		setIsOpenErrorWindow(true);
 
 		setTimeout(() => {

@@ -19,18 +19,18 @@ export default async function callback(
 		const { tokens } = await auth.getToken(String(code));
 		auth.setCredentials(tokens);
 
-		const { data } = await google
-			.oauth2({ version: 'v2', auth })
-			.userinfo.get();
+		const {
+			data: { id },
+		} = await google.oauth2({ version: 'v2', auth }).userinfo.get();
 
-		const googleJWTToken = await axios
+		const googleToken = await axios
 			.post(
 				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/googleCustomers/login`,
-				{ id: data.id }
+				{ id }
 			)
-			.then((res) => res.data.jwtToken);
+			.then((res) => res.data.token);
 
-		res.redirect(`/addgooglejwttoken?googleJWTToken=${googleJWTToken}`);
+		res.redirect(`/addgooglejwttoken?googletoken=${googleToken}`);
 	} catch (error) {
 		res.status(500).redirect(`/googleauthfailed`);
 	}

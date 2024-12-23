@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import useCookies from '@/hooks/useCookies';
 import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
 import AuthorizationPageHeader from '@/components/AuthorizationPageHeader/AuthorizationPageHeader';
 import GoogleAuthSection from '@/components/GoogleAuthSection/GoogleAuthSection';
 import LogInForm from './LogInForm';
-import { IUserData, ILogInUserData } from '@/types/userTypes';
+import { ILogInUserData } from '@/types/userTypes';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { saveData } from '@/store/user/userSlice';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default function LogIn() {
 	const user = useAppSelector((state) => state.user.data);
 	const dispatch = useAppDispatch();
-	const { setCookies } = useCookies();
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isOpenErrorWindow, setIsOpenErrorWindow] = useState<boolean>(false);
@@ -23,54 +22,28 @@ export default function LogIn() {
 
 	const handleSubmitForm = async (data: ILogInUserData) => {
 		try {
-			const jwtToken = await axios
+			const authResponse = await axios
 				.post(
 					`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/login`,
 					data
 				)
-				.then((res) => res.data.jwtToken);
-
-			const fullUserData = await axios
-				.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/customers/verify`, {
-					jwtToken: jwtToken,
-				})
 				.then((res) => res.data);
 
-			setJWTTokenCookie(jwtToken);
-			setAuthorizedUserDataToContext(fullUserData);
-			redirectUserToHomePage();
+			console.log('authResponse', authResponse);
+
+			dispatch(saveData(authResponse.user));
+			Cookies.set('token', authResponse.token);
+			router.push('/');
 		} catch (error: any) {
-			console.log(error);
-			const errorMessage =
-				error.response?.data?.error || error.message || 'Something went wrong';
-			setServerErrorMessage(errorMessage);
-			handleFailure();
+			handleFailure(error);
 		}
 	};
 
-	const setJWTTokenCookie = (token: string) => {
-		setCookies('jwtToken', token, {
-			sameSite: 'Lax',
-		});
-	};
+	const handleFailure = (error: any) => {
+		const errorMessage =
+			error.response?.data!.error || error.message || 'Something went wrong';
+		setServerErrorMessage(errorMessage);
 
-	const setAuthorizedUserDataToContext = (credentials: IUserData) => {
-		dispatch(
-			saveData({
-				name: credentials.name,
-				dateOfBirth: credentials.dateOfBirth,
-				email: credentials.email,
-				login: credentials.login,
-				password: credentials.password,
-			})
-		);
-	};
-
-	const redirectUserToHomePage = () => {
-		router.push('/');
-	};
-
-	const handleFailure = () => {
 		setIsOpenErrorWindow(true);
 
 		setTimeout(() => {

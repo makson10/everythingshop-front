@@ -5,10 +5,10 @@ import axios from 'axios';
 export const getAndStoreUserData = createAsyncThunk(
 	'user/getAndStoreUserData',
 	async () => {
-		const jwtToken = Cookies.get('jwtToken') ?? Cookies.get('googleJWTToken');
-		if (!jwtToken) return null;
+		const token = Cookies.get('token') ?? Cookies.get('googleToken');
+		if (!token) return null;
 
-		const isGoogleUser = !!Cookies.get('googleJWTToken');
+		const isGoogleUser = !!Cookies.get('googleToken');
 
 		const urlForFetch = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/${
 			isGoogleUser ? 'googleCustomers' : 'customers'
@@ -16,7 +16,7 @@ export const getAndStoreUserData = createAsyncThunk(
 
 		const loginedUserData = await axios
 			.post(urlForFetch, {
-				jwtToken: jwtToken,
+				token,
 			})
 			.then((res) => res.data);
 

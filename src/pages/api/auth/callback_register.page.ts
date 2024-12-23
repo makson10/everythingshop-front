@@ -30,7 +30,7 @@ async function generateRedirectURL(code: string | string[] | undefined) {
 		)
 		.then((res) => res.data);
 
-	redirectURL = `${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/addgooglejwttoken?googleJWTToken=${registerResult.jwtToken}&userEmail=${userData.email}&userName=${userData.name}&ie=UTF-8&oe=UTF-8`;
+	redirectURL = `${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/addgooglejwttoken?googletoken=${registerResult.jwtToken}&email=${userData.email}&name=${userData.name}&ie=UTF-8&oe=UTF-8`;
 
 	return encodeURI(redirectURL);
 }
