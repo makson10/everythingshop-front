@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useUserData, useUpdateUserData } from '@/hooks/useUserDataContext';
 import useCookies from '@/hooks/useCookies';
 import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserAlreadyAuthorizedPage from '@/components/UserAlreadyAuthorizedPage/UserAlreadyAuthorizedPage';
@@ -9,11 +8,13 @@ import AuthorizationPageHeader from '@/components/AuthorizationPageHeader/Author
 import GoogleAuthSection from '@/components/GoogleAuthSection/GoogleAuthSection';
 import LogInForm from './LogInForm';
 import { IUserData, ILogInUserData } from '@/types/userTypes';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { saveData } from '@/store/user/userSlice';
 import axios from 'axios';
 
 export default function LogIn() {
-	const userData = useUserData();
-	const { saveData } = useUpdateUserData();
+	const user = useAppSelector((state) => state.user.data);
+	const dispatch = useAppDispatch();
 	const { setCookies } = useCookies();
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
@@ -54,13 +55,15 @@ export default function LogIn() {
 	};
 
 	const setAuthorizedUserDataToContext = (credentials: IUserData) => {
-		saveData({
-			name: credentials.name,
-			dateOfBirth: credentials.dateOfBirth,
-			email: credentials.email,
-			login: credentials.login,
-			password: credentials.password,
-		});
+		dispatch(
+			saveData({
+				name: credentials.name,
+				dateOfBirth: credentials.dateOfBirth,
+				email: credentials.email,
+				login: credentials.login,
+				password: credentials.password,
+			})
+		);
 	};
 
 	const redirectUserToHomePage = () => {
@@ -76,8 +79,8 @@ export default function LogIn() {
 	};
 
 	useEffect(() => {
-		if (userData.data?.name) setDidUserAuthorized(true);
-	}, [userData]);
+		if (user?.name) setDidUserAuthorized(true);
+	}, [user]);
 
 	if (didUserAuthorized) return <UserAlreadyAuthorizedPage />;
 

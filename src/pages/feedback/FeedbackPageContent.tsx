@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import useSendEmail from '@/hooks/useSendEmail';
-import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowSuccessNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
@@ -9,12 +8,13 @@ import Schema from '@/assets/validationSchemas';
 import { Formik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { useAppSelector } from '@/store/hooks';
 
 export default function FeedbackPageContent() {
-	const authorizedUserData = useUserData();
+	const userState = useAppSelector((state) => state.user);
 
-	if (authorizedUserData.isLoading) return <ShowLoadingScreen />;
-	if (!authorizedUserData.data?.email) return <UserNotLoginWindow />;
+	if (userState.isLoading) return <ShowLoadingScreen />;
+	if (!userState.data?.email) return <UserNotLoginWindow />;
 
 	return (
 		<div className="flex-[2_1_auto] flex justify-center items-center max-sm:p-8">
@@ -27,7 +27,7 @@ export default function FeedbackPageContent() {
 }
 
 function FeedbackForm() {
-	const authorizedUserData = useUserData();
+	const user = useAppSelector((state) => state.user.data);
 	const [isOpenSuccessNotification, setIsOpenSuccessNotification] =
 		useState<boolean>(false);
 	const { sendFeedbackEmail } = useSendEmail();
@@ -41,7 +41,7 @@ function FeedbackForm() {
 
 	const shapeFeedbackData = (feedbackText: string) => {
 		const feedbackData: IFeedback = {
-			author: authorizedUserData.data?.name!,
+			author: user?.name!,
 			date: +new Date(),
 			feedbackText: feedbackText,
 			uniqueFeedbackId: uuidv4(),

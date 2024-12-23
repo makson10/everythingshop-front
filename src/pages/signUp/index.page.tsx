@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useUserData, useUpdateUserData } from '@/hooks/useUserDataContext';
 import useSendEmail from '@/hooks/useSendEmail';
 import useCookies from '@/hooks/useCookies';
 import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
@@ -10,12 +9,14 @@ import AuthorizationPageHeader from '@/components/AuthorizationPageHeader/Author
 import GoogleAuthSection from '@/components/GoogleAuthSection/GoogleAuthSection';
 import SignUpForm from './SignUpForm';
 import { IUserData } from '@/types/userTypes';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { saveData } from '@/store/user/userSlice';
 import axios from 'axios';
 
 export default function SignUp() {
-	const userData = useUserData();
+	const userData = useAppSelector((state) => state.user.data);
+	const dispatch = useAppDispatch();
 	const { setCookies } = useCookies();
-	const { saveData } = useUpdateUserData();
 	const { sendSignUpEmail } = useSendEmail();
 
 	const [didUserAuthorized, setDidUserAuthorized] = useState<boolean>(false);
@@ -56,13 +57,15 @@ export default function SignUp() {
 	};
 
 	const setNewUserDataToContext = (credentials: IUserData) => {
-		saveData({
-			name: credentials.name,
-			dateOfBirth: credentials.dateOfBirth,
-			email: credentials.email,
-			login: credentials.login,
-			password: credentials.password,
-		});
+		dispatch(
+			saveData({
+				name: credentials.name,
+				dateOfBirth: credentials.dateOfBirth,
+				email: credentials.email,
+				login: credentials.login,
+				password: credentials.password,
+			})
+		);
 	};
 
 	const redirectUserToHomePage = () => {
@@ -78,7 +81,7 @@ export default function SignUp() {
 	};
 
 	useEffect(() => {
-		if (userData.data?.name) setDidUserAuthorized(true);
+		if (userData?.name) setDidUserAuthorized(true);
 	}, [userData]);
 
 	if (didUserAuthorized) return <UserAlreadyAuthorizedPage />;

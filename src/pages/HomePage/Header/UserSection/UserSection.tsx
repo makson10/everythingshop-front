@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useUserData } from '@/hooks/useUserDataContext';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import ModalMenu from './ModalMenu';
 import LogInButton from './Buttons/LogInButton';
 import UserBadge from './Buttons/UserBadge';
+import { useAppSelector } from '@/store/hooks';
 
 export default function UserSection() {
-	const userData = useUserData();
+	const user = useAppSelector((state) => state.user);
 	const [userName, setUserName] = useState<string>('');
 	const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
 	const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -16,13 +16,12 @@ export default function UserSection() {
 	};
 
 	useEffect(() => {
-		if (userData.data?.name) {
-			setUserName(userData.data?.name);
+		if (user.data?.name) {
+			setUserName(user.data?.name);
 			setIsUserLogin(true);
 		}
-	}, [userData]);
+	}, [user]);
 
-	if (userData.isLoading) return <ShowLoadingScreen />;
 	if (!isUserLogin) return <LogInButton />;
 
 	return (

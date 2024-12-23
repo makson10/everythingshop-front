@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from 'react';
-import { useUserData } from '@/hooks/useUserDataContext';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import {
 	ShowSuccessNotification,
@@ -11,9 +10,10 @@ import { FormProductType } from '@/types/productTypes';
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
+import { useAppSelector } from '@/store/hooks';
 
 export default function PageContent() {
-	const authorizedUserData = useUserData();
+	const user = useAppSelector((state) => state.user.data);
 	const [photoFiles, setPhotoFiles] = useState<File[]>([]);
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -156,7 +156,7 @@ export default function PageContent() {
 		}, 3000);
 	};
 
-	if (!authorizedUserData.data?.name) return <UserNotLoginWindow />;
+	if (!user?.name) return <UserNotLoginWindow />;
 
 	return (
 		<>

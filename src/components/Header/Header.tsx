@@ -49,9 +49,9 @@ export default function Header({ pageName, showCartIcon = true }: Props) {
 								className="relative w-fit h-fit max-sm:w-[32px] max-sm:h-[32px]"
 								onClick={() => router.push('/cart')}>
 								<Image
-									src={`https://img.icons8.com/sf-black/48/${
+									src={`https://img.icons8.com/metro/100/${
 										isDarkTheme ? 'ffffff' : '000000'
-									}/buy.png`}
+									}/shopping-cart.png`}
 									alt="#"
 									width={48}
 									height={48}

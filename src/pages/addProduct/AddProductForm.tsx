@@ -1,8 +1,8 @@
-import { useUserData } from '@/hooks/useUserDataContext';
 import Schema from '@/assets/validationSchemas';
 import { FormProductType } from '@/types/productTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { Formik } from 'formik';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
 	photoFiles: File[];
@@ -13,14 +13,14 @@ export default function AddProductForm({
 	photoFiles,
 	handleSubmitForm,
 }: Props) {
-	const authorizedUserData = useUserData();
+	const user = useAppSelector((state) => state.user.data);
 
 	return (
 		<Formik
 			initialValues={{
 				title: '',
 				description: '',
-				creator: authorizedUserData.data?.name!,
+				creator: user!.name!,
 				price: 0,
 				uniqueProductId: uuidv4(),
 			}}

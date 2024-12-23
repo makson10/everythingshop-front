@@ -9,16 +9,16 @@ import Details from './Parts/Details';
 import Comments from './Parts/Comments';
 import { IComment, CommentType } from '@/types/commentTypes';
 import { IProduct } from '@/types/productTypes';
-import { useUserData } from '@/hooks/useUserDataContext';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
 	productData: IProduct;
 }
 
 export default function ProductPage({ productData }: Props) {
-	const authorizeUserData = useUserData();
+	const user = useAppSelector((state) => state.user.data);
 	const { addProductToCard } = useUpdateCartContext();
 	const [productComments, setProductComments] = useState<CommentType>(
 		productData.comments
@@ -35,10 +35,10 @@ export default function ProductPage({ productData }: Props) {
 
 	const shapeNewCommentData = (newCommentText: string) => {
 		const newComment = {
-			author: authorizeUserData.data?.name!,
+			author: user!.name!,
 			date: +new Date(),
 			picture:
-				authorizeUserData.data?.picture ||
+				user!.picture ||
 				'https://img.icons8.com/material-two-tone/24/null/guest-male--v1.png',
 			text: newCommentText,
 			uniqueCommentId: uuidv4(),

@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { useUserData } from '@/hooks/useUserDataContext';
 import { useDarkTheme } from '@/hooks/useDarkTheme';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
 	userName: string;
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function UserBadge({ userName, handleToggleIsOpenMenu }: Props) {
-	const userData = useUserData();
+	const userData = useAppSelector((state) => state.user.data);
 	const isDarkTheme = useDarkTheme();
 
 	return (
@@ -19,8 +19,8 @@ export default function UserBadge({ userName, handleToggleIsOpenMenu }: Props) {
 				<Image
 					className="min-w-12 max-w-[3rem] rounded-xl"
 					src={
-						userData.data?.picture
-							? userData.data?.picture
+						userData?.picture
+							? userData?.picture
 							: `https://img.icons8.com/windows/120/${
 									isDarkTheme ? 'ffffff' : '000000'
 							  }/user-male-circle.png`

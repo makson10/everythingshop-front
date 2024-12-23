@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useUserData } from '@/hooks/useUserDataContext';
 import { useUpdateCartContext } from '@/hooks/useCartContext';
 import useSendEmail from '@/hooks/useSendEmail';
 import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
@@ -11,6 +10,7 @@ import {
 	ConfirmPurchaseFormData,
 } from '@/types/formDataTypes';
 import { useState } from 'react';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
 	handleCloseConfirmPurchaseForm: () => void;
@@ -21,7 +21,7 @@ export default function ConfirmPurchaseForm({
 	handleCloseConfirmPurchaseForm,
 	purchaseTotalPrice,
 }: Props) {
-	const authorizedUserData = useUserData();
+	const user = useAppSelector((state) => state.user.data);
 	const { deleteAllProducts } = useUpdateCartContext();
 	const { sendBuyEmail } = useSendEmail();
 
@@ -49,13 +49,13 @@ export default function ConfirmPurchaseForm({
 
 		const fullName =
 			formValues.useAccountFullName &&
-			typeof authorizedUserData.data?.name === 'string'
-				? authorizedUserData.data?.name
+			typeof user?.name === 'string'
+				? user?.name
 				: formFullName;
 		const email =
 			formValues.useAccountEmail &&
-			typeof authorizedUserData.data?.email === 'string'
-				? authorizedUserData.data?.email
+			typeof user?.email === 'string'
+				? user?.email
 				: formValues.email;
 
 		const userCredential: ConfirmPurchaseFormData = {

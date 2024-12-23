@@ -1,12 +1,13 @@
+import { useAppDispatch } from '@/store/hooks';
+import { logOut } from '@/store/user/userSlice';
 import { useRouter } from 'next/router';
-import { useUpdateUserData } from '@/hooks/useUserDataContext';
 
 export default function UserAlreadyAuthorizedPage() {
-	const { logOut } = useUpdateUserData();
+	const dispatch = useAppDispatch();
 	const router = useRouter();
 
 	const handleLogOut = () => {
-		logOut();
+		dispatch(logOut());
 		router.reload();
 	};
 

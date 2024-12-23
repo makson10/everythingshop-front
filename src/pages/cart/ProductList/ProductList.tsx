@@ -3,13 +3,13 @@ import { useCartContext, useUpdateCartContext } from '@/hooks/useCartContext';
 import { FailWindow } from '@/components/FailWindow/FailWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
-import { useUserData } from '@/hooks/useUserDataContext';
 import ProductRow from './ProductRow/ProductRow';
 import TotalPriceSection from './TotalPriceSection';
 import axios from 'axios';
+import { useAppSelector } from '@/store/hooks';
 
 export default function ProductList() {
-	const authorizedUser = useUserData();
+	const user = useAppSelector((state) => state.user.data);
 	const products = useCartContext();
 	const { deleteProduct } = useUpdateCartContext();
 	const [purchaseTotalPrice, setPurchaseTotalPrice] = useState<number>(0);
@@ -71,7 +71,7 @@ export default function ProductList() {
 		prepareProductDataToShow();
 	}, [products]);
 
-	if (!authorizedUser.data?.email) return <UserNotLoginWindow />;
+	if (!user?.email) return <UserNotLoginWindow />;
 
 	if (!products || products.length === 0) {
 		return <FailWindow failMessage="There are no products in cart" />;
