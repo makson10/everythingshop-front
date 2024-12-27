@@ -1,12 +1,12 @@
+import { useAppSelector } from '@/store/hooks';
 import Image from 'next/image';
-import { useDarkTheme } from '@/hooks/useDarkTheme';
 
 interface Props {
 	pageTitle: string;
 }
 
 export default function AuthorizationPageHeader({ pageTitle }: Props) {
-	const isDarkTheme = useDarkTheme();
+	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
 
 	return (
 		<div className="sm:mx-auto sm:w-full sm:max-w-sm">

@@ -55,7 +55,9 @@ export default function AddProductForm({
 								onBlur={handleBlur}
 								value={values.title}
 							/>
-							{errors.title && touched.title && errors.title}
+							{errors.title && touched.title && (
+								<p className="text-red-500">{errors.title}</p>
+							)}
 						</div>
 						<div>
 							<textarea
@@ -68,7 +70,9 @@ export default function AddProductForm({
 								onBlur={handleBlur}
 								value={values.description}
 							/>
-							{errors.description && touched.description && errors.description}
+							{errors.description && touched.description && (
+								<p className="text-red-500">{errors.description}</p>
+							)}
 						</div>
 						<div>
 							<input
@@ -80,7 +84,9 @@ export default function AddProductForm({
 								onBlur={handleBlur}
 								value={values.price === 0 ? '' : values.price}
 							/>
-							{errors.price && touched.price && errors.price}
+							{errors.price && touched.price && (
+								<p className="text-red-500">{errors.price}</p>
+							)}
 						</div>
 					</div>
 					<button

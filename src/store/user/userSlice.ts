@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { getAndStoreUserData } from './userAsyncThunk';
-import { UserDataContextType } from '@/types/contextTypes';
+import { UserStoreValues } from '@/types/contextTypes';
 
-const initialState: UserDataContextType = {
+const initialState: UserStoreValues = {
 	data: null,
 	isLoading: false,
 };

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useCartContext } from '@/hooks/useCartContext';
-import { useDarkTheme } from '@/hooks/useDarkTheme';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
 	pageName: string;
@@ -10,8 +9,8 @@ interface Props {
 }
 
 export default function Header({ pageName, showCartIcon = true }: Props) {
-	const isDarkTheme = useDarkTheme();
-	const cart = useCartContext();
+	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
+	const cart = useAppSelector((state) => state.cart);
 	const router = useRouter();
 	const [cartProducstAmount, setCartProducstAmount] = useState<number>(0);
 

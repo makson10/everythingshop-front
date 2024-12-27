@@ -1,12 +1,12 @@
+import { useAppSelector } from '@/store/hooks';
 import Image from 'next/image';
-import { useDarkTheme } from '@/hooks/useDarkTheme';
 
 interface Props {
 	handleSearch: (searchParameter: string) => void;
 }
 
 export default function SearchInput({ handleSearch }: Props) {
-	const isDarkTheme = useDarkTheme();
+	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
 
 	return (
 		<div className="flex flex-row items-center gap-[10px] max-sm:pr-[12%] max-sm:pt-[0.4rem] max-sm:gap-[8px]">

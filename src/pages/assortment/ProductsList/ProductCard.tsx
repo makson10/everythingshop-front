@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -19,35 +19,39 @@ export function ProductCard({ product, photoAccessKey }: Props) {
 	const router = useRouter();
 
 	const handleGoToProductPage = () => {
-		router.push(`/assortment/${product.uniqueProductId}`);
+		router.push(`/assortment/${product._id}`);
 	};
 
-	const getProductPhoto = useCallback(async () => {
-		if (!photoAccessKey) return;
+	useEffect(() => {
+		const getProductPhoto = async () => {
+			if (!photoAccessKey) return;
 
-		setIsPhotoLoading(true);
+			setIsPhotoLoading(true);
 
-		const photoFile = await axios
-			.get(
+			const response = await fetch(
 				`https://www.googleapis.com/drive/v3/files/${product.photoIds[0]}?alt=media`,
 				{
 					headers: {
 						Authorization: 'Bearer ' + photoAccessKey,
 					},
-					responseType: 'blob',
+					cache: 'force-cache',
 				}
-			)
-			.then((res) => res.data);
+			);
 
-		const imageObjectUrl = URL.createObjectURL(photoFile);
-		setProductPhoto(imageObjectUrl);
+			if (!response.ok) {
+				throw new Error('Failed to fetch product photo');
+			}
 
-		setIsPhotoLoading(false);
-	}, [product.photoIds, photoAccessKey]);
+			const photoFile = await response.blob();
 
-	useEffect(() => {
+			const imageObjectUrl = URL.createObjectURL(photoFile);
+			setProductPhoto(imageObjectUrl);
+
+			setIsPhotoLoading(false);
+		};
+
 		getProductPhoto();
-	}, [getProductPhoto]);
+	}, [photoAccessKey]);
 
 	return (
 		<div className="group relative">
@@ -70,7 +74,7 @@ export function ProductCard({ product, photoAccessKey }: Props) {
 			<div className="mt-4 flex justify-between">
 				<div>
 					<h3 className="text-sm text-gray-700 dark:text-white">
-						<Link href={`/assortment/${product.uniqueProductId}`}>
+						<Link href={`/assortment/${product._id}`}>
 							<span aria-hidden="true" className="absolute inset-0" />
 							{product.title}
 						</Link>

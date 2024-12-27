@@ -1,7 +1,6 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useUpdateCartContext } from '@/hooks/useCartContext';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
@@ -15,42 +14,49 @@ export default function MainProductInfo({
 	productData,
 	photoAccessKey,
 }: Props) {
-	const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
-	const { addPhotoToProduct } = useUpdateCartContext();
 	const defaultProductPhoto =
 		'https://img.icons8.com/ios/50/000000/product--v1.png';
 
+	const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
+	const [photoObjectUrl, setPhotoObjectUrl] =
+		useState<string>(defaultProductPhoto);
+
 	const getPhotoFile = async (photoId: string) => {
-		const file = await axios
-			.get(`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`, {
+		const response = await fetch(
+			`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`,
+			{
 				headers: {
 					Authorization: 'Bearer ' + photoAccessKey,
 				},
-				responseType: 'blob',
-			})
-			.then((res) => res.data);
+				cache: 'force-cache',
+			}
+		);
 
-		return file;
+		if (!response.ok) {
+			throw new Error('Failed to fetch product photo');
+		}
+
+		return await response.blob();
 	};
 
-	const getPhotoObjectURL = useCallback(async () => {
-		if (!photoAccessKey) return;
-
-		setIsPhotoLoading(true);
-
-		const photoFile = await getPhotoFile(productData.photoIds[0]);
-		const imageObjectUrl = URL.createObjectURL(photoFile);
-		addPhotoToProduct(productData.uniqueProductId, imageObjectUrl);
-
-		setIsPhotoLoading(false);
-	}, [productData.photoIds, photoAccessKey]);
-
 	useEffect(() => {
+		const getPhotoObjectURL = async () => {
+			if (!photoAccessKey) return;
+
+			setIsPhotoLoading(true);
+
+			const photoFile = await getPhotoFile(productData.photoIds[0]);
+			const imageObjectUrl = URL.createObjectURL(photoFile);
+			setPhotoObjectUrl(imageObjectUrl);
+
+			setIsPhotoLoading(false);
+		};
+
 		getPhotoObjectURL();
-	}, [getPhotoObjectURL]);
+	}, []);
 
 	return (
-		<div className="flex gap-x-4">
+		<div className="flex gap-x-4 w-1/4">
 			{isPhotoLoading ? (
 				<div className="w-[48px] h-[48px] scale-50 flex flex-col justify-center items-center">
 					<LoadingSpinner />
@@ -58,7 +64,7 @@ export default function MainProductInfo({
 			) : (
 				<Image
 					className={'h-12 w-12 flex-none object-cover rounded-full bg-gray-50'}
-					src={productData.imageObjectUrl || defaultProductPhoto}
+					src={photoObjectUrl}
 					alt="#"
 					width={100}
 					height={100}
@@ -67,7 +73,7 @@ export default function MainProductInfo({
 			)}
 			<div className="min-w-0 flex-auto">
 				<Link
-					href={`/assortment/${productData.uniqueProductId}`}
+					href={`/assortment/${productData._id}`}
 					className="text-sm font-semibold leading-6 text-gray-900 dark:text-white hover:underline">
 					{productData.title}
 				</Link>

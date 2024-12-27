@@ -1,10 +1,10 @@
 import { ChangeEvent, useState } from 'react';
 import Image from 'next/image';
-import { useDarkTheme } from '@/hooks/useDarkTheme';
 import DeletePhotoButton from './DeletePhotoButton';
 import { Navigation, Pagination, A11y, EffectCoverflow } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper/types';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
 	photoFiles: File[];
@@ -17,7 +17,7 @@ export default function PhotoCarousel({
 	handleAddFile,
 	handleDeleteFile,
 }: Props) {
-	const isDarkTheme = useDarkTheme();
+	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
 	const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0);
 
 	const handleSlideChange = (event: SwiperType) => {

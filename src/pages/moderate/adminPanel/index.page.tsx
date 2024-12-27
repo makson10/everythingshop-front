@@ -1,7 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import useCookies from '@/hooks/useCookies';
 import useIsAdminAuthorized from '@/hooks/useIsAdminAuthorized';
 import { ProductType } from '@/types/productTypes';
 import { UserDataType } from '@/types/userTypes';
@@ -10,8 +9,9 @@ import UsersDataBlock from './UsersDataBlock/UsersDataBlock';
 import ProductsBlock from './ProductsBlock/ProductsBlock';
 import CommentsBlock from './CommentsBlock/CommentsBlock';
 import FeedbackBlock from './FeedbackBlock/FeedbackBlock';
-import axios from 'axios';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 interface FetchedData {
 	customers: UserDataType;
@@ -26,7 +26,6 @@ export default function AdminPanel({
 	products,
 	feedbacks,
 }: FetchedData) {
-	const { removeCookies } = useCookies();
 	const { isAdminAuthorized, isLoading } = useIsAdminAuthorized();
 	const [shouldShowLoadingScreen, setShouldShowLoadingScreen] =
 		useState<boolean>();
@@ -34,7 +33,7 @@ export default function AdminPanel({
 
 	useEffect(() => {
 		if (!isAdminAuthorized && !isLoading) {
-			removeCookies('isAdminAuthorized');
+			Cookies.remove('isAdminAuthorized');
 			router.push('/moderate');
 		}
 	}, [isAdminAuthorized, isLoading]);

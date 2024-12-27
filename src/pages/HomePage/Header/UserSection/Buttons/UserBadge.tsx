@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { useDarkTheme } from '@/hooks/useDarkTheme';
 import { useAppSelector } from '@/store/hooks';
 
 interface Props {
@@ -9,7 +8,7 @@ interface Props {
 
 export default function UserBadge({ userName, handleToggleIsOpenMenu }: Props) {
 	const userData = useAppSelector((state) => state.user.data);
-	const isDarkTheme = useDarkTheme();
+	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
 
 	return (
 		<div

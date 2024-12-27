@@ -1,14 +1,9 @@
 import { IUnionUserData } from './userTypes';
 import { IProduct } from './productTypes';
 
-export type UserDataContextType = {
+export type UserStoreValues = {
 	data: IUnionUserData | null;
 	isLoading: boolean;
-};
-
-export type UpdateUserDataContextType = {
-	saveData: (credential: IUnionUserData) => void;
-	logOut: () => void;
 };
 
 export interface ICartProduct {
@@ -16,7 +11,7 @@ export interface ICartProduct {
 	productsData: IProduct;
 }
 
-export type CartProductType = ICartProduct[];
+export type CartStoreValues = ICartProduct[];
 
 export type UpdateCartContextType = {
 	addProductToCard: (productData: IProduct) => void;
@@ -27,8 +22,6 @@ export type UpdateCartContextType = {
 	increaseProductAmount: (productId: string) => void;
 };
 
-export type ThemeContextType = boolean;
-
-export type UpdateThemeContextType = {
-	toggleIsDarkTheme: () => void;
+export type ThemeStoreValues = {
+	isDarkTheme: boolean;
 };

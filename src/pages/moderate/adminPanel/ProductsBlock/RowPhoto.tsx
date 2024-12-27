@@ -18,15 +18,21 @@ export default function RowPhoto({ photoId, photoAccessKey }: Props) {
 		if (!photoAccessKey) return;
 		setIsPhotoLoading(true);
 
-		const photoFile = await axios
-			.get(`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`, {
+		const response = await fetch(
+			`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`,
+			{
 				headers: {
 					Authorization: 'Bearer ' + photoAccessKey,
 				},
-				responseType: 'blob',
-			})
-			.then((res) => res.data);
+				cache: 'force-cache',
+			}
+		);
 
+		if (!response.ok) {
+			throw new Error('Failed to fetch product photo');
+		}
+
+		const photoFile = await response.blob();
 		const imageObjectUrl = URL.createObjectURL(photoFile);
 		setProductPhoto(imageObjectUrl);
 

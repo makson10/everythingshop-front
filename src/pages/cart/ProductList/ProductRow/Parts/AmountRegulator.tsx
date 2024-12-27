@@ -1,4 +1,8 @@
-import { useUpdateCartContext } from '@/hooks/useCartContext';
+import {
+	decreaseProductAmount,
+	increaseProductAmount,
+} from '@/store/cart/cartSlice';
+import { useAppDispatch } from '@/store/hooks';
 
 interface Props {
 	productId: string;
@@ -6,13 +10,12 @@ interface Props {
 }
 
 export default function AmountRegulator({ productId, productAmount }: Props) {
-	const { decreaseProductAmount, increaseProductAmount } =
-		useUpdateCartContext();
+	const dispatch = useAppDispatch();
 
 	return (
-		<div>
+		<div className="my-auto">
 			<button
-				onClick={() => decreaseProductAmount(productId)}
+				onClick={() => dispatch(decreaseProductAmount(productId))}
 				disabled={productAmount === 1}
 				className="relative bg-white min-w-[38px] inline-flex justify-center items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0 disabled:bg-gray-200 max-sm:min-w-[26px]">
 				-
@@ -21,7 +24,7 @@ export default function AmountRegulator({ productId, productAmount }: Props) {
 				{productAmount}
 			</div>
 			<button
-				onClick={() => increaseProductAmount(productId)}
+				onClick={() => dispatch(increaseProductAmount(productId))}
 				disabled={productAmount === 99}
 				className="relative bg-white min-w-[38px] inline-flex justify-center items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0 disabled:bg-gray-200 max-sm:min-w-[26px]">
 				+

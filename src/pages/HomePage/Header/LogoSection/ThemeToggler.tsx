@@ -1,15 +1,16 @@
-import { useDarkTheme, useUpdateDarkTheme } from '@/hooks/useDarkTheme';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { toggleTheme } from '@/store/theme/themeSlice';
 import Image from 'next/image';
 
 export default function ThemeToggler() {
-	const isDarkTheme = useDarkTheme();
-	const { toggleIsDarkTheme } = useUpdateDarkTheme();
+	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
+	const dispatch = useAppDispatch();
 
 	return (
 		<div>
 			<div
 				className="relative inline-block w-12 h-6 mr-2 align-middle select-none"
-				onClick={toggleIsDarkTheme}>
+				onClick={() => dispatch(toggleTheme())}>
 				<div
 					className={`absolute flex justify-center items-center w-6 h-6 rounded-full appearance-none cursor-pointer transition-all duration-300 transform ${
 						isDarkTheme

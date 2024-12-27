@@ -151,8 +151,9 @@ function CommentForm({ sendCommentToServer }: CommentFormProps) {
 						</button>
 					</div>
 					{errors.newCommentText &&
-						touched.newCommentText &&
-						errors.newCommentText}
+						touched.newCommentText && (
+							<p className="text-red-400">{errors.newCommentText}</p>
+						)}
 				</form>
 			)}
 		</Formik>

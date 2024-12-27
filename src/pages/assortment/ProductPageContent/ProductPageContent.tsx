@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useUpdateCartContext } from '@/hooks/useCartContext';
 import { ShowSuccessNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import Breadcrumb from './Parts/Breadcrumb';
 import Title from './Parts/Title';
@@ -11,15 +10,16 @@ import { IComment, CommentType } from '@/types/commentTypes';
 import { IProduct } from '@/types/productTypes';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { addProductToCard } from '@/store/cart/cartSlice';
 
 interface Props {
 	productData: IProduct;
 }
 
 export default function ProductPage({ productData }: Props) {
+	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.user.data);
-	const { addProductToCard } = useUpdateCartContext();
 	const [productComments, setProductComments] = useState<CommentType>(
 		productData.comments
 	);
@@ -65,7 +65,7 @@ export default function ProductPage({ productData }: Props) {
 	};
 
 	const handleClickBuyButton = () => {
-		addProductToCard(productData);
+		dispatch(addProductToCard(productData));
 		openSuccessWindow();
 	};
 

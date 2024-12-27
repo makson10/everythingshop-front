@@ -53,7 +53,9 @@ export default function AuthorizationForm({ handleSubmitForm }: FormProps) {
 								onBlur={handleBlur}
 								value={values.login}
 							/>
-							{errors.login && touched.login && errors.login}
+							{errors.login && touched.login && (
+								<p className="text-red-400">{errors.login}</p>
+							)}
 						</div>
 					</div>
 
@@ -89,7 +91,9 @@ export default function AuthorizationForm({ handleSubmitForm }: FormProps) {
 									/>
 								</button>
 							</div>
-							{errors.password && touched.password && errors.password}
+							{errors.password && touched.password && (
+								<p className="text-red-400">{errors.password}</p>
+							)}
 						</div>
 					</div>
 

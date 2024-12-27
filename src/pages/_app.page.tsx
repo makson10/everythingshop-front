@@ -1,5 +1,3 @@
-import { CartProvider } from '@/context/CartContext';
-import { ThemeProvider } from '@/context/ThemeContext';
 import '@/styles/variables.scss';
 import '@/styles/index.scss';
 import '@/styles/globals.scss';
@@ -7,11 +5,12 @@ import 'swiper/css/bundle';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import StoreProvider from '@/store/StoreProvider';
+import ThemeProvider from '@/store/theme/ThemeProvider';
+import CartProvider from '@/store/cart/CartProvider';
 
 // TODO:
 //? check on bugs
-//? make form field error red
-//? add slices for another context
+//? migrate file storaging from google drive
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
@@ -21,11 +20,11 @@ export default function App({ Component, pageProps }: AppProps) {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			</Head>
 			<StoreProvider>
-				<CartProvider>
-					<ThemeProvider>
+				<ThemeProvider>
+					<CartProvider>
 						<Component {...pageProps} />
-					</ThemeProvider>
-				</CartProvider>
+					</CartProvider>
+				</ThemeProvider>
 			</StoreProvider>
 		</>
 	);

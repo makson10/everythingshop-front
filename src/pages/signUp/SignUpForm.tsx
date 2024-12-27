@@ -55,7 +55,9 @@ export default function SignUpForm({ handleSubmitForm }: Props) {
 								onBlur={handleBlur}
 								value={values.name}
 							/>
-							{errors.name && touched.name && errors.name}
+							{errors.name && touched.name && (
+								<p className="text-red-400">{errors.name}</p>
+							)}
 						</div>
 					</div>
 
@@ -75,7 +77,9 @@ export default function SignUpForm({ handleSubmitForm }: Props) {
 								onBlur={handleBlur}
 								value={values.dateOfBirth}
 							/>
-							{errors.dateOfBirth && touched.dateOfBirth && errors.dateOfBirth}
+							{errors.dateOfBirth && touched.dateOfBirth && (
+								<p className="text-red-400">{errors.dateOfBirth}</p>
+							)}
 						</div>
 					</div>
 
@@ -96,7 +100,9 @@ export default function SignUpForm({ handleSubmitForm }: Props) {
 								onBlur={handleBlur}
 								value={values.email}
 							/>
-							{errors.email && touched.email && errors.email}
+							{errors.email && touched.email && (
+								<p className="text-red-400">{errors.email}</p>
+							)}
 						</div>
 					</div>
 
@@ -118,7 +124,9 @@ export default function SignUpForm({ handleSubmitForm }: Props) {
 								onBlur={handleBlur}
 								value={values.login}
 							/>
-							{errors.login && touched.login && errors.login}
+							{errors.login && touched.login && (
+								<p className="text-red-400">{errors.login}</p>
+							)}
 						</div>
 					</div>
 
@@ -154,7 +162,9 @@ export default function SignUpForm({ handleSubmitForm }: Props) {
 									/>
 								</button>
 							</div>
-							{errors.password && touched.password && errors.password}
+							{errors.password && touched.password && (
+								<p className="text-red-400">{errors.password}</p>
+							)}
 						</div>
 					</div>
 

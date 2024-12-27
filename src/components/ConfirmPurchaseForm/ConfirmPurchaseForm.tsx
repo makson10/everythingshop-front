@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useUpdateCartContext } from '@/hooks/useCartContext';
 import useSendEmail from '@/hooks/useSendEmail';
 import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import Header from './Parts/Header';
@@ -10,7 +9,8 @@ import {
 	ConfirmPurchaseFormData,
 } from '@/types/formDataTypes';
 import { useState } from 'react';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { deleteAllProducts } from '@/store/cart/cartSlice';
 
 interface Props {
 	handleCloseConfirmPurchaseForm: () => void;
@@ -22,7 +22,7 @@ export default function ConfirmPurchaseForm({
 	purchaseTotalPrice,
 }: Props) {
 	const user = useAppSelector((state) => state.user.data);
-	const { deleteAllProducts } = useUpdateCartContext();
+	const dispatch = useAppDispatch();
 	const { sendBuyEmail } = useSendEmail();
 
 	const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
@@ -34,7 +34,7 @@ export default function ConfirmPurchaseForm({
 			const userCredential = shapeUserCredential(values);
 			sendDataToServer(userCredential);
 			sendEmailAboutPurchase(userCredential);
-			cleanCart();
+			dispatch(deleteAllProducts());
 			redirectUserToHomePage();
 		} catch (error: any) {
 			const errorMessage =
@@ -48,13 +48,11 @@ export default function ConfirmPurchaseForm({
 		const formFullName = `${formValues.firstName} ${formValues.lastName}`;
 
 		const fullName =
-			formValues.useAccountFullName &&
-			typeof user?.name === 'string'
+			formValues.useAccountFullName && typeof user?.name === 'string'
 				? user?.name
 				: formFullName;
 		const email =
-			formValues.useAccountEmail &&
-			typeof user?.email === 'string'
+			formValues.useAccountEmail && typeof user?.email === 'string'
 				? user?.email
 				: formValues.email;
 
@@ -79,10 +77,6 @@ export default function ConfirmPurchaseForm({
 			purchaseTotalPrice: purchaseTotalPrice,
 			fullUserName: fullName,
 		});
-	};
-
-	const cleanCart = () => {
-		deleteAllProducts();
 	};
 
 	const redirectUserToHomePage = () => {

@@ -1,4 +1,4 @@
-import { useDarkTheme } from '@/hooks/useDarkTheme';
+import { useAppSelector } from '@/store/hooks';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 
 interface Props {
@@ -14,7 +14,7 @@ export function PaginationBar({
 	currentPage,
 	showingProductAmount,
 }: Props) {
-	const isDarkTheme = useDarkTheme();
+	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
 	const pagesAmount = Math.ceil(productsAmount / showingProductAmount);
 
 	if (pagesAmount < 2) return null;

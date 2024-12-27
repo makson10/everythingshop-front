@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import useCookies from '@/hooks/useCookies';
 import useIsAdminAuthorized from '@/hooks/useIsAdminAuthorized';
 import { ShowErrorNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import AuthorizationForm from './AuthorizationForm';
 import { IAdminData } from '@/types/adminTypes';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default function ModeratePage() {
-	const { setCookies } = useCookies();
 	const { isAdminAuthorized, isLoading } = useIsAdminAuthorized();
 	const [shouldShowLoadingScreen, setShouldShowLoadingScreen] =
 		useState<boolean>();
@@ -34,7 +33,7 @@ export default function ModeratePage() {
 	};
 
 	const setAdminCookie = () => {
-		setCookies('isAdminAuthorized', 'true', {
+		Cookies.set('isAdminAuthorized', 'true', {
 			path: '/moderate',
 			samesite: 'Lax',
 			expires: new Date(new Date().getTime() + 5 * 60 * 1000),

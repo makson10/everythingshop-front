@@ -1,9 +1,10 @@
-import { useUpdateCartContext } from '@/hooks/useCartContext';
 import MainProductInfo from './Parts/MainProductInfo';
 import AmountRegulator from './Parts/AmountRegulator';
 import PriceTag from './Parts/PriceTag';
 import RemoveButton from './Parts/RemoveButton';
 import { ICartProduct } from '@/types/contextTypes';
+import { useAppDispatch } from '@/store/hooks';
+import { deleteProduct } from '@/store/cart/cartSlice';
 
 interface Props {
 	product: ICartProduct;
@@ -11,10 +12,10 @@ interface Props {
 }
 
 export default function ProductRow({ product, photoAccessKey }: Props) {
-	const { deleteProduct } = useUpdateCartContext();
+	const dispatch = useAppDispatch();
 
 	const handleDeleteThisProduct = () => {
-		deleteProduct(product.productsData.uniqueProductId);
+		dispatch(deleteProduct(product.productsData.uniqueProductId));
 	};
 
 	return (

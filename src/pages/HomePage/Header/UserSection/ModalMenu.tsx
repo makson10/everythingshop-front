@@ -1,7 +1,7 @@
 import { useEffect, useRef, Dispatch, SetStateAction } from 'react';
-import { useUpdateCartContext } from '@/hooks/useCartContext';
 import { useAppDispatch } from '@/store/hooks';
 import { logOut } from '@/store/user/userSlice';
+import { deleteAllProducts } from '@/store/cart/cartSlice';
 
 interface Props {
 	isOpen: boolean;
@@ -15,14 +15,13 @@ export default function ModalMenu({
 	setIsUserLogin,
 }: Props) {
 	const dispatch = useAppDispatch();
-	const { deleteAllProducts } = useUpdateCartContext();
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	function handleLogOut() {
 		if (!isOpen) return;
 
 		dispatch(logOut());
-		deleteAllProducts();
+		dispatch(deleteAllProducts());
 		setIsUserLogin(false);
 	}
 

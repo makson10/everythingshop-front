@@ -1,19 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { useDarkTheme } from '@/hooks/useDarkTheme';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { ShowPhotoInFullscreen } from '@/components/ShowModalWindow/ShowModalWindow';
 import { Navigation, Pagination, A11y, EffectCoverflow } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper/types';
 import axios from 'axios';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
 	photoIds: string[];
 }
 
 export default function PhotoCarousel({ photoIds }: Props) {
-	const isDarkTheme = useDarkTheme();
+	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
 
 	const [photoURLs, setPhotoURLs] = useState<string[]>([]);
 	const [isPhotosLoading, setIsPhotosLoading] = useState<boolean>(false);
@@ -55,15 +55,21 @@ export default function PhotoCarousel({ photoIds }: Props) {
 	}, [photoAccessKey]);
 
 	const fetchPhotoFileAndCreateObjectUrl = async (photoId: string) => {
-		const photoFile = await axios
-			.get(`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`, {
+		const response = await fetch(
+			`https://www.googleapis.com/drive/v3/files/${photoId}?alt=media`,
+			{
 				headers: {
 					Authorization: 'Bearer ' + photoAccessKey,
 				},
-				responseType: 'blob',
-			})
-			.then((res) => res.data);
+				cache: 'force-cache',
+			}
+		);
 
+		if (!response.ok) {
+			throw new Error('Failed to fetch product photo');
+		}
+
+		const photoFile = await response.blob();
 		const imageObjectUrl = URL.createObjectURL(photoFile);
 		return imageObjectUrl;
 	};

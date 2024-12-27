@@ -75,8 +75,9 @@ export default function Form({ handleSubmitForm }: Props) {
 							/>
 							{!useAccountFullName &&
 								errors.firstName &&
-								touched.firstName &&
-								errors.firstName}
+								touched.firstName && (
+									<p className="text-red-400">{errors.firstName}</p>
+								)}
 							<div className="flex flex-col gap-2">
 								<input
 									placeholder="Enter your last name"
@@ -90,8 +91,9 @@ export default function Form({ handleSubmitForm }: Props) {
 								/>
 								{!useAccountFullName &&
 									errors.lastName &&
-									touched.lastName &&
-									errors.lastName}
+									touched.lastName && (
+										<p className="text-red-400">{errors.lastName}</p>
+									)}
 								<div
 									className="flex flex-row items-center gap-3"
 									onClick={() => {
@@ -111,8 +113,9 @@ export default function Form({ handleSubmitForm }: Props) {
 										Use account full name
 									</label>
 									{errors.useAccountFullName &&
-										touched.useAccountFullName &&
-										errors.useAccountFullName}
+										touched.useAccountFullName && (
+											<p className="text-red-400">{errors.useAccountFullName}</p>
+										)}
 								</div>
 							</div>
 							<div className="flex flex-col gap-2">
@@ -128,8 +131,9 @@ export default function Form({ handleSubmitForm }: Props) {
 								/>
 								{!useAccountEmail &&
 									errors.email &&
-									touched.email &&
-									errors.email}
+									touched.email && (
+										<p className="text-red-400">{errors.email}</p>
+									)}
 								<div
 									className="flex flex-row items-center gap-3"
 									onClick={() => {
@@ -147,8 +151,9 @@ export default function Form({ handleSubmitForm }: Props) {
 										Use account email
 									</label>
 									{errors.useAccountEmail &&
-										touched.useAccountEmail &&
-										errors.useAccountEmail}
+										touched.useAccountEmail && (
+											<p className="text-red-400">{errors.useAccountEmail}</p>
+										)}
 								</div>
 							</div>
 							<input
@@ -162,8 +167,9 @@ export default function Form({ handleSubmitForm }: Props) {
 								value={values.deliveryAddress}
 							/>
 							{errors.deliveryAddress &&
-								touched.deliveryAddress &&
-								errors.deliveryAddress}
+								touched.deliveryAddress && (
+									<p className="text-red-400">{errors.deliveryAddress}</p>
+								)}
 							<button
 								className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
 								type="submit"

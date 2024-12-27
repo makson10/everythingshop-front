@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useCartContext, useUpdateCartContext } from '@/hooks/useCartContext';
 import { FailWindow } from '@/components/FailWindow/FailWindow';
 import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
 import ProductRow from './ProductRow/ProductRow';
 import TotalPriceSection from './TotalPriceSection';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { deleteProduct } from '@/store/cart/cartSlice';
 import axios from 'axios';
-import { useAppSelector } from '@/store/hooks';
 
 export default function ProductList() {
 	const user = useAppSelector((state) => state.user.data);
-	const products = useCartContext();
-	const { deleteProduct } = useUpdateCartContext();
+	const products = useAppSelector((state) => state.cart);
+	const dispatch = useAppDispatch();
 	const [purchaseTotalPrice, setPurchaseTotalPrice] = useState<number>(0);
 	const [readyToShowList, setReadyToShowList] = useState<boolean>(false);
 	const [photoAccessKey, setPhotoAccessKey] = useState<string>('');
@@ -35,7 +35,7 @@ export default function ProductList() {
 				.then((res) => res.data);
 
 			if (!doesProductExist) {
-				deleteProduct(product.productsData.uniqueProductId);
+				dispatch(deleteProduct(product.productsData.uniqueProductId));
 			}
 		});
 
@@ -83,15 +83,13 @@ export default function ProductList() {
 				<div className="w-1/2 max-sm:w-full">
 					<div role="list" className="divide-y divide-gray-100">
 						{readyToShowList ? (
-							<>
-								{products.map((product, index) => (
-									<ProductRow
-										product={product}
-										key={index}
-										photoAccessKey={photoAccessKey}
-									/>
-								))}
-							</>
+							products.map((product) => (
+								<ProductRow
+									key={product.productsData.uniqueProductId}
+									product={product}
+									photoAccessKey={photoAccessKey}
+								/>
+							))
 						) : (
 							<ShowLoadingScreen />
 						)}

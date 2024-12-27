@@ -1,6 +1,7 @@
 import { CommentType } from './commentTypes';
 
 export interface IProduct {
+	_id: string;
 	title: string;
 	description: string;
 	photoIds: string[];

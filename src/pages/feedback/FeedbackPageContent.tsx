@@ -100,8 +100,9 @@ function FeedbackForm() {
 								value={values.feedbackText}
 							/>
 							{errors.feedbackText &&
-								touched.feedbackText &&
-								errors.feedbackText}
+								touched.feedbackText && (
+									<p className="text-red-400">{errors.feedbackText}</p>
+								)}
 						</div>
 						<button
 							className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
