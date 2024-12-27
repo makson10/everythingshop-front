@@ -57,7 +57,7 @@ export default function ProductPage({ productData }: Props) {
 	const getAndSetNewComments = async () => {
 		const newComments = await axios
 			.get(
-				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productData.uniqueProductId}`
+				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productData._id}`
 			)
 			.then((res) => res.data.comments);
 

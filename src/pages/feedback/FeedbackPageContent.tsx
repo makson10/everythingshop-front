@@ -2,18 +2,18 @@ import { useState } from 'react';
 import useSendEmail from '@/hooks/useSendEmail';
 import { ShowSuccessNotification } from '@/components/ShowModalWindow/ShowModalWindow';
 import UserNotLoginWindow from '@/components/UserNotLoginWindow/UserNotLoginWindow';
-import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
+import LoadingScreen from '@/components/LoadingScreen/LoadingScreen';
 import { IFeedback } from '@/types/feedbackTypes';
 import Schema from '@/assets/validationSchemas';
 import { Formik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
+import axios from 'axios';
 
 export default function FeedbackPageContent() {
 	const userState = useAppSelector((state) => state.user);
 
-	if (userState.isLoading) return <ShowLoadingScreen />;
+	if (userState.isLoading) return <LoadingScreen />;
 	if (!userState.data?.email) return <UserNotLoginWindow />;
 
 	return (
@@ -99,10 +99,9 @@ function FeedbackForm() {
 								onBlur={handleBlur}
 								value={values.feedbackText}
 							/>
-							{errors.feedbackText &&
-								touched.feedbackText && (
-									<p className="text-red-400">{errors.feedbackText}</p>
-								)}
+							{errors.feedbackText && touched.feedbackText && (
+								<p className="text-red-400">{errors.feedbackText}</p>
+							)}
 						</div>
 						<button
 							className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

@@ -3,23 +3,19 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IComment } from '@/types/commentTypes';
 import axios from 'axios';
+import { IProduct } from '@/types/productTypes';
 
 interface CommentProps {
 	comment: IComment;
-	productId: string;
-	productName: string;
+	product: IProduct;
 }
 
-export default function Comment({
-	comment,
-	productId,
-	productName,
-}: CommentProps) {
+export default function Comment({ comment, product }: CommentProps) {
 	const router = useRouter();
 
 	const handleClick = async () => {
 		await axios.delete(
-			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${productId}/deleteComment/${comment.uniqueCommentId}`
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/${product.uniqueProductId}/deleteComment/${comment.uniqueCommentId}`
 		);
 
 		router.reload();
@@ -37,10 +33,8 @@ export default function Comment({
 						height={100}
 					/>
 					{comment.author}, {new Date(comment.date).toLocaleString()}; to post{' '}
-					<Link
-						className="hover:underline"
-						href={`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/assortment/${productId}`}>
-						{productName}
+					<Link className="hover:underline" href={'/assortment/' + product._id}>
+						{product.title}
 					</Link>
 				</div>
 				<p>{comment.text}</p>

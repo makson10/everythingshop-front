@@ -101,12 +101,12 @@ export default function PageContent() {
 	) => {
 		const newProductData = {
 			photoIds: fileIds,
-			title: title,
-			description: description,
-			creator: creator,
-			price: price,
+			title,
+			description,
+			creator,
+			price,
 			comments: JSON.stringify([]),
-			uniqueProductId: uniqueProductId,
+			uniqueProductId,
 		};
 
 		return newProductData;

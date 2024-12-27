@@ -1,17 +1,13 @@
+import { IProduct } from '@/types/productTypes';
 import Comment from './Comment';
 import { CommentType } from '@/types/commentTypes';
 
 interface Props {
 	comments: CommentType;
-	productId: string;
-	productName: string;
+	product: IProduct;
 }
 
-export default function CommentRow({
-	comments,
-	productId,
-	productName,
-}: Props) {
+export default function CommentRow({ comments, product }: Props) {
 	return (
 		<>
 			{comments.map((comment, index) => {
@@ -19,11 +15,7 @@ export default function CommentRow({
 					<div
 						key={index}
 						className="flex flex-col gap-[5px] p-[0.5rem] border-b-2 border-b-[gray]">
-						<Comment
-							comment={comment}
-							productId={productId}
-							productName={productName}
-						/>
+						<Comment comment={comment} product={product} />
 					</div>
 				);
 			})}

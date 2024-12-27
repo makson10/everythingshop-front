@@ -31,7 +31,7 @@ export default function ProductRow({ product, photoAccessKey }: Props) {
 				<p>
 					<Link
 						className="text-black hover:underline"
-						href={`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/assortment/${product.uniqueProductId}`}>
+						href={`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/assortment/${product._id}`}>
 						<b>{product.title}</b>
 					</Link>
 					, {product.creator}
