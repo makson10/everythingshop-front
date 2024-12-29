@@ -1,75 +1,32 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { IProduct } from '@/types/productTypes';
-import axios from 'axios';
 
 interface Props {
 	product: IProduct;
-	photoAccessKey: string;
 }
 
-export function ProductCard({ product, photoAccessKey }: Props) {
-	const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
-	const [productPhoto, setProductPhoto] = useState(
-		`https://img.icons8.com/ios/250/808080/product--v1.png`
-	);
+export function ProductCard({ product }: Props) {
 	const router = useRouter();
 
 	const handleGoToProductPage = () => {
 		router.push(`/assortment/${product._id}`);
 	};
 
-	useEffect(() => {
-		const getProductPhoto = async () => {
-			if (!photoAccessKey) return;
-
-			setIsPhotoLoading(true);
-
-			const response = await fetch(
-				`https://www.googleapis.com/drive/v3/files/${product.photoIds[0]}?alt=media`,
-				{
-					headers: {
-						Authorization: 'Bearer ' + photoAccessKey,
-					},
-					cache: 'force-cache',
-				}
-			);
-
-			if (!response.ok) {
-				throw new Error('Failed to fetch product photo');
-			}
-
-			const photoFile = await response.blob();
-
-			const imageObjectUrl = URL.createObjectURL(photoFile);
-			setProductPhoto(imageObjectUrl);
-
-			setIsPhotoLoading(false);
-		};
-
-		getProductPhoto();
-	}, [photoAccessKey]);
-
 	return (
 		<div className="group relative">
 			<div className="flex flex-col justify-center items-center min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-transparent lg:aspect-none group-hover:opacity-75 lg:h-80">
-				{isPhotoLoading ? (
-					<LoadingSpinner />
-				) : (
-					<Image
-						className="h-full w-full object-contain object-center lg:h-full lg:w-full"
-						src={productPhoto}
-						alt="#"
-						crossOrigin="use-credentials"
-						width={1000}
-						height={1000}
-						onClick={handleGoToProductPage}
-						loading="lazy"
-					/>
-				)}
+				<Image
+					className="h-full w-full object-contain object-center lg:h-full lg:w-full"
+					src={product.photoIds[0]}
+					alt="#"
+					crossOrigin="use-credentials"
+					width={1000}
+					height={1000}
+					onClick={handleGoToProductPage}
+					loading="lazy"
+				/>
 			</div>
 			<div className="mt-4 flex justify-between">
 				<div>

@@ -8,10 +8,9 @@ import { deleteProduct } from '@/store/cart/cartSlice';
 
 interface Props {
 	product: ICartProduct;
-	photoAccessKey: string;
 }
 
-export default function ProductRow({ product, photoAccessKey }: Props) {
+export default function ProductRow({ product }: Props) {
 	const dispatch = useAppDispatch();
 
 	const handleDeleteThisProduct = () => {
@@ -22,7 +21,6 @@ export default function ProductRow({ product, photoAccessKey }: Props) {
 		<div className="flex justify-between gap-x-6 py-5 max-sm:justify-center max-sm:gap-x-2">
 			<MainProductInfo
 				productData={product.productsData}
-				photoAccessKey={photoAccessKey}
 			/>
 			<AmountRegulator
 				productId={product.productsData.uniqueProductId}

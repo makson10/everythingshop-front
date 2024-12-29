@@ -8,9 +8,9 @@ import PhotoCarousel from './PhotoCarousel';
 import AddProductForm from './AddProductForm';
 import { FormProductType } from '@/types/productTypes';
 import imageCompression from 'browser-image-compression';
-import axios from 'axios';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { useAppSelector } from '@/store/hooks';
+import axios from 'axios';
 
 export default function PageContent() {
 	const user = useAppSelector((state) => state.user.data);
@@ -38,7 +38,7 @@ export default function PageContent() {
 
 		let file = e.target.files[0];
 
-		if (file.size > 5 * 1024 * 1024) {
+		if (file.size > 4 * 1024 * 1024) {
 			file = await compressFile(file);
 		}
 
@@ -53,63 +53,23 @@ export default function PageContent() {
 		setPhotoFiles(newFileList);
 	};
 
-	const getPhotoAccessKey = async () => {
-		const key = await axios
-			.get(
-				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/getPhotoAccessKey`
-			)
-			.then((res) => res.data.token);
-
-		return key;
-	};
-
-	const saveFileInGoogleDrive = async (file: File, photoAccessKey: string) => {
-		const fileId = await axios
-			.post(
-				'https://www.googleapis.com/upload/drive/v3/files?uploadType=media',
-				file,
-				{
-					headers: {
-						'Content-Type': file.type,
-						'Content-Length': file.size,
-						Authorization: 'Bearer ' + photoAccessKey,
-					},
-				}
-			)
-			.then((res) => res.data.id);
-
-		return fileId;
-	};
-
-	const storePhotoFiles = async () => {
-		const photoAccessKey = await getPhotoAccessKey();
-		const fileIds: string[] = [];
-
-		const storeFilePromises = photoFiles.map(async (file) => {
-			const fileId = await saveFileInGoogleDrive(file, photoAccessKey);
-			fileIds.push(fileId);
-		});
-
-		await Promise.all(storeFilePromises);
-
-		return fileIds;
-	};
-
-	const shapeDataForStoring = (
-		{ title, description, creator, price, uniqueProductId }: FormProductType,
-		fileIds: string[]
+	const storeProduct = async (
+		newProductData: FormProductType,
+		files: File[]
 	) => {
-		const newProductData = {
-			photoIds: fileIds,
-			title,
-			description,
-			creator,
-			price,
-			comments: JSON.stringify([]),
-			uniqueProductId,
-		};
+		const formData = new FormData();
+		files.map((file) => formData.append('files', file));
+		formData.append('title', newProductData.title);
+		formData.append('description', newProductData.description);
+		formData.append('creator', newProductData.creator);
+		formData.append('price', newProductData.price.toString());
+		formData.append('uniqueProductId', newProductData.uniqueProductId);
+		formData.append('comments', JSON.stringify([]));
 
-		return newProductData;
+		await axios.post(
+			`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/addNewProduct`,
+			formData
+		);
 	};
 
 	const handleSubmitForm = async (newProductData: FormProductType) => {
@@ -120,22 +80,13 @@ export default function PageContent() {
 			}
 
 			setIsLoading(true);
-			const fileIds = await storePhotoFiles();
-			const newProduct = shapeDataForStoring(newProductData, fileIds);
-
-			await axios.post(
-				`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/products/addNewProduct`,
-				newProduct
-			);
+			await storeProduct(newProductData, photoFiles);
 
 			clearFileInput();
 			setIsLoading(false);
 			openSuccessWindow();
 		} catch (error: any) {
-			const errorMessage =
-				error.response?.data?.error || error.message || 'Something went wrong';
-			setServerErrorMessage(errorMessage);
-			handleFailure();
+			handleFailure(error);
 		}
 	};
 
@@ -148,7 +99,11 @@ export default function PageContent() {
 		setTimeout(() => setIsOpenSuccessWindow(false), 3000);
 	};
 
-	const handleFailure = () => {
+	const handleFailure = (error: any) => {
+		const errorMessage =
+			error.response?.data?.error || error.message || 'Something went wrong';
+		setServerErrorMessage(errorMessage);
+
 		setIsOpenErrorWindow(true);
 
 		setTimeout(() => {

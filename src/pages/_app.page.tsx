@@ -9,9 +9,7 @@ import ThemeProvider from '@/store/theme/ThemeProvider';
 import CartProvider from '@/store/cart/CartProvider';
 
 // TODO:
-//? check on bugs
-//? migrate file storaging from google drive
-//? make refactoring
+//? add testing
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (

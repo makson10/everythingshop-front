@@ -8,7 +8,7 @@ export default function LogInButton() {
 			<button
 				className="bg-[#fff992] text-black text-[1.2rem] border-black border-[3px] rounded-[10px] p-2 transition-all diration-100 ease-linear hover:scale-[1.1] font-[--main-font-weight]"
 				onClick={() => router.push('/login')}>
-				SignUp/LogIn
+				Log in
 			</button>
 		</div>
 	);

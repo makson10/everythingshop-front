@@ -6,7 +6,7 @@ export default function LogoSection() {
 	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
 
 	return (
-		<div className="flex items-center gap-4 w-2/12 max-sm:w-full max-sm:justify-center">
+		<div className="flex items-center gap-4 w-[15%] max-sm:w-full max-sm:justify-center">
 			<Logo isDarkTheme={isDarkTheme} />
 			<ThemeToggler />
 		</div>

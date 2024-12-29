@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { ShowLoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
 import ModalMenu from './ModalMenu';
 import LogInButton from './Buttons/LogInButton';
 import UserBadge from './Buttons/UserBadge';
@@ -25,7 +24,7 @@ export default function UserSection() {
 	if (!isUserLogin) return <LogInButton />;
 
 	return (
-		<div className="flex max-sm:justify-center">
+		<div className="w-[15%] flex justify-end max-sm:justify-center">
 			<UserBadge
 				userName={userName}
 				handleToggleIsOpenMenu={handleToggleIsOpenMenu}

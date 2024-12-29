@@ -7,10 +7,9 @@ import axios from 'axios';
 
 interface Props {
 	product: IProduct;
-	photoAccessKey: string;
 }
 
-export default function ProductRow({ product, photoAccessKey }: Props) {
+export default function ProductRow({ product }: Props) {
 	const router = useRouter();
 
 	const handleDeleteProduct = async () => {
@@ -24,10 +23,7 @@ export default function ProductRow({ product, photoAccessKey }: Props) {
 	return (
 		<div className="flex flex-row border-b-[2px] border-[gray] p-2">
 			<div className="flex flex-row items-center gap-[10px]">
-				<RowPhoto
-					photoId={product.photoIds[0]}
-					photoAccessKey={photoAccessKey}
-				/>
+				<RowPhoto photoId={product.photoIds[0]} />
 				<p>
 					<Link
 						className="text-black hover:underline"
