@@ -53,9 +53,7 @@ export default function LogInForm({ handleSubmitForm }: Props) {
 								onBlur={handleBlur}
 								value={values.login}
 							/>
-							{errors.login && touched.login && (
-								<p className="text-red-400">{errors.login}</p>
-							)}
+							{errors.login && touched.login && errors.login}
 						</div>
 					</div>
 
@@ -98,9 +96,7 @@ export default function LogInForm({ handleSubmitForm }: Props) {
 									/>
 								</button>
 							</div>
-							{errors.password && touched.password && (
-								<p className="text-red-400">{errors.password}</p>
-							)}
+							{errors.password && touched.password && errors.password}
 						</div>
 					</div>
 

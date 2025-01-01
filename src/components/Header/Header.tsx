@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
-import { useAppSelector } from '@/store/hooks';
+import GoBackButton from './GoBackButton';
+import PageTitle from './PageTitle';
+import CartButton from './CartButton';
 
 interface Props {
 	pageName: string;
@@ -9,60 +8,13 @@ interface Props {
 }
 
 export default function Header({ pageName, showCartIcon = true }: Props) {
-	const isDarkTheme = useAppSelector((state) => state.theme.isDarkTheme);
-	const cart = useAppSelector((state) => state.cart);
-	const router = useRouter();
-	const [cartProducstAmount, setCartProducstAmount] = useState<number>(0);
-
-	useEffect(() => {
-		const newValue = cart.reduce((accumulator, currentValue) => {
-			return accumulator + currentValue.amount;
-		}, 0);
-
-		setCartProducstAmount(newValue);
-	}, [cart]);
-
 	return (
 		<div className="flex flex-col">
 			<div className="flex flex-row justify-between p-4 px-8">
-				<div className="flex flex-row">
-					<button className="rounded-full" onClick={() => router.back()}>
-						<Image
-							className="w-[60px] h-[60px] max-sm:w-[40px] max-sm:h-[40px]"
-							src={`https://img.icons8.com/ios/100/${
-								isDarkTheme ? 'ffffff' : '000000'
-							}/circled-left-2.png`}
-							alt="#"
-							width={100}
-							height={100}
-						/>
-					</button>
-				</div>
-				<p className="flex items-center text-[1.8rem] max-sm:text-[1.4rem]">
-					{pageName}
-				</p>
+				<GoBackButton />
+				<PageTitle pageTitle={pageName} />
 				<div className="flex justify-center items-center">
-					{showCartIcon && (
-						<>
-							<button
-								className="relative w-fit h-fit max-sm:w-[32px] max-sm:h-[32px]"
-								onClick={() => router.push('/cart')}>
-								<Image
-									src={`https://img.icons8.com/metro/100/${
-										isDarkTheme ? 'ffffff' : '000000'
-									}/shopping-cart.png`}
-									alt="#"
-									width={48}
-									height={48}
-								/>
-								{cartProducstAmount !== 0 && (
-									<div className="flex justify-center items-center absolute top-[-20%] left-[65%] w-1/2 bg-[coral] rounded-full max-sm:text-[0.8rem] max-sm:h-1/2 max-sm:top-[-15%]">
-										<p>{cartProducstAmount}</p>
-									</div>
-								)}
-							</button>
-						</>
-					)}
+					{showCartIcon && <CartButton />}
 				</div>
 			</div>
 			<div className="bg-[darkblue] dark:bg-[orange] w-full h-[5px]"></div>

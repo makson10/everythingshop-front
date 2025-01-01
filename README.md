@@ -1,24 +1,50 @@
 # Everything Marketplace
 
-<h3>Frontend for <b>Everything shop</b> using SSR Next.js app</h4>
+### Frontend for **Everything shop** using SSR Next.js app
 
-<br>
+## Getting Started
 
-Useful links in the development:<br>
---> https://www.figma.com/file/stS6ilryI84Dw3olknHhCW/coffee-shop-(Community)?node-id=0%3A1&t=lgtC8ELCixjzl9ln-0 <br>
---> https://www.vantajs.com <br>
---> https://scrollrevealjs.org <br>
---> https://formik.org <br>
+To get started with the project, follow these steps:
 
-<br>
-<br>
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/makson10/everythingshop-front.git
+   ```
+2. **Navigate to the project directory:**
+   ```bash
+   cd everythingfront
+   ```
+3. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Contributors
+## Features
 
----
+- **Server-Side Rendering (SSR):** Utilizes Next.js for SSR to improve SEO and performance.
+- **Responsive Design:** Ensures compatibility across various devices and screen sizes.
+- **State Management:** Uses Redux Toolkit for state management.
+- **API Integration:** Connects with backend APIs to fetch and display data.
 
-<br>
+## Technologies Used
 
-<img src="https://avatars.githubusercontent.com/u/106618172?s=400&u=f6b42bd16afd90aacfdfeb00e20555cea01df19b&v=4" width="150px" height="150px" /><br>
+- **Next.js:** React framework for server-side rendering.
+- **Redux Toolkit:** State management library.
+- **CSS Modules:** For scoped and modular CSS.
+- **Axios:** Promise-based HTTP client for the browser and Node.js.
 
-<p style='width: 150px; text-align: center;'>Maks M<br>Main developer<p>
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Authors
+
+<div align="center">
+    <img src="https://avatars.githubusercontent.com/u/106618172?s=400&u=f6b42bd16afd90aacfdfeb00e20555cea01df19b&v=4" width="250px" height="250px" />
+    <p style="width: 150px; text-align: center;"><b>Maks M</b><br>Main developer</p>
+</div>

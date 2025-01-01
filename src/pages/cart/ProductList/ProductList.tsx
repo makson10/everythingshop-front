@@ -66,7 +66,7 @@ export default function ProductList() {
 		<div className="flex-[2_1_auto] flex justify-center items-center p-4">
 			<div className="flex flex-col justify-center items-center gap-8 min-w-full">
 				<div className="w-1/2 max-sm:w-full">
-					<div role="list" className="divide-y divide-gray-100">
+					<div id='cart-product-list' role="list" className="divide-y divide-gray-100">
 						{readyToShowList ? (
 							products.map((product) => (
 								<ProductRow

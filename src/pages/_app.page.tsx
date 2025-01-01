@@ -8,9 +8,6 @@ import StoreProvider from '@/store/StoreProvider';
 import ThemeProvider from '@/store/theme/ThemeProvider';
 import CartProvider from '@/store/cart/CartProvider';
 
-// TODO:
-//? add testing
-
 export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<>
