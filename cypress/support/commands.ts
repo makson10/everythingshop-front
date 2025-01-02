@@ -42,14 +42,21 @@ Cypress.Commands.add('login', function () {
 		cy.get('input[name=password]').type(password);
 	});
 
+	cy.intercept('POST', Cypress.env('baseServerUrl') + '/customers/login').as(
+		'loginRequest'
+	);
+
 	cy.get('button[type=submit]').click();
+
+	cy.wait('@loginRequest');
+	cy.getCookie('token').should('exist');
 });
 
 Cypress.Commands.add('loginWithRequest', function () {
 	cy.fixture('login').then((login) => {
 		cy.request(
 			'POST',
-			Cypress.env('baseServerUrl') + 'customers/login',
+			Cypress.env('baseServerUrl') + '/customers/login',
 			login
 		).then((res) => {
 			cy.setCookie('token', res.body.token);

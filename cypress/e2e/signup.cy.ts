@@ -30,7 +30,7 @@ describe('signup', () => {
 		cy.get('input[name=password]').type(chance.string({ length: 8 }));
 
 		cy.get('button[type=submit]').click();
-		cy.url().should('equal', Cypress.config('baseUrl'));
+		cy.url().should('equal', Cypress.config('baseUrl') + '/');
 		cy.get('#go-to-login-button').should('not.exist');
 	});
 });

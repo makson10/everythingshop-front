@@ -8,6 +8,10 @@ import StoreProvider from '@/store/StoreProvider';
 import ThemeProvider from '@/store/theme/ThemeProvider';
 import CartProvider from '@/store/cart/CartProvider';
 
+// TODO:
+//? make errors red
+//? make CI/CD git intergration
+
 export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<>

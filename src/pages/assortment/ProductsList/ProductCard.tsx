@@ -33,7 +33,7 @@ export function ProductCard({ product }: Props) {
 					<h3 className="text-sm text-gray-700 dark:text-white">
 						<Link href={`/assortment/${product._id}`}>
 							<span aria-hidden="true" className="absolute inset-0" />
-							{product.title}
+							<p>{product.title}</p>
 						</Link>
 					</h3>
 					<p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
