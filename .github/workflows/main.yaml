@@ -1,4 +1,4 @@
-name: EverythingShop Frontend CI/CD
+name: EverythingShop Frontend
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '21.x'
       - name: Run install
-        run: npm install
+        run: npm install --legacy-peer-deps
       - name: Run build
         run: npm run build
       - name: Run test
