@@ -9,8 +9,9 @@ import ThemeProvider from '@/store/theme/ThemeProvider';
 import CartProvider from '@/store/cart/CartProvider';
 
 // TODO:
-//? make errors red
+//? return pretty custom error in /assortment and /addproduct, /cart
 //? make CI/CD git intergration
+//? deploy to hosting
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (

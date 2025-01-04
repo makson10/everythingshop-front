@@ -5,12 +5,10 @@ import { Formik } from 'formik';
 import { useAppSelector } from '@/store/hooks';
 
 interface Props {
-	photoFiles: File[];
 	handleSubmitForm: (values: FormProductType) => void;
 }
 
 export default function AddProductForm({
-	photoFiles,
 	handleSubmitForm,
 }: Props) {
 	const user = useAppSelector((state) => state.user.data);

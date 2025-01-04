@@ -140,10 +140,7 @@ export default function PageContent() {
 									handleAddFile={handleAddFile}
 									handleDeleteFile={handleDeleteFile}
 								/>
-								<AddProductForm
-									photoFiles={photoFiles}
-									handleSubmitForm={handleSubmitForm}
-								/>
+								<AddProductForm handleSubmitForm={handleSubmitForm} />
 							</div>
 						</div>
 					</div>
