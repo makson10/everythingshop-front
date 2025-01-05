@@ -9,7 +9,6 @@ import ThemeProvider from '@/store/theme/ThemeProvider';
 import CartProvider from '@/store/cart/CartProvider';
 
 // TODO:
-//? make pre-commit testing
 //? deploy to hosting
 //? return pretty custom error in /assortment and /addproduct, /cart
 //? make refactoring
