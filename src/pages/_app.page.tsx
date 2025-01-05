@@ -9,9 +9,8 @@ import ThemeProvider from '@/store/theme/ThemeProvider';
 import CartProvider from '@/store/cart/CartProvider';
 
 // TODO:
-//? deploy to hosting
+//? deploy to hosting, make refactoring
 //? return pretty custom error in /assortment and /addproduct, /cart
-//? make refactoring
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
