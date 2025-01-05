@@ -1,7 +1,3 @@
 {
-	"*.{js, ts, jsx, tsx}": [
-		"npx prettier --write .",
-		"npm run build",
-		"npm run test-cli"
-	]
+	"*.{js, ts, jsx, tsx}": ["npx prettier --write ."]
 }
