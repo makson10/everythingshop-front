@@ -9,7 +9,7 @@
 		"lint": "next lint",
 		"lint-staged": "lint-staged",
 		"test": "cypress open",
-		"test-cli": "cypress run --e2e",
+		"test-cli": "concurrently --kill-others --kill-others-on-fail \"next dev\" \"cypress run --e2e --browser chrome\"",
 		"prepare": "husky"
 	},
 	"dependencies": {
@@ -53,6 +53,7 @@
 		"@types/node": "18.16.2",
 		"autoprefixer": "^10.4.14",
 		"chance": "^1.1.12",
+		"concurrently": "^9.1.2",
 		"cypress": "^13.17.0",
 		"cypress-localstorage-commands": "^2.2.7",
 		"eslint-config-next": "13.4.4",
