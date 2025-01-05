@@ -9,14 +9,8 @@ import ThemeProvider from '@/store/theme/ThemeProvider';
 import CartProvider from '@/store/cart/CartProvider';
 
 // TODO:
-//? deploy to hosting
 //? return pretty custom error in /assortment and /addproduct, /cart
 //? make refactoring
-
-process.on('SIGTERM', () => {
-	console.log('Exiting...');
-	process.exit(0);
-});
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (

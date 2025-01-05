@@ -67,8 +67,7 @@ export default function UserRow({
 						</p>
 					</div>
 					<p>
-						Login: {customer.login},{isMobileDevice && <br />} Password:{' '}
-						{customer.password}
+						Login: {customer.login},{isMobileDevice && <br />}
 					</p>
 				</>
 			)}
